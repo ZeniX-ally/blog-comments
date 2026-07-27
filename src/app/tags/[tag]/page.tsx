@@ -1,0 +1,50 @@
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { getAllTags, getPostsByTag } from "@/lib/posts";
+import { PostList } from "@/components/post-list";
+
+type Params = { tag: string };
+
+export function generateStaticParams(): Params[] {
+  return getAllTags().map(({ tag }) => ({ tag }));
+}
+
+export const dynamicParams = false;
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<Params>;
+}): Promise<Metadata> {
+  const { tag } = await params;
+  if (getPostsByTag(tag).length === 0) return {};
+  return {
+    title: `#${tag}`,
+    description: `标签「${tag}」下的文章。`,
+  };
+}
+
+/** 单个标签下的文章列表，复用 PostList 保持与首页/文章列表一致的极简风格 */
+export default async function TagPage({ params }: { params: Promise<Params> }) {
+  const { tag } = await params;
+  const posts = getPostsByTag(tag);
+  if (posts.length === 0) notFound();
+
+  return (
+    <>
+      <header className="py-12 sm:py-16">
+        <h1 className="font-serif text-3xl font-semibold tracking-tight sm:text-4xl">
+          <span className="text-faint">#</span>
+          {tag}
+        </h1>
+        <p className="mt-3 text-muted">共 {posts.length} 篇文章。</p>
+      </header>
+
+      <div className="pb-20">
+        <div className="border-t border-line">
+          <PostList posts={posts} />
+        </div>
+      </div>
+    </>
+  );
+}
