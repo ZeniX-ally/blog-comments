@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { formatDate, getAllPosts, getAdjacentPosts, getPost } from "@/lib/posts";
+import { formatDate, getAllPosts, getAdjacentPosts, getPost, decodeSlug, slugToHref } from "@/lib/posts";
 
 type Params = { slug: string };
 
@@ -26,7 +26,8 @@ export async function generateMetadata({
 }
 
 export default async function PostPage({ params }: { params: Promise<Params> }) {
-  const { slug } = await params;
+  const { slug: rawSlug } = await params;
+  const slug = decodeSlug(rawSlug);
   const post = await getPost(slug);
   if (!post) notFound();
   const adjacent = getAdjacentPosts(slug);
@@ -44,7 +45,7 @@ export default async function PostPage({ params }: { params: Promise<Params> }) 
           {post.tags.map((tag) => (
             <Link
               key={tag}
-              href={`/tags/${tag}`}
+              href={`/tags/${slugToHref(tag)}`}
               className="transition-colors hover:text-accent"
             >
               #{tag}
@@ -63,7 +64,7 @@ export default async function PostPage({ params }: { params: Promise<Params> }) 
       {(adjacent.prev || adjacent.next) && (
         <nav className="mt-16 grid gap-4 border-t border-line pt-6 sm:grid-cols-2 sm:gap-8">
           {adjacent.prev ? (
-            <Link href={`/blog/${adjacent.prev.slug}`} className="group block">
+            <Link href={`/blog/${slugToHref(adjacent.prev.slug)}`} className="group block">
               <span className="font-mono text-xs text-faint">← 上一篇</span>
               <span className="mt-1 block leading-snug transition-colors group-hover:text-accent">
                 {adjacent.prev.title}
@@ -73,7 +74,7 @@ export default async function PostPage({ params }: { params: Promise<Params> }) 
             <span />
           )}
           {adjacent.next ? (
-            <Link href={`/blog/${adjacent.next.slug}`} className="group block sm:text-right">
+            <Link href={`/blog/${slugToHref(adjacent.next.slug)}`} className="group block sm:text-right">
               <span className="font-mono text-xs text-faint">下一篇 →</span>
               <span className="mt-1 block leading-snug transition-colors group-hover:text-accent">
                 {adjacent.next.title}

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getAllTags, getPostsByTag } from "@/lib/posts";
+import { decodeSlug, getAllTags, getPostsByTag } from "@/lib/posts";
 import { PostList } from "@/components/post-list";
 
 type Params = { tag: string };
@@ -18,15 +18,17 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { tag } = await params;
   if (getPostsByTag(tag).length === 0) return {};
+  const label = decodeSlug(tag);
   return {
-    title: `#${tag}`,
-    description: `标签「${tag}」下的文章。`,
+    title: `#${label}`,
+    description: `标签「${label}」下的文章。`,
   };
 }
 
 /** 单个标签下的文章列表，复用 PostList 保持与首页/文章列表一致的极简风格 */
 export default async function TagPage({ params }: { params: Promise<Params> }) {
-  const { tag } = await params;
+  const { tag: rawTag } = await params;
+  const tag = decodeSlug(rawTag);
   const posts = getPostsByTag(tag);
   if (posts.length === 0) notFound();
 

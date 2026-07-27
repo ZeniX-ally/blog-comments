@@ -1,10 +1,10 @@
 import type { MetadataRoute } from "next";
-import { getAllPosts } from "@/lib/posts";
+import { getAllPosts, slugToHref } from "@/lib/posts";
 import { site } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const posts = getAllPosts().map((post) => ({
-    url: `${site.url}/blog/${post.slug}`,
+    url: `${site.url}/blog/${slugToHref(post.slug)}`,
     lastModified: post.date,
   }));
 

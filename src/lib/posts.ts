@@ -39,10 +39,11 @@ export function getAllPosts(): PostMeta[] {
 
 /** 读取单篇文章并渲染 Markdown 为 HTML */
 export async function getPost(slug: string): Promise<Post | null> {
-  const file = path.join(postsDir, `${slug}.md`);
+  const decoded = decodeSlug(slug);
+  const file = path.join(postsDir, `${decoded}.md`);
   if (!fs.existsSync(file)) return null;
 
-  const meta = parsePost(`${slug}.md`);
+  const meta = parsePost(`${decoded}.md`);
   if (!meta) return null;
 
   const raw = fs.readFileSync(file, "utf8");
@@ -88,6 +89,25 @@ export function formatDate(iso: string): string {
   return iso.replaceAll("-", ".");
 }
 
+/**
+ * 路由参数解码。
+ * Next.js 的动态路由 params 保持 URL 原始(编码)形式，中文 slug/标签会拿到
+ * `%E6%B5%8B...`，直接拼文件名会找不到文件 → 404 白屏。这里统一安全解码。
+ * 解码失败(非法百分号序列)时原样返回，避免抛异常导致 500。
+ */
+export function decodeSlug(raw: string): string {
+  try {
+    return decodeURIComponent(raw);
+  } catch {
+    return raw;
+  }
+}
+
+/** 生成文章/标签链接用的 URL 片段(中文与空格需编码) */
+export function slugToHref(value: string): string {
+  return encodeURIComponent(value);
+}
+
 /** 获取全部标签及各自的文章数，按文章数倒序、标签名正序排列 */
 export function getAllTags(): { tag: string; count: number }[] {
   const counts = new Map<string, number>();
@@ -103,7 +123,8 @@ export function getAllTags(): { tag: string; count: number }[] {
 
 /** 按标签筛选文章(返回结果已按日期倒序) */
 export function getPostsByTag(tag: string): PostMeta[] {
-  return getAllPosts().filter((post) => post.tags.includes(tag));
+  const decoded = decodeSlug(tag);
+  return getAllPosts().filter((post) => post.tags.includes(decoded));
 }
 
 /**
@@ -115,8 +136,9 @@ export function getAdjacentPosts(slug: string): {
   prev: PostMeta | null;
   next: PostMeta | null;
 } {
+  const decoded = decodeSlug(slug);
   const posts = getAllPosts();
-  const i = posts.findIndex((p) => p.slug === slug);
+  const i = posts.findIndex((p) => p.slug === decoded);
   if (i === -1) return { prev: null, next: null };
   return {
     prev: posts[i + 1] ?? null,

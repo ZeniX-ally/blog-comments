@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getAllTags } from "@/lib/posts";
+import { getAllTags, slugToHref } from "@/lib/posts";
 
 export const metadata: Metadata = {
   title: "标签",
@@ -26,7 +26,7 @@ export default function TagsPage() {
             {tags.map(({ tag, count }) => (
               <li key={tag}>
                 <Link
-                  href={`/tags/${tag}`}
+                  href={`/tags/${slugToHref(tag)}`}
                   className="group inline-flex items-baseline gap-1.5"
                 >
                   <span className="text-lg transition-colors group-hover:text-accent">

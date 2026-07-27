@@ -1,4 +1,4 @@
-import { getAllPosts } from "@/lib/posts";
+import { getAllPosts, slugToHref } from "@/lib/posts";
 import { site } from "@/lib/site";
 
 function escapeXml(text: string): string {
@@ -16,8 +16,8 @@ export function GET() {
     .map(
       (post) => `    <item>
       <title>${escapeXml(post.title)}</title>
-      <link>${site.url}/blog/${post.slug}</link>
-      <guid isPermaLink="true">${site.url}/blog/${post.slug}</guid>
+      <link>${site.url}/blog/${slugToHref(post.slug)}</link>
+      <guid isPermaLink="true">${site.url}/blog/${slugToHref(post.slug)}</guid>
       <pubDate>${new Date(post.date).toUTCString()}</pubDate>
       <description>${escapeXml(post.excerpt)}</description>
     </item>`,
