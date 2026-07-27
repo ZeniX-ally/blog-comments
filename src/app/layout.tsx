@@ -5,7 +5,7 @@ import { SiteFooter } from "@/components/site-footer";
 import "./globals.css";
 
 // 防闪烁:首屏渲染前根据 localStorage 设置主题,避免暗色模式白屏闪一下
-const themeScript = `(function(){try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t);}}}catch(e){})();`;
+const themeScript = `(function(){try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
