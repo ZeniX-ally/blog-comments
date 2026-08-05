@@ -4,6 +4,8 @@ import { getAllPosts } from "@/lib/posts";
 import { projects } from "@/lib/projects";
 import { PostList } from "@/components/post-list";
 import { FadeIn } from "@/components/fade-in";
+import { Spotlight } from "@/components/spotlight";
+import { RevealText } from "@/components/reveal-text";
 
 function SectionHeading({ title, moreHref }: { title: string; moreHref?: string }) {
   return (
@@ -27,18 +29,20 @@ export default function Home() {
         {/* Hero —— 官方式排版:超大字贴左,简介贴右 */}
       <section className="py-12 sm:py-16">
         <div className="mt-8 sm:mt-12">
-          <FadeIn>
-            <h1 className="font-display text-6xl font-normal leading-[1.04] tracking-tight sm:text-7xl xl:text-8xl">
-              {site.hero.greeting}
-            </h1>
-          </FadeIn>
-          <FadeIn delay={120}>
-            <div className="mt-10 max-w-xl space-y-2 text-base leading-relaxed text-muted sm:text-lg">
-              {site.hero.bio.map((line) => (
-                <p key={line}>{line}</p>
-              ))}
-            </div>
-          </FadeIn>
+          <Spotlight>
+            <FadeIn>
+              <h1 className="font-display text-6xl font-normal leading-[1.04] tracking-tight sm:text-7xl xl:text-8xl">
+                <RevealText text={site.hero.greeting} />
+              </h1>
+            </FadeIn>
+            <FadeIn delay={120}>
+              <div className="mt-10 max-w-xl space-y-2 text-base leading-relaxed text-muted sm:text-lg">
+                {site.hero.bio.map((line) => (
+                  <p key={line}>{line}</p>
+                ))}
+              </div>
+            </FadeIn>
+          </Spotlight>
         </div>
       </section>
 

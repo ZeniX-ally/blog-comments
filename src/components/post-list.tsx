@@ -15,7 +15,7 @@ export function PostList({ posts }: { posts: PostMeta[] }) {
   return (
     <ul>
       {posts.map((post, i) => (
-        <li key={post.slug} className="border-b border-line last:border-b-0">
+        <li key={post.slug} className="-mx-3 border-b border-line px-3 transition-colors duration-300 last:border-b-0 hover:bg-[rgba(212,162,127,0.04)]">
           <FadeIn delay={Math.min(i, 6) * 50}>
             <Link href={`/blog/${slugToHref(post.slug)}`} className="group block py-5">
               <div className="flex items-baseline justify-between gap-6">

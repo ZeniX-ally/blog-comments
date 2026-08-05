@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { site } from "@/lib/site";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { BackToTop } from "@/components/back-to-top";
 import "./globals.css";
 
 const themeScript = `(function(){try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t);}var m=document.querySelector('meta[name="theme-color"]');if(m){var dark=t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme: dark)').matches);m.setAttribute('content',dark?'#191919':'#ffffff');}}catch(e){}})();`;
@@ -37,6 +38,7 @@ export default function RootLayout({
         <SiteHeader />
         <main className="w-full grow px-5 sm:px-8 md:px-12 xl:px-16">{children}</main>
         <SiteFooter />
+        <BackToTop />
       </body>
     </html>
   );
