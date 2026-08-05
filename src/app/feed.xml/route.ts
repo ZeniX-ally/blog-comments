@@ -11,6 +11,8 @@ function escapeXml(text: string): string {
 }
 
 /** RSS 2.0 订阅源:构建时生成,新增文章后自动更新 */
+export const dynamic = "force-static";
+
 export function GET() {
   const items = getAllPosts()
     .map(

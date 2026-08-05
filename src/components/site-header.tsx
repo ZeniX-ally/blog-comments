@@ -1,12 +1,35 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { site } from "@/lib/site";
 import { NavLink } from "./nav-link";
 import { ThemeToggle } from "./theme-toggle";
 
+/**
+ * 顶栏。滚动超过 8px 时收紧(py 5→3)+ 极淡底影,给阅读节奏一个克制的反馈。
+ */
 export function SiteHeader() {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <header className="sticky top-0 z-40 border-b border-line bg-background">
-      <div className="flex w-full items-baseline justify-between px-5 py-5 sm:px-8 md:px-12 xl:px-16">
+    <header
+      className={`sticky top-0 z-40 border-b border-line bg-background transition-shadow duration-300 ${
+        scrolled ? "shadow-[0_1px_0_rgba(25,25,25,0.04)]" : ""
+      }`}
+    >
+      <div
+        className={`flex w-full items-baseline justify-between px-5 transition-all duration-300 sm:px-8 md:px-12 xl:px-16 ${
+          scrolled ? "py-3" : "py-5"
+        }`}
+      >
         <div className="flex items-center gap-3">
           <Link
             href="/"
@@ -17,6 +40,7 @@ export function SiteHeader() {
             <span className="inline-block h-2 w-2 rounded-full bg-accent" aria-hidden="true" />
             <span className="font-display text-lg font-normal tracking-tight">
               {site.name}
+              <span className="ml-[0.35em]">。</span>
             </span>
           </Link>
         </div>

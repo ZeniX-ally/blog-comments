@@ -58,7 +58,9 @@ export function ThemeToggle() {
       className="text-muted transition-colors hover:text-foreground"
       suppressHydrationWarning
     >
-      {mounted && isDark ? <MoonIcon /> : <SunIcon />}
+      <span className="inline-block transition-transform duration-300 ease-out hover:-translate-y-px">
+        {mounted && isDark ? <MoonIcon /> : <SunIcon />}
+      </span>
     </button>
   );
 }

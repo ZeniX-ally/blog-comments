@@ -3,6 +3,7 @@ import { site } from "@/lib/site";
 import { getAllPosts } from "@/lib/posts";
 import { projects } from "@/lib/projects";
 import { PostList } from "@/components/post-list";
+import { FadeIn } from "@/components/fade-in";
 
 function SectionHeading({ title, moreHref }: { title: string; moreHref?: string }) {
   return (
@@ -23,25 +24,21 @@ export default function Home() {
 
   return (
     <>
-        {/* Hero —— 官方式排版:meta 行左右分布,超大字贴左,简介贴右 */}
-      <section className="py-16 sm:py-24">
-        <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2 border-b border-line pb-5">
-          <p className="flex items-center gap-2.5 font-mono text-xs uppercase tracking-widest text-muted">
-            <span className="inline-block h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true" />
-            数字自留地
-          </p>
-          <p className="font-mono text-xs text-faint">Personal Site · Since 2026</p>
-        </div>
-
-        <div className="mt-14 sm:mt-20">
-          <h1 className="font-display text-6xl font-normal leading-[1.04] tracking-tight sm:text-7xl xl:text-8xl">
-            {site.hero.greeting}
-          </h1>
-          <div className="mt-10 max-w-xl space-y-2 text-base leading-relaxed text-muted sm:text-lg">
-            {site.hero.bio.map((line) => (
-              <p key={line}>{line}</p>
-            ))}
-          </div>
+        {/* Hero —— 官方式排版:超大字贴左,简介贴右 */}
+      <section className="py-12 sm:py-16">
+        <div className="mt-8 sm:mt-12">
+          <FadeIn>
+            <h1 className="font-display text-6xl font-normal leading-[1.04] tracking-tight sm:text-7xl xl:text-8xl">
+              {site.hero.greeting}
+            </h1>
+          </FadeIn>
+          <FadeIn delay={120}>
+            <div className="mt-10 max-w-xl space-y-2 text-base leading-relaxed text-muted sm:text-lg">
+              {site.hero.bio.map((line) => (
+                <p key={line}>{line}</p>
+              ))}
+            </div>
+          </FadeIn>
         </div>
       </section>
 

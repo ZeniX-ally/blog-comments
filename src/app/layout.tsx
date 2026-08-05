@@ -24,6 +24,10 @@ export default function RootLayout({
   return (
     <html lang="zh-CN" data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
+        {/* 性能:预加载全站 UI 字体(Styrene A 标题 + Anthropic Sans 正文),
+            serif/mono 按需使用不预载 */}
+        <link rel="preload" href="/fonts/styrene-a-regular.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href="/fonts/anthropic-sans-roman.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
         <meta name="theme-color" media="(prefers-color-scheme: light)" content="#faf9f5" />
         <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#191919" />
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />

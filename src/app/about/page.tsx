@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import type { Metadata } from "next";
 import { renderMarkdown } from "@/lib/posts";
+import { FadeIn } from "@/components/fade-in";
 
 export const metadata: Metadata = {
   title: "关于",
@@ -18,7 +19,9 @@ export default async function AboutPage() {
 
   return (
     <article className="mx-auto w-full max-w-3xl py-12 sm:py-16">
+      <FadeIn>
       <div className="prose" dangerouslySetInnerHTML={{ __html: html }} />
+      </FadeIn>
     </article>
   );
 }

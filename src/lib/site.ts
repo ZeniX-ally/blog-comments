@@ -16,8 +16,8 @@ export const site = {
   hero: {
     greeting: "我是阿九。",
     bio: [
-      "测试工程师，方向是测试研发。完美主义者，偏爱极简的界面与干净的文字。",
-      "这里是我的数字自留地，记录生活，分享学习。",
+      "Test engineer in test R&D.",
+      "Minimal design. Clean text. Perfectionist.",
     ],
   },
 

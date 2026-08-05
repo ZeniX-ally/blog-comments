@@ -180,6 +180,32 @@ body {
   outline-offset: 2px;
 }
 
+/* ------------------------------------------------------------
+   导航链接下划线动画:Tan 细线从左滑入(纯 CSS,零 JS)
+   ------------------------------------------------------------ */
+
+.nav-underline {
+  position: relative;
+}
+
+.nav-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  height: 1px;
+  width: 100%;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 250ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nav-underline:hover::after,
+.nav-underline[aria-current="page"]::after {
+  transform: scaleX(1);
+}
+
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;

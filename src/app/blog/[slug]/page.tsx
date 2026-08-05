@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { formatDate, getAllPosts, getAdjacentPosts, getPost, decodeSlug, slugToHref } from "@/lib/posts";
+import { ReadingProgress } from "@/components/reading-progress";
+import { FadeIn } from "@/components/fade-in";
 
 type Params = { slug: string };
 
@@ -34,7 +36,10 @@ export default async function PostPage({ params }: { params: Promise<Params> }) 
 
   return (
     <article className="mx-auto w-full max-w-3xl py-12 sm:py-16">
+      {/* 阅读进度条:Tan 细线 */}
+      <ReadingProgress />
       {/* 文章头部 */}
+      <FadeIn>
       <header className="border-b border-line pb-6">
         <h1 className="font-serif text-4xl font-normal leading-tight tracking-tight sm:text-5xl">
           {post.title}
@@ -53,12 +58,15 @@ export default async function PostPage({ params }: { params: Promise<Params> }) 
           ))}
         </div>
       </header>
+      </FadeIn>
 
       {/* 正文 */}
+      <FadeIn delay={100}>
       <div
         className="prose mt-10"
         dangerouslySetInnerHTML={{ __html: post.html }}
       />
+      </FadeIn>
 
       {/* 上一篇 / 下一篇 */}
       {(adjacent.prev || adjacent.next) && (
