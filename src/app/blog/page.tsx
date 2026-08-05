@@ -23,14 +23,17 @@ export default function BlogPage() {
   return (
     <>
       <header className="py-12 sm:py-16">
-        <h1 className="font-serif text-3xl font-semibold tracking-tight sm:text-4xl">文章</h1>
+        <h1 className="font-display text-3xl font-normal tracking-tight sm:text-4xl">文章</h1>
         <p className="mt-3 text-muted">关于技术、设计与生活的一切记录。</p>
       </header>
 
       <div className="pb-20">
         {groups.map(([year, posts]) => (
           <section key={year} className="mb-12">
-            <h2 className="font-mono text-xs tracking-widest text-faint">{year}</h2>
+            <h2 className="font-mono text-xs tracking-widest text-faint">
+              {year}
+              <span className="ml-2">· {posts.length} 篇</span>
+            </h2>
             <div className="mt-3 border-t border-line">
               <PostList posts={posts} />
             </div>

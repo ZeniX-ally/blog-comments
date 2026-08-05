@@ -33,10 +33,10 @@ export default async function PostPage({ params }: { params: Promise<Params> }) 
   const adjacent = getAdjacentPosts(slug);
 
   return (
-    <article className="py-12 sm:py-16">
+    <article className="mx-auto w-full max-w-3xl py-12 sm:py-16">
       {/* 文章头部 */}
-      <header>
-        <h1 className="font-serif text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
+      <header className="border-b border-line pb-6">
+        <h1 className="font-serif text-4xl font-normal leading-tight tracking-tight sm:text-5xl">
           {post.title}
         </h1>
         <div className="mt-4 flex flex-wrap items-center gap-4 font-mono text-xs text-faint">

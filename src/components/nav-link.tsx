@@ -14,7 +14,7 @@ export function NavLink({ href, children }: { href: string; children: ReactNode 
       href={href}
       aria-current={active ? "page" : undefined}
       className={`transition-colors duration-200 ${
-        active ? "text-foreground" : "text-muted hover:text-foreground"
+        active ? "text-accent-strong" : "text-muted hover:text-foreground"
       }`}
     >
       {children}

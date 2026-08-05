@@ -10,7 +10,7 @@ export default function ProjectsPage() {
   return (
     <>
       <header className="py-12 sm:py-16">
-        <h1 className="font-serif text-3xl font-semibold tracking-tight sm:text-4xl">作品</h1>
+        <h1 className="font-display text-3xl font-normal tracking-tight sm:text-4xl">作品</h1>
         <p className="mt-3 text-muted">做过的项目，大都源于自己的真实需求。</p>
       </header>
 
@@ -23,7 +23,7 @@ export default function ProjectsPage() {
           {projects.map((project) => (
           <li key={project.name} className="border-b border-line py-7">
             <div className="flex items-baseline justify-between gap-6">
-              <h2 className="text-xl font-medium">{project.name}</h2>
+              <h2 className="text-xl font-normal">{project.name}</h2>
               <span className="shrink-0 font-mono text-xs text-faint">{project.year}</span>
             </div>
 

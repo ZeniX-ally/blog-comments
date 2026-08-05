@@ -14,7 +14,7 @@ export default function TagsPage() {
   return (
     <>
       <header className="py-12 sm:py-16">
-        <h1 className="font-serif text-3xl font-semibold tracking-tight sm:text-4xl">标签</h1>
+        <h1 className="font-display text-3xl font-normal tracking-tight sm:text-4xl">标签</h1>
         <p className="mt-3 text-muted">按主题浏览全部文章。</p>
       </header>
 
@@ -29,7 +29,11 @@ export default function TagsPage() {
                   href={`/tags/${slugToHref(tag)}`}
                   className="group inline-flex items-baseline gap-1.5"
                 >
-                  <span className="text-lg transition-colors group-hover:text-accent">
+                  <span
+                    className={`${
+                      count >= 4 ? "text-2xl" : count >= 2 ? "text-xl" : "text-base"
+                    } transition-colors group-hover:text-accent`}
+                  >
                     #{tag}
                   </span>
                   <span className="font-mono text-xs text-faint">{count}</span>

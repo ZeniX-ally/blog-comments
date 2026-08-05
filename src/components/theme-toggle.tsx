@@ -41,6 +41,11 @@ export function ThemeToggle() {
       /* localStorage 不可用时静默忽略 */
     }
     document.documentElement.setAttribute("data-theme", next);
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) {
+      const bg = getComputedStyle(document.documentElement).getPropertyValue("--bg").trim();
+      meta.setAttribute("content", bg || (next === "dark" ? "#191919" : "#faf9f5"));
+    }
   }
 
   const isDark = theme === "dark";

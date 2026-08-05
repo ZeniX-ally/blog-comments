@@ -2,10 +2,44 @@
 @plugin "@tailwindcss/typography";
 
 /* ============================================================
-   设计系统 —— 极简留白
-   语义化色彩 token，亮 / 暗由 prefers-color-scheme 自动切换。
+   设计系统 —— Anthropic Brand Style
+   规范:Tan #D4A27F / Black #191919 / White #FFFFFF / Warm Gray #E8E0D8
+   暖色克制风。语义化色彩 token，亮 / 暗由 prefers-color-scheme 自动切换。
    改配色只需要动 :root 与 dark 两处变量。
    ============================================================ */
+
+/* 本地字体：品牌参考里的 4 个 woff2 已下载到 public/fonts/ */
+@font-face {
+  font-family: "Styrene A";
+  src: url("/fonts/styrene-a-regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Anthropic Sans";
+  src: url("/fonts/anthropic-sans-roman.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Anthropic Serif";
+  src: url("/fonts/anthropic-serif-roman.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Anthropic Mono";
+  src: url("/fonts/anthropic-mono-roman.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 
 @theme inline {
   --color-background: var(--bg);
@@ -14,80 +48,123 @@
   --color-faint: var(--faint);
   --color-line: var(--line);
   --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-surface: var(--surface);
 
-  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI",
-    "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC",
-    sans-serif;
-  --font-serif: ui-serif, Georgia, "Times New Roman", "Songti SC", "STSong",
+  /* 标题 / Display —— Styrene A，中文回退到系统黑体 */
+  --font-display: "Styrene A", "Anthropic Sans", ui-sans-serif, system-ui,
+    -apple-system, "Segoe UI", "PingFang SC", "Hiragino Sans GB",
+    "Microsoft YaHei", "Noto Sans SC", sans-serif;
+
+  /* 正文 / UI —— Anthropic Sans */
+  --font-sans: "Anthropic Sans", ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+    "Noto Sans SC", sans-serif;
+
+  /* 编辑 / 长文 —— Anthropic Serif，中文回退到宋体 */
+  --font-serif: "Anthropic Serif", ui-serif, Georgia, "Songti SC", "STSong",
     "Noto Serif SC", "SimSun", serif;
-  --font-mono: ui-monospace, "SF Mono", "Cascadia Code", "JetBrains Mono",
-    Consolas, "Liberation Mono", monospace;
+
+  /* 代码 / 技术 —— Anthropic Mono */
+  --font-mono: "Anthropic Mono", ui-monospace, "SF Mono", "Cascadia Code",
+    "JetBrains Mono", Consolas, "Liberation Mono", monospace;
 }
 
 :root {
-  --bg: #fdfdfa;
-  --fg: #1e1e1b;
-  --muted: #6d6d64;
-  --faint: #aaaaa1;
-  --line: #eaeae2;
-  --accent: #b54234;
-  --code-bg: #f6f5f0;
+  color-scheme: light;
+  accent-color: var(--accent-strong);
 
-  --tok-keyword: #9a3ba6;
-  --tok-string: #2e7d46;
-  --tok-number: #b54234;
-  --tok-comment: #a3a39a;
-  --tok-title: #205e9e;
+  /* 规范品牌色(CSS Variables) */
+  --brand-primary: #d4a27f;
+  --brand-black: #191919;
+  --brand-white: #ffffff;
+  --brand-warm-gray: #e8e0d8;
+  /* 2026-08-08 重新设计: 官方语言的奶油白底 / 暖灰表面 */
+  --brand-cream: #faf9f5;
+  --brand-surface: #f5f2ed;
+
+  --bg: var(--brand-cream);
+  --fg: var(--brand-black);
+  --muted: #6b6459;
+  --faint: #9c948a;
+  --line: var(--brand-warm-gray);
+  --accent: var(--brand-primary);
+  --accent-strong: #b9855c;
+  --surface: var(--brand-surface);
+  --code-bg: #f3efe9;
+
+  /* 背景氛围:极淡暖色渐晕(官方式干净,只留呼吸感,不有点阵) */
+  --glow: rgba(212, 162, 127, 0.055);
+  --glow-2: rgba(185, 133, 92, 0.035);
+
+  --tok-keyword: #9a5b23;
+  --tok-string: #6b7f3e;
+  --tok-number: #b4542a;
+  --tok-comment: #a39c90;
+  --tok-title: #7a4a2b;
   --tok-attr: #8a6d1d;
 }
 
-/* 手动切换到暗色 */
+/* 手动切换到暗色：Anthropic Black #191919 打底 */
 :root[data-theme="dark"] {
-  --bg: #131311;
-  --fg: #e5e5dc;
-  --muted: #9c9c92;
-  --faint: #62625a;
-  --line: #262622;
-  --accent: #d97a66;
-  --code-bg: #1b1b17;
+  color-scheme: dark;
+  --bg: var(--brand-black);
+  --fg: #edeae4;
+  --muted: #a8a29a;
+  --faint: #6b665f;
+  --line: #2e2b26;
+  --accent: var(--brand-primary);
+  --accent-strong: #e4b794;
+  --surface: #211f1c;
+  --code-bg: #23211d;
 
-  --tok-keyword: #c586c0;
-  --tok-string: #8ec98f;
-  --tok-number: #e0937e;
-  --tok-comment: #6f6f66;
-  --tok-title: #7db3e0;
-  --tok-attr: #d7ba7d;
+  --glow: rgba(212, 162, 127, 0.05);
+  --glow-2: rgba(212, 162, 127, 0.035);
+
+  --tok-keyword: #e0a264;
+  --tok-string: #a3b866;
+  --tok-number: #e08a5e;
+  --tok-comment: #7a746c;
+  --tok-title: #d9a879;
+  --tok-attr: #d4b26a;
 }
 
 /* 未手动设置时,跟随系统偏好(无 JS 也能正确显示暗色) */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme]) {
-    --bg: #131311;
-    --fg: #e5e5dc;
-    --muted: #9c9c92;
-    --faint: #62625a;
-    --line: #262622;
-    --accent: #d97a66;
-    --code-bg: #1b1b17;
+    color-scheme: dark;
+    --bg: var(--brand-black);
+    --fg: #edeae4;
+    --muted: #a8a29a;
+    --faint: #6b665f;
+    --line: #2e2b26;
+    --accent: var(--brand-primary);
+    --accent-strong: #e4b794;
+    --surface: #211f1c;
+    --code-bg: #23211d;
 
-    --tok-keyword: #c586c0;
-    --tok-string: #8ec98f;
-    --tok-number: #e0937e;
-    --tok-comment: #6f6f66;
-    --tok-title: #7db3e0;
-    --tok-attr: #d7ba7d;
+    --glow: rgba(212, 162, 127, 0.05);
+    --glow-2: rgba(212, 162, 127, 0.035);
+
+    --tok-keyword: #e0a264;
+    --tok-string: #a3b866;
+    --tok-number: #e08a5e;
+    --tok-comment: #7a746c;
+    --tok-title: #d9a879;
+    --tok-attr: #d4b26a;
   }
 }
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
 }
 
 body {
   background-color: var(--bg);
   color: var(--fg);
   font-family: var(--font-sans);
-  line-height: 1.75;
+  line-height: 1.7;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   transition: background-color 0.3s ease, color 0.3s ease;
@@ -95,18 +172,73 @@ body {
 
 ::selection {
   background: var(--accent);
-  color: var(--bg);
+  color: var(--brand-black);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-strong);
+  outline-offset: 2px;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border: 2px solid transparent;
+  border-radius: 9999px;
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--faint);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
 }
 
 /* ------------------------------------------------------------
-   文章正文排版:让 typography 插件的颜色全部接入语义 token
+   背景氛围:极淡暖色渐晕(官方式干净,零装饰,只留呼吸感)
+   pointer-events: none,不干扰交互;z-index 压在内容之下
+   ------------------------------------------------------------ */
+
+.bg-fx {
+  position: fixed;
+  inset: 0;
+  z-index: -10;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* 光晕层:左上主光 + 右下辅光,随视口缩放 */
+.bg-fx::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 10% -5%, var(--glow) 0%, transparent 55%),
+    radial-gradient(circle at 92% 105%, var(--glow-2) 0%, transparent 58%);
+}
+
+/* ------------------------------------------------------------
+   文章正文排版:typography 插件接入语义 token,正文走 Anthropic Serif
    ------------------------------------------------------------ */
 
 .prose {
   --tw-prose-body: var(--fg);
   --tw-prose-headings: var(--fg);
   --tw-prose-lead: var(--muted);
-  --tw-prose-links: var(--accent);
+  --tw-prose-links: var(--fg);
   --tw-prose-bold: var(--fg);
   --tw-prose-counters: var(--faint);
   --tw-prose-bullets: var(--faint);
@@ -122,14 +254,17 @@ body {
   --tw-prose-td-borders: var(--line);
 
   max-width: 44rem;
+  font-family: var(--font-serif);
   font-size: 1.0625rem;
   line-height: 1.9;
 }
 
+.prose h1,
 .prose h2,
 .prose h3,
 .prose h4 {
   font-family: var(--font-serif);
+  font-weight: 400;
   letter-spacing: -0.01em;
 }
 
@@ -138,23 +273,39 @@ body {
   text-decoration: underline;
   text-underline-offset: 4px;
   text-decoration-color: var(--faint);
-  transition: text-decoration-color 0.2s ease;
+  transition: text-decoration-color 0.2s ease, color 0.2s ease;
 }
 
 .prose a:hover {
+  color: var(--accent-strong);
   text-decoration-color: var(--accent);
+}
+
+/* 重新设计:正文链接常驻为 Tan 弱化,悬停加深——官方站点的暖色链接语言 */
+.prose p a,
+.prose li a,
+.prose td a {
+  color: var(--accent-strong);
+}
+
+.prose p a:hover,
+.prose li a:hover,
+.prose td a:hover {
+  color: var(--accent);
 }
 
 .prose blockquote {
   font-style: normal;
   border-left-width: 2px;
+  color: var(--muted);
 }
 
-/* 行内代码:浅色底、无反引号伪元素 */
+/* 行内代码:暖灰浅底、无反引号伪元素 */
 .prose :where(code):not(:where(pre code)) {
   background-color: var(--code-bg);
   padding: 0.15em 0.4em;
   border-radius: 0.25rem;
+  font-family: var(--font-mono);
   font-size: 0.875em;
   font-weight: normal;
 }
@@ -167,6 +318,7 @@ body {
 .prose pre {
   border: 1px solid var(--line);
   border-radius: 0.5rem;
+  font-family: var(--font-mono);
   font-size: 0.875rem;
   line-height: 1.7;
 }
@@ -176,8 +328,19 @@ body {
   margin-bottom: 3rem;
 }
 
+.prose img {
+  border: 1px solid var(--line);
+  border-radius: 0.5rem;
+}
+
+.prose figcaption {
+  margin-top: 0.5rem;
+  text-align: center;
+  font-size: 0.8125rem;
+}
+
 /* ------------------------------------------------------------
-   代码高亮(highlight.js)—— 与整体配色一致的轻量主题
+   代码高亮(highlight.js)—— 暖色系,与 Anthropic 调色板协调
    ------------------------------------------------------------ */
 
 .hljs-comment,
@@ -236,4 +399,3 @@ body {
 .hljs-strong {
   font-weight: bold;
 }
-

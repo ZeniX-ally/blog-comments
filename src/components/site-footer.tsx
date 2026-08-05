@@ -5,8 +5,8 @@ export function SiteFooter() {
   const { github, email, rss } = site.links;
 
   return (
-    <footer className="mt-auto border-t border-line">
-      <div className="mx-auto flex w-full max-w-5xl flex-col gap-3 px-6 py-8 text-sm text-faint sm:flex-row sm:items-baseline sm:justify-between lg:px-10">
+    <footer className="mt-auto border-t border-line bg-surface">
+      <div className="flex w-full flex-col gap-3 px-5 py-8 text-sm text-faint sm:flex-row sm:items-baseline sm:justify-between sm:px-8 md:px-12 xl:px-16">
         <p>
           © {year} {site.name} · 用 <a href="https://nextjs.org" className="underline decoration-line underline-offset-4 transition-colors hover:text-foreground">Next.js</a> 构建
         </p>

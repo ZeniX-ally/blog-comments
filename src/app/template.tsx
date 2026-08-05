@@ -41,13 +41,13 @@ export default function Template({ children }: { children: React.ReactNode }) {
         reduced
           ? [{ opacity: 0 }, { opacity: 1 }]
           : [
-              { opacity: 0, transform: "translateY(10px)" },
-              { opacity: 1, transform: "translateY(0)" },
+              { opacity: 0, transform: "translateY(32px) scale(0.985)" },
+              { opacity: 1, transform: "translateY(0) scale(1)" },
             ],
         {
-          duration: reduced ? 200 : 420,
-          delay: reduced ? 0 : Math.min(i, 4) * 70,
-          easing: "cubic-bezier(0.22, 0.61, 0.36, 1)",
+          duration: reduced ? 200 : 500,
+          delay: reduced ? 0 : Math.min(i, 4) * 100,
+          easing: "cubic-bezier(0.16, 1, 0.3, 1)",
           fill: "backwards", // delay 期间保持起始态，避免先闪一下再动
         },
       ),

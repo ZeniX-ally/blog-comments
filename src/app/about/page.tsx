@@ -17,7 +17,7 @@ export default async function AboutPage() {
   const html = await renderMarkdown(markdown);
 
   return (
-    <article className="py-12 sm:py-16">
+    <article className="mx-auto w-full max-w-3xl py-12 sm:py-16">
       <div className="prose" dangerouslySetInnerHTML={{ __html: html }} />
     </article>
   );

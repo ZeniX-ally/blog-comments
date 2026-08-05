@@ -4,8 +4,7 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import "./globals.css";
 
-// 防闪烁:首屏渲染前根据 localStorage 设置主题,避免暗色模式白屏闪一下
-const themeScript = `(function(){try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();`;
+const themeScript = `(function(){try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t);}var m=document.querySelector('meta[name="theme-color"]');if(m){var dark=t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme: dark)').matches);m.setAttribute('content',dark?'#191919':'#ffffff');}}catch(e){}})();`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -25,11 +24,14 @@ export default function RootLayout({
   return (
     <html lang="zh-CN" data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
+        <meta name="theme-color" media="(prefers-color-scheme: light)" content="#faf9f5" />
+        <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#191919" />
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body className="flex min-h-screen flex-col">
+        <div aria-hidden="true" className="bg-fx" />
         <SiteHeader />
-        <main className="mx-auto w-full max-w-5xl grow px-6 lg:px-10">{children}</main>
+        <main className="w-full grow px-5 sm:px-8 md:px-12 xl:px-16">{children}</main>
         <SiteFooter />
       </body>
     </html>

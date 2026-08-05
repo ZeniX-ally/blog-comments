@@ -3,42 +3,21 @@ import { site } from "@/lib/site";
 import { NavLink } from "./nav-link";
 import { ThemeToggle } from "./theme-toggle";
 
-function HomeIcon() {
-  return (
-    <svg
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-      <polyline points="9 22 9 12 15 12 15 22" />
-    </svg>
-  );
-}
-
 export function SiteHeader() {
   return (
-    <header className="border-b border-line">
-      <div className="mx-auto flex w-full max-w-5xl items-baseline justify-between px-6 py-5 lg:px-10">
+    <header className="sticky top-0 z-40 border-b border-line bg-background">
+      <div className="flex w-full items-baseline justify-between px-5 py-5 sm:px-8 md:px-12 xl:px-16">
         <div className="flex items-center gap-3">
           <Link
             href="/"
             aria-label="返回首页"
-            className="text-muted transition-colors hover:text-foreground"
+            className="flex items-center gap-3 text-foreground transition-opacity hover:opacity-70"
           >
-            <HomeIcon />
-          </Link>
-          <Link
-            href="/"
-            className="font-serif text-lg font-semibold tracking-tight transition-colors hover:text-accent"
-          >
-            {site.name}
+            {/* 品牌标记:Tan 圆点,克制不张扬 */}
+            <span className="inline-block h-2 w-2 rounded-full bg-accent" aria-hidden="true" />
+            <span className="font-display text-lg font-normal tracking-tight">
+              {site.name}
+            </span>
           </Link>
         </div>
         <div className="flex items-center gap-5">
@@ -47,7 +26,7 @@ export function SiteHeader() {
             <NavLink href="/projects">作品</NavLink>
             <NavLink href="/about">关于</NavLink>
           </nav>
-          <span className="h-4 w-px bg-line" />
+          <span className="hidden h-4 w-px bg-line sm:block" />
           <ThemeToggle />
         </div>
       </div>

@@ -35,7 +35,7 @@ export default async function TagPage({ params }: { params: Promise<Params> }) {
   return (
     <>
       <header className="py-12 sm:py-16">
-        <h1 className="font-serif text-3xl font-semibold tracking-tight sm:text-4xl">
+        <h1 className="font-display text-3xl font-normal tracking-tight sm:text-4xl">
           <span className="text-faint">#</span>
           {tag}
         </h1>
