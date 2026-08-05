@@ -6,6 +6,7 @@ import remarkParse from "remark-parse";
 import remarkGfm from "remark-gfm";
 import remarkRehype from "remark-rehype";
 import rehypeHighlight from "rehype-highlight";
+import rehypeSanitize from "rehype-sanitize";
 import rehypeStringify from "rehype-stringify";
 
 const postsDir = path.join(process.cwd(), "content", "posts");
@@ -40,6 +41,7 @@ export function getAllPosts(): PostMeta[] {
 /** 读取单篇文章并渲染 Markdown 为 HTML */
 export async function getPost(slug: string): Promise<Post | null> {
   const decoded = decodeSlug(slug);
+  if (!isSafeSlug(decoded)) return null;
   const file = path.join(postsDir, `${decoded}.md`);
   if (!fs.existsSync(file)) return null;
 
@@ -53,6 +55,21 @@ export async function getPost(slug: string): Promise<Post | null> {
   return { ...meta, html };
 }
 
+/**
+ * 防路径遍历（LFI）：slug 解码后不得含路径分隔符或相对跳转段，
+ * 且解析后的路径必须仍在 posts 目录内。
+ * 2026-08-08 安全审计修复：此前 /blog/..%2Fabout 可读到 posts 目录外任意 .md 文件。
+ */
+function isSafeSlug(decoded: string): boolean {
+  if (decoded.length === 0) return false;
+  if (decoded.includes("/") || decoded.includes("\\")) return false;
+  if (decoded === "." || decoded === "..") return false;
+  if (decoded.startsWith(".")) return false; // 隐藏文件/点开头一律拒绝
+  const file = path.resolve(postsDir, `${decoded}.md`);
+  const base = path.resolve(postsDir) + path.sep;
+  return file.startsWith(base);
+}
+
 /** 渲染 Markdown 文本(文章、关于页共用) */
 export async function renderMarkdown(markdown: string): Promise<string> {
   const result = await unified()
@@ -60,6 +77,8 @@ export async function renderMarkdown(markdown: string): Promise<string> {
     .use(remarkGfm)
     .use(remarkRehype)
     .use(rehypeHighlight)
+    // 2026-08-08 安全审计修复：默认 schema 阻止 javascript: 等危险 URI 与 on* 事件属性
+    .use(rehypeSanitize)
     .use(rehypeStringify)
     .process(markdown);
   return result.toString();
