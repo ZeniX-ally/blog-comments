@@ -10,7 +10,7 @@ export const site = {
   /** 站点描述，用于 SEO 与 RSS */
   description: "测试工程师，记录生活与学习中的所思所想。",
   /** 线上域名(部署后替换，用于 sitemap / RSS / 分享链接) */
-  url: "https://example.com",
+  url: "https://404-found.uk",
 
   /** 首页 Hero */
   hero: {
@@ -26,6 +26,21 @@ export const site = {
     github: "https://github.com/ZeniX-ally",
     email: "",
     rss: "/feed.xml",
+  },
+
+  /** Giscus 评论(https://giscus.app 上配置后填入;为空则不显示评论区) */
+  giscus: {
+    repo: "ZeniX-ally/blog-comments", // 格式: "owner/repo"
+    repoId: "R_kgDOTzB8hA",
+    category: "Announcements",
+    categoryId: "DIC_kwDOTzB8hM4DC_Ns",
+    lang: "zh-CN",
+  },
+
+  /** Umami 统计(自托管或云版;scriptSrc 为空则不加载) */
+  umami: {
+    scriptSrc: "https://cloud.umami.is/script.js",
+    websiteId: "6444ccf5-d4e7-4df4-a9a8-d4204141db58",
   },
 } as const;
 

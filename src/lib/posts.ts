@@ -59,8 +59,9 @@ export async function getPost(slug: string): Promise<Post | null> {
  * 防路径遍历（LFI）：slug 解码后不得含路径分隔符或相对跳转段，
  * 且解析后的路径必须仍在 posts 目录内。
  * 2026-08-08 安全审计修复：此前 /blog/..%2Fabout 可读到 posts 目录外任意 .md 文件。
+ * 导出供发布 API 复用（写入侧同样受此约束）。
  */
-function isSafeSlug(decoded: string): boolean {
+export function isSafeSlug(decoded: string): boolean {
   if (decoded.length === 0) return false;
   if (decoded.includes("/") || decoded.includes("\\")) return false;
   if (decoded === "." || decoded === "..") return false;

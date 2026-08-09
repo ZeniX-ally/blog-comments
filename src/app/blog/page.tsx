@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getAllPosts, type PostMeta } from "@/lib/posts";
 import { PostList } from "@/components/post-list";
+import { PostSearch } from "@/components/post-search";
 
 export const metadata: Metadata = {
   title: "文章",
@@ -18,7 +19,8 @@ function groupByYear(posts: PostMeta[]): [string, PostMeta[]][] {
 }
 
 export default function BlogPage() {
-  const groups = groupByYear(getAllPosts());
+  const allPosts = getAllPosts();
+  const groups = groupByYear(allPosts);
 
   return (
     <>
@@ -26,6 +28,8 @@ export default function BlogPage() {
         <h1 className="font-display text-3xl font-normal tracking-tight sm:text-4xl">文章</h1>
         <p className="mt-3 text-muted">关于技术、设计与生活的一切记录。</p>
       </header>
+
+      <PostSearch posts={allPosts} />
 
       <div className="pb-20">
         {groups.map(([year, posts]) => (

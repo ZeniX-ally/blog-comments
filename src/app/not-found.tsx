@@ -1,15 +1,17 @@
 import Link from "next/link";
 
-/** 自定义 404 页:替换 Next 默认,沿用极简风格 */
+/** 404 页:域名梗彩蛋 —— "404 not found" 反写为 "404 found" */
 export default function NotFound() {
   return (
     <section className="flex min-h-[50vh] flex-col items-center justify-center py-24 text-center">
-      <p className="font-mono text-sm uppercase tracking-widest text-faint">404</p>
+      <p className="font-mono text-sm uppercase tracking-widest text-faint">404 found</p>
       <h1 className="mt-5 font-display text-3xl font-normal tracking-tight sm:text-4xl">
-        这里什么也没有
+        很好，你找到了这里
       </h1>
       <p className="mt-4 max-w-sm text-muted">
-        你访问的页面不存在，或者已经被移走了。
+        本站域名叫 404-found，所以没有页面反而是对的——
+        <br className="hidden sm:block" />
+        只是这个地址暂时还不存在。
       </p>
       <Link
         href="/"

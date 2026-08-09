@@ -6,7 +6,9 @@ import { PostList } from "@/components/post-list";
 type Params = { tag: string };
 
 export function generateStaticParams(): Params[] {
-  return getAllTags().map(({ tag }) => ({ tag }));
+  const tags = getAllTags().map(({ tag }) => ({ tag }));
+  // 静态导出要求至少生成一个路由；暂无文章时用占位标签(页面会 404)
+  return tags.length > 0 ? tags : [{ tag: "placeholder" }];
 }
 
 export const dynamicParams = false;

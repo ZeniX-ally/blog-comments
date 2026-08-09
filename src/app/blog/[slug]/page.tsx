@@ -4,14 +4,17 @@ import { notFound } from "next/navigation";
 import { formatDate, getAllPosts, getAdjacentPosts, getPost, decodeSlug, slugToHref } from "@/lib/posts";
 import { ReadingProgress } from "@/components/reading-progress";
 import { FadeIn } from "@/components/fade-in";
+import { Comments } from "@/components/comments";
 
 type Params = { slug: string };
 
 export function generateStaticParams(): Params[] {
-  return getAllPosts().map((post) => ({ slug: post.slug }));
+  const posts = getAllPosts().map((post) => ({ slug: post.slug }));
+  // 静态导出要求至少生成一个路由；暂无文章时用占位 slug(页面会 404)
+  return posts.length > 0 ? posts : [{ slug: "placeholder" }];
 }
 
-export const dynamicParams = true;
+export const dynamicParams = false;
 
 export async function generateMetadata({
   params,
@@ -100,6 +103,9 @@ export default async function PostPage({ params }: { params: Promise<Params> }) 
           ← 返回文章列表
         </Link>
       </footer>
+
+      {/* 评论区 */}
+      <Comments />
     </article>
   );
 }
