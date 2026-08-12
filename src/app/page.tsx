@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { site } from "@/lib/site";
-import { getAllPosts } from "@/lib/posts";
+import { getAllPosts, formatDate, slugToHref } from "@/lib/posts";
 import { projects } from "@/lib/projects";
-import { PostList } from "@/components/post-list";
 import { FadeIn } from "@/components/fade-in";
 import { RevealText } from "@/components/reveal-text";
 import { SignIn } from "@/components/sign-in";
@@ -162,8 +161,45 @@ export default function Home() {
             />
           </FadeIn>
           <FadeIn delay={60}>
-            <div className="border-t border-line">
-              <PostList posts={latestPosts} />
+            <div className="grid grid-cols-1 gap-3">
+              {latestPosts.map((post, i) => (
+                <FadeIn key={post.slug} delay={i * 60}>
+                  <TiltCard className="h-full">
+                    <Link
+                      href={`/blog/${slugToHref(post.slug)}`}
+                      className="tool-card group flex min-h-[8.5rem] flex-col justify-between gap-2 rounded-lg border border-line bg-surface/70 p-4 transition-colors hover:border-accent/60"
+                    >
+                      <div>
+                        <div className="flex items-center gap-2.5">
+                          <span className="led led-lab" aria-hidden="true" />
+                          <span className="font-medium leading-snug group-hover:text-accent">
+                            {post.title}
+                          </span>
+                        </div>
+                        {post.excerpt && (
+                          <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-muted">
+                            {post.excerpt}
+                          </p>
+                        )}
+                      </div>
+                      <div className="flex items-center justify-between border-t border-line/80 pt-2 font-mono text-[11px] text-faint">
+                        <time>{formatDate(post.date)}</time>
+                        {post.tags.length > 0 && (
+                          <span className="truncate">
+                            {post.tags.map((t) => `#${t}`).join(" ")}
+                          </span>
+                        )}
+                        <span
+                          aria-hidden="true"
+                          className="text-accent opacity-0 transition-all duration-200 group-hover:translate-x-0.5 group-hover:opacity-100"
+                        >
+                          →
+                        </span>
+                      </div>
+                    </Link>
+                  </TiltCard>
+                </FadeIn>
+              ))}
             </div>
           </FadeIn>
         </section>
