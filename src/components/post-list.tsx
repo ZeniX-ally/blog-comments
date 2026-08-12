@@ -7,8 +7,9 @@ import { Spotlight } from "./spotlight";
  * 文章列表 —— 无卡片、无阴影，只有标题、日期与一道细分隔线。
  * 极简站点的核心组件，首页与文章列表页共用。
  * hover 时标题变 Tan + 右侧 → 箭头滑入 + 局部照亮;滚动进入视口时逐项淡入。
+ * basePath 用于英文站链接前缀(/en),中文站不传。
  */
-export function PostList({ posts }: { posts: PostMeta[] }) {
+export function PostList({ posts, basePath = "" }: { posts: PostMeta[]; basePath?: string }) {
   if (posts.length === 0) {
     return <p className="py-8 text-muted">还没有文章，去 content/posts 里写第一篇吧。</p>;
   }
@@ -19,7 +20,7 @@ export function PostList({ posts }: { posts: PostMeta[] }) {
         <li key={post.slug} className="-mx-3 border-b border-line px-3 transition-colors duration-300 last:border-b-0">
           <FadeIn delay={Math.min(i, 6) * 50}>
             <Spotlight>
-              <Link href={`/blog/${slugToHref(post.slug)}`} className="group block py-5">
+              <Link href={`${basePath}/blog/${slugToHref(post.slug)}`} className="group block py-5">
                 <div className="flex items-baseline justify-between gap-6">
                   <h3 className="text-lg font-normal leading-snug transition-colors group-hover:text-accent">
                     {post.title}

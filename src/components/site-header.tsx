@@ -2,16 +2,23 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { site } from "@/lib/site";
 import { NavLink } from "./nav-link";
 import { ThemeToggle } from "./theme-toggle";
 import { SfxToggle } from "./sfx-toggle";
+import { LanguageToggle } from "./language-toggle";
+import { dict, getLangFromPath } from "@/lib/i18n";
 
 /**
  * 顶栏。滚动超过 8px 时收紧(py 5→3)+ 极淡底影,给阅读节奏一个克制的反馈。
+ * 导航文案按当前语言切换(zh/en)。
  */
 export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
+  const lang = getLangFromPath(pathname);
+  const nav = dict[lang].nav;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -47,12 +54,14 @@ export function SiteHeader() {
         </div>
         <div className="flex items-center gap-5">
           <nav className="flex items-center gap-5 text-sm">
-            <NavLink href="/blog">文章</NavLink>
-            <NavLink href="/tools">工具</NavLink>
-            <NavLink href="/projects">作品</NavLink>
-            <NavLink href="/about">关于</NavLink>
+            {nav.map((item) => (
+              <NavLink key={item.href} href={item.href}>
+                {item.label}
+              </NavLink>
+            ))}
           </nav>
           <span className="hidden h-4 w-px bg-line sm:block" />
+          <LanguageToggle />
           <SfxToggle />
           <ThemeToggle />
         </div>

@@ -10,8 +10,9 @@ type Entry = { cmd: string; output: string[] };
  * 命令彩蛋输入行:终端式交互,输入 help 开始。
  * - 支持 help/whoami/ls/date/clear/0xff/ajiu
  * - 历史记录滚动展示,点击容器聚焦输入
+ * - lang 控制提示与命令输出语言
  */
-export function CommandLine() {
+export function CommandLine({ lang = "zh" }: { lang?: "zh" | "en" }) {
   const [history, setHistory] = useState<Entry[]>([]);
   const [value, setValue] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -24,7 +25,7 @@ export function CommandLine() {
   function submit() {
     const cmd = value.trim();
     if (!cmd) return;
-    const { output, clear } = runCommand(cmd);
+    const { output, clear } = runCommand(cmd, lang);
     if (clear) {
       setHistory([]);
     } else {
@@ -47,8 +48,9 @@ export function CommandLine() {
       </div>
       <div className="max-h-56 overflow-y-auto px-4 py-3 font-mono text-[13px] leading-relaxed">
         <p className="text-faint">
-          输入命令,回车执行。输入{" "}
-          <span className="text-accent">help</span> 开始。
+          {lang === "zh"
+            ? "输入命令,回车执行。输入 help 开始。"
+            : "Type a command, press Enter. Start with help."}
         </p>
         {history.map((entry, i) => (
           <div key={i}>

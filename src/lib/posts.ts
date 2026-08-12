@@ -9,7 +9,17 @@ import rehypeHighlight from "rehype-highlight";
 import rehypeSanitize from "rehype-sanitize";
 import rehypeStringify from "rehype-stringify";
 
-const postsDir = path.join(process.cwd(), "content", "posts");
+const contentRoot = path.join(process.cwd(), "content");
+
+/** 站点语言:中文在 content/posts,英文在 content/en/posts */
+export type Lang = "zh" | "en";
+
+/** 语言对应的文章目录 */
+export function postsDirFor(lang: Lang = "zh"): string {
+  return lang === "en"
+    ? path.join(contentRoot, "en", "posts")
+    : path.join(contentRoot, "posts");
+}
 
 export type PostMeta = {
   slug: string;
@@ -27,25 +37,26 @@ export type Post = PostMeta & {
 };
 
 /** 读取全部文章元信息，按日期倒序(draft: true 的文章会被忽略) */
-export function getAllPosts(): PostMeta[] {
-  if (!fs.existsSync(postsDir)) return [];
+export function getAllPosts(lang: Lang = "zh"): PostMeta[] {
+  const dir = postsDirFor(lang);
+  if (!fs.existsSync(dir)) return [];
 
   return fs
-    .readdirSync(postsDir)
+    .readdirSync(dir)
     .filter((file) => file.endsWith(".md"))
-    .map((file) => parsePost(file))
+    .map((file) => parsePost(file, lang))
     .filter((post): post is PostMeta => post !== null)
     .sort((a, b) => (a.date < b.date ? 1 : -1));
 }
 
 /** 读取单篇文章并渲染 Markdown 为 HTML */
-export async function getPost(slug: string): Promise<Post | null> {
+export async function getPost(slug: string, lang: Lang = "zh"): Promise<Post | null> {
   const decoded = decodeSlug(slug);
-  if (!isSafeSlug(decoded)) return null;
-  const file = path.join(postsDir, `${decoded}.md`);
+  if (!isSafeSlug(decoded, lang)) return null;
+  const file = path.join(postsDirFor(lang), `${decoded}.md`);
   if (!fs.existsSync(file)) return null;
 
-  const meta = parsePost(`${decoded}.md`);
+  const meta = parsePost(`${decoded}.md`, lang);
   if (!meta) return null;
 
   const raw = fs.readFileSync(file, "utf8");
@@ -61,13 +72,14 @@ export async function getPost(slug: string): Promise<Post | null> {
  * 2026-08-08 安全审计修复：此前 /blog/..%2Fabout 可读到 posts 目录外任意 .md 文件。
  * 导出供发布 API 复用（写入侧同样受此约束）。
  */
-export function isSafeSlug(decoded: string): boolean {
+export function isSafeSlug(decoded: string, lang: Lang = "zh"): boolean {
   if (decoded.length === 0) return false;
   if (decoded.includes("/") || decoded.includes("\\")) return false;
   if (decoded === "." || decoded === "..") return false;
   if (decoded.startsWith(".")) return false; // 隐藏文件/点开头一律拒绝
-  const file = path.resolve(postsDir, `${decoded}.md`);
-  const base = path.resolve(postsDir) + path.sep;
+  const dir = postsDirFor(lang);
+  const file = path.resolve(dir, `${decoded}.md`);
+  const base = path.resolve(dir) + path.sep;
   return file.startsWith(base);
 }
 
@@ -85,14 +97,16 @@ export async function renderMarkdown(markdown: string): Promise<string> {
   return result.toString();
 }
 
-function parsePost(filename: string): PostMeta | null {
-  const raw = fs.readFileSync(path.join(postsDir, filename), "utf8");
+function parsePost(filename: string, lang: Lang = "zh"): PostMeta | null {
+  const raw = fs.readFileSync(path.join(postsDirFor(lang), filename), "utf8");
   const { data, content } = matter(raw);
 
   if (data.draft === true) return null;
 
   const slug = filename.replace(/\.md$/, "");
   const plainText = content.replace(/[#>*`\-[\]()!]/g, "").replace(/\s+/g, "");
+  // 阅读时长:中文约 400 字/分钟,英文约 200 词/分钟
+  const perMinute = lang === "en" ? 200 : 400;
 
   return {
     slug,
@@ -100,7 +114,7 @@ function parsePost(filename: string): PostMeta | null {
     date: toISODate(data.date),
     excerpt: data.excerpt ?? "",
     tags: Array.isArray(data.tags) ? data.tags.map(String) : [],
-    readingTime: Math.max(1, Math.round(plainText.length / 400)),
+    readingTime: Math.max(1, Math.round(plainText.length / perMinute)),
   };
 }
 
@@ -129,9 +143,9 @@ export function slugToHref(value: string): string {
 }
 
 /** 获取全部标签及各自的文章数，按文章数倒序、标签名正序排列 */
-export function getAllTags(): { tag: string; count: number }[] {
+export function getAllTags(lang: Lang = "zh"): { tag: string; count: number }[] {
   const counts = new Map<string, number>();
-  for (const post of getAllPosts()) {
+  for (const post of getAllPosts(lang)) {
     for (const tag of post.tags) {
       counts.set(tag, (counts.get(tag) ?? 0) + 1);
     }
@@ -142,9 +156,9 @@ export function getAllTags(): { tag: string; count: number }[] {
 }
 
 /** 按标签筛选文章(返回结果已按日期倒序) */
-export function getPostsByTag(tag: string): PostMeta[] {
+export function getPostsByTag(tag: string, lang: Lang = "zh"): PostMeta[] {
   const decoded = decodeSlug(tag);
-  return getAllPosts().filter((post) => post.tags.includes(decoded));
+  return getAllPosts(lang).filter((post) => post.tags.includes(decoded));
 }
 
 /**
@@ -152,12 +166,12 @@ export function getPostsByTag(tag: string): PostMeta[] {
  * getAllPosts 已按日期倒序(新在前)，所以 index+1 是更早的(上一篇)，
  * index-1 是更新的(下一篇)。
  */
-export function getAdjacentPosts(slug: string): {
+export function getAdjacentPosts(slug: string, lang: Lang = "zh"): {
   prev: PostMeta | null;
   next: PostMeta | null;
 } {
   const decoded = decodeSlug(slug);
-  const posts = getAllPosts();
+  const posts = getAllPosts(lang);
   const i = posts.findIndex((p) => p.slug === decoded);
   if (i === -1) return { prev: null, next: null };
   return {
