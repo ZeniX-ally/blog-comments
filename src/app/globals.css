@@ -100,6 +100,12 @@
   /* TiltCard 跟手光斑:亮底用淡 Tan 暖光 */
   --tilt-spot: rgba(212, 162, 127, 0.15);
 
+  /* Spotlight 局部照亮(文章行/卡片) */
+  --spotlight-glow: rgba(212, 162, 127, 0.1);
+
+  /* 卡片 hover 极淡表面 */
+  --surface-soft: rgba(245, 242, 237, 0.65);
+
   --tok-keyword: #9a5b23;
   --tok-string: #6b7f3e;
   --tok-number: #b4542a;
@@ -126,6 +132,10 @@
 
   /* TiltCard 跟手高光:暗底用白高光 */
   --tilt-spot: rgba(255, 255, 255, 0.08);
+
+  --spotlight-glow: rgba(255, 255, 255, 0.06);
+
+  --surface-soft: rgba(33, 31, 28, 0.7);
 
   --tok-keyword: #e0a264;
   --tok-string: #a3b866;
@@ -210,35 +220,6 @@ body {
 .nav-underline:hover::after,
 .nav-underline[aria-current="page"]::after {
   transform: scaleX(1);
-}
-
-/* ------------------------------------------------------------
-   标题逐字浮现:每个字淡入上移(一次,载入时)
-   ------------------------------------------------------------ */
-
-@keyframes reveal-char {
-  from {
-    opacity: 0;
-    transform: translateY(0.55em);
-    filter: blur(4px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-    filter: blur(0);
-  }
-}
-
-.reveal-char {
-  opacity: 0;
-  animation: reveal-char 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .reveal-char {
-    opacity: 1;
-    animation: none;
-  }
 }
 
 /* ------------------------------------------------------------
@@ -539,4 +520,191 @@ body {
 
 .hljs-strong {
   font-weight: bold;
+}
+
+/* ============================================================
+   交互层(2026-08-12 改版新增)
+   光标光晕 / 闪烁光标 / 打字机 / Spotlight / 命令彩蛋 / 卡片简约化
+   所有动效在 prefers-reduced-motion 时降级
+   ============================================================ */
+
+/* ---------- 全局光标光晕(EffectLayer) ---------- */
+.cursor-glow {
+  position: fixed;
+  inset: 0;
+  z-index: -9; /* 内容之下,bg-fx(-10)之上 */
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 600ms ease;
+  background: radial-gradient(
+    42rem circle at var(--glow-x, 50%) var(--glow-y, 50%),
+    var(--glow) 0%,
+    transparent 60%
+  );
+}
+
+.cursor-glow.is-idle {
+  opacity: 0;
+}
+
+.cursor-glow:not(.is-idle) {
+  opacity: 1;
+}
+
+/* ---------- 闪烁光标 ---------- */
+@keyframes cursor-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.cursor-blink {
+  animation: cursor-blink 1.1s steps(1) infinite;
+}
+
+/* ---------- Spotlight 局部照亮 ---------- */
+.spotlight {
+  position: relative;
+  border-radius: inherit;
+  overflow: hidden;
+}
+
+.spotlight-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 300ms ease;
+  background: radial-gradient(
+    22rem circle at var(--sx, 50%) var(--sy, 50%),
+    var(--spotlight-glow) 0%,
+    transparent 65%
+  );
+}
+
+.spotlight:hover .spotlight-overlay {
+  opacity: 1;
+}
+
+/* ---------- 滚动渐显(useInView 调用方加 .reveal) ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 500ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal.reveal-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* 逐行浮现:列表项由父级传 --reveal-i 交错 delay */
+.reveal-item {
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity 420ms cubic-bezier(0.16, 1, 0.3, 1)
+      calc(var(--reveal-i, 0) * 55ms),
+    transform 420ms cubic-bezier(0.16, 1, 0.3, 1)
+      calc(var(--reveal-i, 0) * 55ms);
+}
+
+.reveal-item.reveal-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- 简约化:终端卡片统一样式(去边框阴影,留极淡表面) ---------- */
+.tool-card {
+  border: 1px solid transparent;
+  background: var(--surface-soft);
+  transition:
+    background-color 250ms ease,
+    border-color 250ms ease;
+}
+
+.tool-card:hover {
+  border-color: var(--accent);
+  background: var(--surface);
+}
+
+/* LED 状态灯:极小圆点(原装饰类此前无定义,补一个克制版) */
+.led {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
+.led-running {
+  background: #4caf7d;
+}
+
+.led-lab,
+.led-local {
+  background: var(--accent);
+}
+
+/* ---------- 命令彩蛋终端框 ---------- */
+.terminal-box {
+  background: var(--surface-soft);
+  border: 1px solid transparent;
+  transition: border-color 250ms ease;
+}
+
+.terminal-box:hover {
+  border-color: var(--accent);
+}
+
+/* ---------- 交互元素微动(链接/按钮 hover 轻移发光) ---------- */
+.interactive {
+  transition:
+    transform 180ms cubic-bezier(0.16, 1, 0.3, 1),
+    color 180ms ease,
+    text-shadow 180ms ease;
+}
+
+.interactive:hover {
+  transform: translateY(-1px);
+  text-shadow: 0 0 18px var(--accent);
+}
+
+/* ---------- 章节联动:正文 h2/h3 滚动高亮(ScrollSpy) ---------- */
+.prose h2,
+.prose h3 {
+  scroll-margin-top: 5rem;
+}
+
+.prose h2.is-spy,
+.prose h3.is-spy {
+  color: var(--accent-strong);
+}
+
+/* ---------- 通用降级 ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .cursor-glow {
+    display: none;
+  }
+  .spotlight-overlay {
+    display: none;
+  }
+  .reveal,
+  .reveal-item {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .cursor-blink {
+    animation: none;
+  }
 }

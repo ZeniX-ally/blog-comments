@@ -5,6 +5,7 @@ import Link from "next/link";
 import { site } from "@/lib/site";
 import { NavLink } from "./nav-link";
 import { ThemeToggle } from "./theme-toggle";
+import { SfxToggle } from "./sfx-toggle";
 
 /**
  * 顶栏。滚动超过 8px 时收紧(py 5→3)+ 极淡底影,给阅读节奏一个克制的反馈。
@@ -52,6 +53,7 @@ export function SiteHeader() {
             <NavLink href="/about">关于</NavLink>
           </nav>
           <span className="hidden h-4 w-px bg-line sm:block" />
+          <SfxToggle />
           <ThemeToggle />
         </div>
       </div>

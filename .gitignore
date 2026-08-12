@@ -30,3 +30,5 @@ next-env.d.ts
 .workbuddy/
 .dev-server.log
 .wrangler/
+.mimosa/
+.playwright-mcp/

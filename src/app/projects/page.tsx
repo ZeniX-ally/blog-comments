@@ -46,7 +46,7 @@ export default function ProjectsPage() {
               {projects.map((p, i) => (
                 <FadeIn key={p.name} delay={i * 60}>
                   <TiltCard className="h-full">
-                    <div className="tool-card flex min-h-[9rem] flex-col justify-between gap-2 rounded-lg border border-line bg-surface/70 p-4 transition-colors hover:border-accent/60">
+                    <div className="tool-card flex min-h-[9rem] flex-col justify-between gap-2 rounded-lg p-4">
                       <div>
                         <div className="flex items-start justify-between gap-3">
                           <div className="flex items-center gap-2.5">

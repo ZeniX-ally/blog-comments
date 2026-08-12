@@ -4,6 +4,7 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { BackToTop } from "@/components/back-to-top";
 import { BackButton } from "@/components/back-button";
+import { EffectLayer } from "@/components/effect-layer";
 import "./globals.css";
 
 const themeScript = `(function(){try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t);}var m=document.querySelector('meta[name="theme-color"]');if(m){var dark=t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme: dark)').matches);m.setAttribute('content',dark?'#191919':'#ffffff');}}catch(e){}})();`;
@@ -55,6 +56,7 @@ export default function RootLayout({
       </head>
       <body className="flex min-h-screen flex-col">
         <div aria-hidden="true" className="bg-fx" />
+        <EffectLayer />
         <SiteHeader />
         <main className="w-full grow px-5 sm:px-8 md:px-12 xl:px-16">{children}</main>
         {/* 返回按钮放在 body 层:避免被页面模板的入场动画 transform 影响

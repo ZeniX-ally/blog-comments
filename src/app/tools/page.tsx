@@ -111,7 +111,7 @@ export default function ToolsPage() {
                 return (
                   <FadeIn key={t.id} delay={si * 60 + ti * 40}>
                     <TiltCard className="h-full">
-                      <div className="tool-card flex min-h-[8.5rem] flex-col justify-between gap-2 rounded-lg border border-line bg-surface/70 p-4 transition-colors hover:border-accent/60">
+                      <div className="tool-card flex min-h-[8.5rem] flex-col justify-between gap-2 rounded-lg p-4">
                         <div className="flex items-start gap-3">
                           <span className={`led ${meta.led} mt-1.5`} aria-hidden="true" />
                           <div className="min-w-0 flex-1">

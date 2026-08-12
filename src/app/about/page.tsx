@@ -129,7 +129,7 @@ export default function AboutPage() {
           {NOW_ITEMS.map((item, i) => (
             <FadeIn key={item.id} delay={i * 60}>
               <TiltCard className="h-full">
-                <div className="tool-card flex min-h-[9.5rem] flex-col justify-between gap-2 rounded-lg border border-line bg-surface/70 p-4 transition-colors hover:border-accent/60">
+                <div className="tool-card flex min-h-[9.5rem] flex-col justify-between gap-2 rounded-lg p-4">
                   <div>
                     <div className="flex items-center gap-2.5">
                       <span className={`led ${item.led}`} aria-hidden="true" />
@@ -167,7 +167,7 @@ export default function AboutPage() {
               href="https://github.com/ZeniX-ally"
               target="_blank"
               rel="noopener noreferrer"
-              className="tool-card group flex items-center justify-between gap-4 rounded-lg border border-line bg-surface/70 px-4 py-3.5 transition-colors hover:border-accent/60"
+              className="tool-card group flex items-center justify-between gap-4 rounded-lg px-4 py-3.5"
             >
               <div className="flex items-center gap-3">
                 <span className="led led-local" aria-hidden="true" />

@@ -5,6 +5,7 @@ import { formatDate, getAllPosts, getAdjacentPosts, getPost, decodeSlug, slugToH
 import { ReadingProgress } from "@/components/reading-progress";
 import { FadeIn } from "@/components/fade-in";
 import { Comments } from "@/components/comments";
+import { ScrollSpy } from "@/components/scroll-spy";
 
 type Params = { slug: string };
 
@@ -47,6 +48,8 @@ export default async function PostPage({ params }: { params: Promise<Params> }) 
     <article className="mx-auto w-full max-w-3xl py-12 sm:py-16">
       {/* 阅读进度条:Tan 细线 */}
       <ReadingProgress />
+      {/* 章节联动:正文滚动高亮当前标题 */}
+      <ScrollSpy />
       {/* 文章头部 */}
       <FadeIn>
       <header className="border-b border-line pb-6">
