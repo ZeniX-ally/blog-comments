@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { FadeIn } from "@/components/fade-in";
+import { TiltCard } from "@/components/tilt-card";
 
 export const metadata: Metadata = {
   title: "关于",
@@ -127,21 +128,23 @@ export default function AboutPage() {
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
           {NOW_ITEMS.map((item, i) => (
             <FadeIn key={item.id} delay={i * 60}>
-              <div className="tool-card flex min-h-[9.5rem] flex-col justify-between gap-2 rounded-lg border border-line bg-surface/70 p-4 transition-colors hover:border-accent/60">
-                <div>
-                  <div className="flex items-center gap-2.5">
-                    <span className={`led ${item.led}`} aria-hidden="true" />
-                    <span className="font-medium">{item.title}</span>
+              <TiltCard className="h-full">
+                <div className="tool-card flex min-h-[9.5rem] flex-col justify-between gap-2 rounded-lg border border-line bg-surface/70 p-4 transition-colors hover:border-accent/60">
+                  <div>
+                    <div className="flex items-center gap-2.5">
+                      <span className={`led ${item.led}`} aria-hidden="true" />
+                      <span className="font-medium">{item.title}</span>
+                    </div>
+                    <p className="mt-2.5 text-sm leading-relaxed text-muted">
+                      {item.desc}
+                    </p>
                   </div>
-                  <p className="mt-2.5 text-sm leading-relaxed text-muted">
-                    {item.desc}
-                  </p>
+                  <div className="flex items-center justify-between border-t border-line/80 pt-2 font-mono text-[11px] text-faint">
+                    <span>{item.id}</span>
+                    <span>{item.label}</span>
+                  </div>
                 </div>
-                <div className="flex items-center justify-between border-t border-line/80 pt-2 font-mono text-[11px] text-faint">
-                  <span>{item.id}</span>
-                  <span>{item.label}</span>
-                </div>
-              </div>
+              </TiltCard>
             </FadeIn>
           ))}
         </div>
@@ -159,25 +162,27 @@ export default function AboutPage() {
           </header>
         </FadeIn>
         <FadeIn delay={60}>
-          <a
-            href="https://github.com/ZeniX-ally"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="tool-card group flex items-center justify-between gap-4 rounded-lg border border-line bg-surface/70 px-4 py-3.5 transition-colors hover:border-accent/60"
-          >
-            <div className="flex items-center gap-3">
-              <span className="led led-local" aria-hidden="true" />
-              <div>
-                <div className="font-medium">GitHub</div>
-                <div className="font-mono text-xs text-faint">
-                  github.com/ZeniX-ally
+          <TiltCard>
+            <a
+              href="https://github.com/ZeniX-ally"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="tool-card group flex items-center justify-between gap-4 rounded-lg border border-line bg-surface/70 px-4 py-3.5 transition-colors hover:border-accent/60"
+            >
+              <div className="flex items-center gap-3">
+                <span className="led led-local" aria-hidden="true" />
+                <div>
+                  <div className="font-medium">GitHub</div>
+                  <div className="font-mono text-xs text-faint">
+                    github.com/ZeniX-ally
+                  </div>
                 </div>
               </div>
-            </div>
-            <span className="font-mono text-sm text-accent transition-transform group-hover:translate-x-0.5">
-              →
-            </span>
-          </a>
+              <span className="font-mono text-sm text-accent transition-transform group-hover:translate-x-0.5">
+                →
+              </span>
+            </a>
+          </TiltCard>
           <p className="mt-3 text-sm text-muted">
             文章勘误、想法交流，或单纯想打个招呼，都欢迎。
           </p>

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { FadeIn } from "@/components/fade-in";
+import { TiltCard } from "@/components/tilt-card";
 
 export const metadata: Metadata = {
   title: "工具清单",
@@ -109,28 +110,30 @@ export default function ToolsPage() {
                 const meta = STATUS_META[t.status];
                 return (
                   <FadeIn key={t.id} delay={si * 60 + ti * 40}>
-                    <div className="tool-card flex min-h-[8.5rem] flex-col justify-between gap-2 rounded-lg border border-line bg-surface/70 p-4 transition-colors hover:border-accent/60">
-                      <div className="flex items-start gap-3">
-                        <span className={`led ${meta.led} mt-1.5`} aria-hidden="true" />
-                        <div className="min-w-0 flex-1">
-                          <div className="flex items-baseline justify-between gap-2">
-                            <span className="font-medium leading-snug">{t.name}</span>
-                            <span
-                              className={`shrink-0 font-mono text-[10px] tracking-widest ${meta.led === "led-running" ? "text-[#4caf7d]" : "text-accent/80"}`}
-                            >
-                              {meta.label}
-                            </span>
+                    <TiltCard className="h-full">
+                      <div className="tool-card flex min-h-[8.5rem] flex-col justify-between gap-2 rounded-lg border border-line bg-surface/70 p-4 transition-colors hover:border-accent/60">
+                        <div className="flex items-start gap-3">
+                          <span className={`led ${meta.led} mt-1.5`} aria-hidden="true" />
+                          <div className="min-w-0 flex-1">
+                            <div className="flex items-baseline justify-between gap-2">
+                              <span className="font-medium leading-snug">{t.name}</span>
+                              <span
+                                className={`shrink-0 font-mono text-[10px] tracking-widest ${meta.led === "led-running" ? "text-[#4caf7d]" : "text-accent/80"}`}
+                              >
+                                {meta.label}
+                              </span>
+                            </div>
+                            <p className="mt-1 text-sm leading-relaxed text-muted">
+                              {t.desc}
+                            </p>
                           </div>
-                          <p className="mt-1 text-sm leading-relaxed text-muted">
-                            {t.desc}
-                          </p>
+                        </div>
+                        <div className="flex items-center justify-between border-t border-line/80 pt-2 font-mono text-[11px] text-faint">
+                          <span>{t.id}</span>
+                          <span>{t.tag}</span>
                         </div>
                       </div>
-                      <div className="flex items-center justify-between border-t border-line/80 pt-2 font-mono text-[11px] text-faint">
-                        <span>{t.id}</span>
-                        <span>{t.tag}</span>
-                      </div>
-                    </div>
+                    </TiltCard>
                   </FadeIn>
                 );
               })}
