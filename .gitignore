@@ -28,3 +28,5 @@ next-env.d.ts
 .chrome-test*
 .dev-server.*.log
 .workbuddy/
+.dev-server.log
+.wrangler/
