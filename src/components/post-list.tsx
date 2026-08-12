@@ -26,6 +26,7 @@ export function PostList({ posts }: { posts: PostMeta[] }) {
                   <time className="font-mono text-xs text-faint transition-colors group-hover:text-muted">
                     {formatDate(post.date)}
                   </time>
+                  <span className="font-mono text-xs text-faint">约 {post.readingTime} 分钟</span>
                   <span
                     aria-hidden="true"
                     className="font-mono text-xs text-accent opacity-0 transition-all duration-200 group-hover:translate-x-0 group-hover:opacity-100 -translate-x-1"

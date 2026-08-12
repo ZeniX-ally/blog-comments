@@ -13,7 +13,8 @@ export function SiteFooter() {
           <span className="text-faint">数字自留地</span>
           <span className="text-faint/70">· © {year} {site.name}</span>
         </p>
-        <div className="flex gap-5">
+        {/* 右侧链接组右 padding 避让右下角固定按钮(BackToTop),防止滚动到底时被遮挡 */}
+        <div className="flex gap-5 sm:pr-16">
           {github && (
             <a href={github} target="_blank" rel="noreferrer" className="transition-colors hover:text-foreground">
               GitHub

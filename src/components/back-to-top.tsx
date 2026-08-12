@@ -10,7 +10,13 @@ export function BackToTop() {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setShow(window.scrollY > 480);
+    const onScroll = () => {
+      const doc = document.documentElement;
+      // 接近页面底部(剩余 < 200px)时隐藏,避免遮挡 footer 内容(如 RSS 链接)
+      const nearBottom =
+        window.scrollY + window.innerHeight >= doc.scrollHeight - 200;
+      setShow(window.scrollY > 480 && !nearBottom);
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);

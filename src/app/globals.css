@@ -97,6 +97,9 @@
   --glow: rgba(212, 162, 127, 0.055);
   --glow-2: rgba(185, 133, 92, 0.035);
 
+  /* TiltCard 跟手光斑:亮底用淡 Tan 暖光 */
+  --tilt-spot: rgba(212, 162, 127, 0.15);
+
   --tok-keyword: #9a5b23;
   --tok-string: #6b7f3e;
   --tok-number: #b4542a;
@@ -120,6 +123,9 @@
 
   --glow: rgba(212, 162, 127, 0.05);
   --glow-2: rgba(212, 162, 127, 0.035);
+
+  /* TiltCard 跟手高光:暗底用白高光 */
+  --tilt-spot: rgba(255, 255, 255, 0.08);
 
   --tok-keyword: #e0a264;
   --tok-string: #a3b866;
@@ -156,7 +162,8 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  /* 不用 scroll-behavior: smooth —— 会让 Next SPA 导航的滚顶变成平滑动画,
+     页面滚动时 fixed 按钮相对内容位置变化,用户感知为「跳位」 */
   scroll-padding-top: 5rem;
 }
 
@@ -232,6 +239,47 @@ body {
     opacity: 1;
     animation: none;
   }
+}
+
+/* ------------------------------------------------------------
+   TiltCard 3D 倾斜卡片:倾斜角度与光斑位置由 JS 写入 CSS 变量,
+   悬停时过渡近乎即时(跟手),移出后 400ms 回正
+   ------------------------------------------------------------ */
+
+.tilt-card {
+  position: relative;
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition: transform 400ms ease-out, border-color 250ms ease, background-color 250ms ease;
+}
+
+.tilt-card.is-hovering {
+  transition: transform 60ms linear, border-color 250ms ease, background-color 250ms ease;
+}
+
+/* 内容层:轻微抬起,增强景深 */
+.tilt-card-inner {
+  transform: translateZ(30px);
+  transform-style: preserve-3d;
+}
+
+/* 表面光斑:跟随鼠标的径向渐变,纯装饰,不挡交互 */
+.tilt-card-spot {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(
+    26rem circle at var(--spot-x, 50%) var(--spot-y, 50%),
+    var(--tilt-spot),
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+
+.tilt-card:hover .tilt-card-spot {
+  opacity: 1;
 }
 
 /* ------------------------------------------------------------

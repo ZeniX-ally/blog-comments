@@ -45,13 +45,10 @@ export function SiteHeader() {
           </Link>
         </div>
         <div className="flex items-center gap-5">
-          <nav className="flex items-baseline gap-5 text-sm">
+          <nav className="flex items-center gap-5 text-sm">
             <NavLink href="/blog">文章</NavLink>
-            <NavLink href="/roadmap">学习</NavLink>
             <NavLink href="/tools">工具</NavLink>
-            <NavLink href="/books">书单</NavLink>
             <NavLink href="/projects">作品</NavLink>
-            <NavLink href="/timeline">时间线</NavLink>
             <NavLink href="/about">关于</NavLink>
           </nav>
           <span className="hidden h-4 w-px bg-line sm:block" />

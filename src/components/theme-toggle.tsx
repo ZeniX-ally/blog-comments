@@ -55,7 +55,7 @@ export function ThemeToggle() {
       type="button"
       onClick={toggle}
       aria-label={isDark ? "切换到亮色模式" : "切换到暗色模式"}
-      className="text-muted transition-colors hover:text-foreground"
+      className="inline-flex items-center text-muted transition-colors hover:text-foreground"
       suppressHydrationWarning
     >
       <span className="inline-block transition-transform duration-300 ease-out hover:-translate-y-px">

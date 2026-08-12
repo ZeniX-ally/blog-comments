@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { projects } from "@/lib/projects";
+import { FadeIn } from "@/components/fade-in";
 
 export const metadata: Metadata = {
   title: "作品",
@@ -8,56 +9,92 @@ export const metadata: Metadata = {
 
 export default function ProjectsPage() {
   return (
-    <>
-      <header className="py-12 sm:py-16">
-        <h1 className="font-display text-3xl font-normal tracking-tight sm:text-4xl">作品</h1>
-        <p className="mt-3 text-muted">做过的项目，大都源于自己的真实需求。</p>
-      </header>
-
-      {projects.length === 0 ? (
-        <div className="border-t border-line py-20 text-center">
-          <p className="text-muted">还没有作品，之后有了会放在这里。</p>
-        </div>
-      ) : (
-        <ul className="border-t border-line pb-20">
-          {projects.map((project) => (
-          <li key={project.name} className="border-b border-line py-7">
-            <div className="flex items-baseline justify-between gap-6">
-              <h2 className="text-xl font-normal">{project.name}</h2>
-              <span className="shrink-0 font-mono text-xs text-faint">{project.year}</span>
-            </div>
-
-            <p className="mt-2 leading-relaxed text-muted">{project.description}</p>
-
-            <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
-              <span className="font-mono text-xs text-faint">{project.tech.join(" · ")}</span>
-              <span className="flex gap-4">
-                {project.link && (
-                  <a
-                    href={project.link}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-accent underline decoration-faint underline-offset-4 transition-colors hover:decoration-accent"
-                  >
-                    访问 ↗
-                  </a>
-                )}
-                {project.repo && (
-                  <a
-                    href={project.repo}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-muted underline decoration-faint underline-offset-4 transition-colors hover:text-foreground"
-                  >
-                    源码 ↗
-                  </a>
-                )}
+    <article className="mx-auto w-full max-w-4xl py-12 sm:py-16">
+      <div className="grid gap-12 lg:grid-cols-[250px_1fr]">
+        {/* 左栏:sticky 信息牌 */}
+        <FadeIn>
+          <aside className="lg:sticky lg:top-24 lg:self-start">
+            <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+              <span className="font-mono text-xs text-faint">[0x00]</span>
+              <h1 className="font-display text-2xl font-medium">作品</h1>
+              <span className="font-mono text-[10px] tracking-[0.25em] text-accent">
+                PROJECTS
               </span>
             </div>
-          </li>
-          ))}
-        </ul>
-      )}
-    </>
+            <p className="mt-3 text-[15px] leading-relaxed text-muted">
+              做过的项目，大都源于自己的真实需求。
+            </p>
+            <div className="mt-5 font-mono text-xs text-accent">
+              zenix@0xff:~/projects$ ls
+              <span className="cursor-blink ml-0.5">▍</span>
+            </div>
+            <div className="mt-6 space-y-1 border-t border-line pt-4 font-mono text-xs text-faint">
+              <div>{projects.length} projects</div>
+            </div>
+          </aside>
+        </FadeIn>
+
+        {/* 右栏:作品列表 */}
+        <div className="min-w-0">
+          {projects.length === 0 ? (
+            <div className="border-t border-line py-20 text-center">
+              <p className="text-muted">还没有作品，之后有了会放在这里。</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 gap-3">
+              {projects.map((p, i) => (
+                <FadeIn key={p.name} delay={i * 60}>
+                  <div className="tool-card flex min-h-[9rem] flex-col justify-between gap-2 rounded-lg border border-line bg-surface/70 p-4 transition-colors hover:border-accent/60">
+                    <div>
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="flex items-center gap-2.5">
+                          <span className="led led-local" aria-hidden="true" />
+                          <span className="font-medium leading-snug">
+                            {p.name}
+                          </span>
+                        </div>
+                        <span className="shrink-0 font-mono text-xs text-faint">
+                          {p.year}
+                        </span>
+                      </div>
+                      <p className="mt-2.5 text-sm leading-relaxed text-muted">
+                        {p.description}
+                      </p>
+                    </div>
+                    <div className="flex items-center justify-between gap-3 border-t border-line/80 pt-2">
+                      <span className="min-w-0 truncate font-mono text-[11px] text-faint">
+                        {p.tech.join(" · ")}
+                      </span>
+                      <span className="flex shrink-0 gap-3 font-mono text-xs">
+                        {p.link && (
+                          <a
+                            href={p.link}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="text-accent transition-colors hover:underline"
+                          >
+                            访问 ↗
+                          </a>
+                        )}
+                        {p.repo && (
+                          <a
+                            href={p.repo}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="text-muted transition-colors hover:text-foreground"
+                          >
+                            源码 ↗
+                          </a>
+                        )}
+                      </span>
+                    </div>
+                  </div>
+                </FadeIn>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </article>
   );
 }
