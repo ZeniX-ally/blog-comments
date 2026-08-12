@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { projects } from "@/lib/projects";
 import { FadeIn } from "@/components/fade-in";
+import { TiltCard } from "@/components/tilt-card";
 
 export const metadata: Metadata = {
   title: "作品",
@@ -44,51 +45,53 @@ export default function ProjectsPage() {
             <div className="grid grid-cols-1 gap-3">
               {projects.map((p, i) => (
                 <FadeIn key={p.name} delay={i * 60}>
-                  <div className="tool-card flex min-h-[9rem] flex-col justify-between gap-2 rounded-lg border border-line bg-surface/70 p-4 transition-colors hover:border-accent/60">
-                    <div>
-                      <div className="flex items-start justify-between gap-3">
-                        <div className="flex items-center gap-2.5">
-                          <span className="led led-local" aria-hidden="true" />
-                          <span className="font-medium leading-snug">
-                            {p.name}
+                  <TiltCard className="h-full">
+                    <div className="tool-card flex min-h-[9rem] flex-col justify-between gap-2 rounded-lg border border-line bg-surface/70 p-4 transition-colors hover:border-accent/60">
+                      <div>
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="flex items-center gap-2.5">
+                            <span className="led led-local" aria-hidden="true" />
+                            <span className="font-medium leading-snug">
+                              {p.name}
+                            </span>
+                          </div>
+                          <span className="shrink-0 font-mono text-xs text-faint">
+                            {p.year}
                           </span>
                         </div>
-                        <span className="shrink-0 font-mono text-xs text-faint">
-                          {p.year}
+                        <p className="mt-2.5 text-sm leading-relaxed text-muted">
+                          {p.description}
+                        </p>
+                      </div>
+                      <div className="flex items-center justify-between gap-3 border-t border-line/80 pt-2">
+                        <span className="min-w-0 truncate font-mono text-[11px] text-faint">
+                          {p.tech.join(" · ")}
+                        </span>
+                        <span className="flex shrink-0 gap-3 font-mono text-xs">
+                          {p.link && (
+                            <a
+                              href={p.link}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="text-accent transition-colors hover:underline"
+                            >
+                              访问 ↗
+                            </a>
+                          )}
+                          {p.repo && (
+                            <a
+                              href={p.repo}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="text-muted transition-colors hover:text-foreground"
+                            >
+                              源码 ↗
+                            </a>
+                          )}
                         </span>
                       </div>
-                      <p className="mt-2.5 text-sm leading-relaxed text-muted">
-                        {p.description}
-                      </p>
                     </div>
-                    <div className="flex items-center justify-between gap-3 border-t border-line/80 pt-2">
-                      <span className="min-w-0 truncate font-mono text-[11px] text-faint">
-                        {p.tech.join(" · ")}
-                      </span>
-                      <span className="flex shrink-0 gap-3 font-mono text-xs">
-                        {p.link && (
-                          <a
-                            href={p.link}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="text-accent transition-colors hover:underline"
-                          >
-                            访问 ↗
-                          </a>
-                        )}
-                        {p.repo && (
-                          <a
-                            href={p.repo}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="text-muted transition-colors hover:text-foreground"
-                          >
-                            源码 ↗
-                          </a>
-                        )}
-                      </span>
-                    </div>
-                  </div>
+                  </TiltCard>
                 </FadeIn>
               ))}
             </div>

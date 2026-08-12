@@ -6,6 +6,7 @@ import { PostList } from "@/components/post-list";
 import { FadeIn } from "@/components/fade-in";
 import { RevealText } from "@/components/reveal-text";
 import { SignIn } from "@/components/sign-in";
+import { TiltCard } from "@/components/tilt-card";
 
 function SectionHeader({
   hex,
@@ -181,30 +182,32 @@ export default function Home() {
             <div className="grid grid-cols-1 gap-3">
               {featuredProjects.map((p, i) => (
                 <FadeIn key={p.name} delay={i * 60}>
-                  <div className="tool-card flex min-h-[7.5rem] flex-col justify-between gap-2 rounded-lg border border-line bg-surface/70 p-4 transition-colors hover:border-accent/60">
-                    <div>
-                      <div className="flex items-center gap-2.5">
-                        <span className="led led-local" aria-hidden="true" />
-                        <span className="font-medium">{p.name}</span>
+                  <TiltCard className="h-full">
+                    <div className="tool-card flex min-h-[7.5rem] flex-col justify-between gap-2 rounded-lg border border-line bg-surface/70 p-4 transition-colors hover:border-accent/60">
+                      <div>
+                        <div className="flex items-center gap-2.5">
+                          <span className="led led-local" aria-hidden="true" />
+                          <span className="font-medium">{p.name}</span>
+                        </div>
+                        <p className="mt-2 text-sm leading-relaxed text-muted">
+                          {p.description}
+                        </p>
                       </div>
-                      <p className="mt-2 text-sm leading-relaxed text-muted">
-                        {p.description}
-                      </p>
+                      <div className="flex items-center justify-between border-t border-line/80 pt-2 font-mono text-[11px] text-faint">
+                        <span>{p.year}</span>
+                        {p.link && (
+                          <a
+                            href={p.link}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="text-accent transition-colors hover:underline"
+                          >
+                            访问 ↗
+                          </a>
+                        )}
+                      </div>
                     </div>
-                    <div className="flex items-center justify-between border-t border-line/80 pt-2 font-mono text-[11px] text-faint">
-                      <span>{p.year}</span>
-                      {p.link && (
-                        <a
-                          href={p.link}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="text-accent transition-colors hover:underline"
-                        >
-                          访问 ↗
-                        </a>
-                      )}
-                    </div>
-                  </div>
+                  </TiltCard>
                 </FadeIn>
               ))}
             </div>
