@@ -42,7 +42,7 @@ export default function ProjectsPage() {
               <p className="text-muted">还没有作品，之后有了会放在这里。</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 gap-3">
+            <div className="grid grid-cols-1 gap-4">
               {projects.map((p, i) => (
                 <FadeIn key={p.name} delay={i * 60}>
                   <TiltCard className="h-full">

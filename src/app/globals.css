@@ -106,6 +106,9 @@
   /* 卡片 hover 极淡表面 */
   --surface-soft: rgba(245, 242, 237, 0.65);
 
+  /* 卡片常显边框:比 --line 略深,亮暗底上都可辨 */
+  --card-border: rgba(25, 25, 25, 0.16);
+
   --tok-keyword: #9a5b23;
   --tok-string: #6b7f3e;
   --tok-number: #b4542a;
@@ -137,6 +140,8 @@
 
   --surface-soft: rgba(33, 31, 28, 0.7);
 
+  --card-border: rgba(255, 255, 255, 0.14);
+
   --tok-keyword: #e0a264;
   --tok-string: #a3b866;
   --tok-number: #e08a5e;
@@ -161,6 +166,10 @@
 
     --glow: rgba(212, 162, 127, 0.05);
     --glow-2: rgba(212, 162, 127, 0.035);
+
+    --card-border: rgba(255, 255, 255, 0.14);
+    --spotlight-glow: rgba(255, 255, 255, 0.06);
+    --surface-soft: rgba(33, 31, 28, 0.7);
 
     --tok-keyword: #e0a264;
     --tok-string: #a3b866;
@@ -622,9 +631,9 @@ body {
   transform: none;
 }
 
-/* ---------- 简约化:终端卡片统一样式(去边框阴影,留极淡表面) ---------- */
+/* ---------- 简约化:终端卡片统一样式(细边框保边界,留白加大) ---------- */
 .tool-card {
-  border: 1px solid transparent;
+  border: 1px solid var(--card-border);
   background: var(--surface-soft);
   transition:
     background-color 250ms ease,
@@ -658,7 +667,7 @@ body {
 /* ---------- 命令彩蛋终端框 ---------- */
 .terminal-box {
   background: var(--surface-soft);
-  border: 1px solid transparent;
+  border: 1px solid var(--card-border);
   transition: border-color 250ms ease;
 }
 

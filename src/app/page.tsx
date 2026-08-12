@@ -127,7 +127,7 @@ export default function Home() {
             />
           </FadeIn>
           <FadeIn delay={60}>
-            <div className="grid grid-cols-1 gap-3">
+            <div className="grid grid-cols-1 gap-4">
               {latestPosts.map((post, i) => (
                 <FadeIn key={post.slug} delay={i * 60}>
                   <TiltCard className="h-full">
@@ -181,7 +181,7 @@ export default function Home() {
                 moreHref="/projects"
               />
             </FadeIn>
-            <div className="grid grid-cols-1 gap-3">
+            <div className="grid grid-cols-1 gap-4">
               {featuredProjects.map((p, i) => (
                 <FadeIn key={p.name} delay={i * 60}>
                   <TiltCard className="h-full">
