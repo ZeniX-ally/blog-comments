@@ -13,7 +13,12 @@ export async function MdPage({
   title: string;
   description: string;
 }) {
-  const full = path.join(process.cwd(), "content", file);
+  // 防路径遍历（LFI）：先 resolve 再校验目标必须位于 content 目录内
+  const contentRoot = path.resolve(process.cwd(), "content");
+  const full = path.resolve(contentRoot, file);
+  if (!full.startsWith(contentRoot + path.sep)) {
+    return null;
+  }
   const markdown = fs.existsSync(full)
     ? fs.readFileSync(full, "utf8")
     : `# ${title}\n\n还没有内容，去创建 \`content/${file}\` 吧。`;
