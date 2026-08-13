@@ -43,9 +43,7 @@ export default async function TagPageEn({ params }: { params: Promise<Params> })
       </header>
 
       <div className="pb-20">
-        <div className="border-t border-line">
-          <PostList posts={posts} basePath="/en" />
-        </div>
+        <PostList posts={posts} basePath="/en" />
       </div>
     </>
   );

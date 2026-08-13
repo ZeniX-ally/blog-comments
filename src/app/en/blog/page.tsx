@@ -59,7 +59,7 @@ export default function BlogPageEn() {
                 {year}
                 <span className="ml-2">· {posts.length} {posts.length === 1 ? "post" : "posts"}</span>
               </h2>
-              <div className="mt-3 border-t border-line">
+              <div className="mt-3">
                 <PostList posts={posts} basePath="/en" />
               </div>
             </section>

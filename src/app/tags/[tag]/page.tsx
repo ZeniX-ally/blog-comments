@@ -45,9 +45,7 @@ export default async function TagPage({ params }: { params: Promise<Params> }) {
       </header>
 
       <div className="pb-20">
-        <div className="border-t border-line">
-          <PostList posts={posts} />
-        </div>
+        <PostList posts={posts} />
       </div>
     </>
   );

@@ -61,7 +61,7 @@ export default function BlogPage() {
                 {year}
                 <span className="ml-2">· {posts.length} 篇</span>
               </h2>
-              <div className="mt-3 border-t border-line">
+              <div className="mt-3">
                 <PostList posts={posts} />
               </div>
             </section>
