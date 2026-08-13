@@ -17,9 +17,9 @@ echo "==> 2/4 构建"
 rm -rf .next
 npm run build
 
-echo "==> 3/4 部署到 Cloudflare Pages"
+echo "==> 3/4 部署到 Cloudflare Pages (--branch main 生产分支, 否则进 Preview 线上不变)"
 source .cf-env
-npx wrangler pages deploy out --project-name 0xff-blog --commit-dirty=true
+npx wrangler pages deploy out --project-name 0xff-blog --branch main --commit-dirty=true
 
 echo "==> 4/4 验证"
 for path in "/" "/blog/" "/tools/" "/about/" "/projects/" "/en/" "/blog/hello-im-ajiu/"; do
