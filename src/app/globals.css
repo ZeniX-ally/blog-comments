@@ -273,6 +273,108 @@ body {
 }
 
 /* ------------------------------------------------------------
+   ProseTilt 正文块交互:段落/标题/列表项鼠标经过时,
+   跟手暖光斑 + 微倾斜(与 TiltCard 同 --tilt-spot,手感统一)
+   - 光斑:伪元素径向渐变,位置由 JS 写入 --pt-x/--pt-y
+   - 倾斜:h3/h4/p/li 无 scroll 动画可安全 transform(±2°)
+   - h2/pre/blockquote/table 有 scroll-driven 动画占用 transform,
+     只显示光斑不倾斜;img 是替换元素无伪元素,用边框提亮
+   ------------------------------------------------------------ */
+
+.pt-host .prose p,
+.pt-host .prose h2,
+.pt-host .prose h3,
+.pt-host .prose h4,
+.pt-host .prose li,
+.pt-host .prose pre,
+.pt-host .prose blockquote,
+.pt-host .prose table {
+  position: relative;
+  transition: transform 300ms ease-out;
+}
+
+/* 可倾斜块:跟手微倾斜,移出后 300ms 回正 */
+.pt-host .prose p.pt-active,
+.pt-host .prose h3.pt-active,
+.pt-host .prose h4.pt-active,
+.pt-host .prose li.pt-active {
+  transform: perspective(900px)
+    rotateX(var(--pt-tilt-x, 0deg))
+    rotateY(var(--pt-tilt-y, 0deg));
+  transition: transform 60ms linear;
+}
+
+/* 光斑层:半透明暖光覆盖块面,不挡交互 */
+.pt-host .prose p::after,
+.pt-host .prose h2::after,
+.pt-host .prose h3::after,
+.pt-host .prose h4::after,
+.pt-host .prose li::after,
+.pt-host .prose pre::after,
+.pt-host .prose blockquote::after,
+.pt-host .prose table::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(
+    14rem circle at var(--pt-x, 50%) var(--pt-y, 50%),
+    var(--tilt-spot),
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 200ms ease;
+  z-index: 1;
+}
+
+.pt-host .prose p.pt-active::after,
+.pt-host .prose h2.pt-active::after,
+.pt-host .prose h3.pt-active::after,
+.pt-host .prose h4.pt-active::after,
+.pt-host .prose li.pt-active::after,
+.pt-host .prose pre.pt-active::after,
+.pt-host .prose blockquote.pt-active::after,
+.pt-host .prose table.pt-active::after {
+  opacity: 1;
+}
+
+/* img 无伪元素:悬停时边框提亮 */
+.pt-host .prose img.pt-active {
+  border-color: var(--accent);
+  transition: border-color 200ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pt-host .prose p,
+  .pt-host .prose h2,
+  .pt-host .prose h3,
+  .pt-host .prose h4,
+  .pt-host .prose li,
+  .pt-host .prose pre,
+  .pt-host .prose blockquote,
+  .pt-host .prose table {
+    transition: none;
+  }
+  .pt-host .prose p.pt-active,
+  .pt-host .prose h3.pt-active,
+  .pt-host .prose h4.pt-active,
+  .pt-host .prose li.pt-active {
+    transform: none;
+  }
+  .pt-host .prose p::after,
+  .pt-host .prose h2::after,
+  .pt-host .prose h3::after,
+  .pt-host .prose h4::after,
+  .pt-host .prose li::after,
+  .pt-host .prose pre::after,
+  .pt-host .prose blockquote::after,
+  .pt-host .prose table::after {
+    opacity: 0 !important;
+  }
+}
+
+/* ------------------------------------------------------------
    正文滚动渐入:纯 CSS Scroll-Driven Animations(零 JS)
    h2/代码块/引用/图片进入视口时淡入上移;
    不支持 animation-timeline 的浏览器自动跳过(优雅降级)

@@ -6,6 +6,7 @@ import { ReadingProgress } from "@/components/reading-progress";
 import { FadeIn } from "@/components/fade-in";
 import { Comments } from "@/components/comments";
 import { ScrollSpy } from "@/components/scroll-spy";
+import { ProseTilt } from "@/components/prose-tilt";
 
 type Params = { slug: string };
 
@@ -74,10 +75,12 @@ export default async function PostPage({ params }: { params: Promise<Params> }) 
 
       {/* 正文 */}
       <FadeIn delay={100}>
+      <ProseTilt>
       <div
         className="prose mt-10"
         dangerouslySetInnerHTML={{ __html: post.html }}
       />
+      </ProseTilt>
       </FadeIn>
 
       {/* 上一篇 / 下一篇 */}
