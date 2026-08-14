@@ -9,7 +9,7 @@ import { FadeIn } from "./fade-in";
  */
 export function PostList({ posts, basePath = "" }: { posts: PostMeta[]; basePath?: string }) {
   if (posts.length === 0) {
-    return <p className="py-8 text-muted">还没有文章，去 content/posts 里写第一篇吧。</p>;
+    return <p className="py-12 text-muted">还没有文章，去 content/posts 里写第一篇吧。</p>;
   }
 
   return (

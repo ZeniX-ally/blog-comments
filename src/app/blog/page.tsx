@@ -26,7 +26,7 @@ export default function BlogPage() {
   const tagCount = new Set(allPosts.flatMap((p) => p.tags ?? [])).size;
 
   return (
-    <article className="mx-auto w-full max-w-3xl pb-24 pt-16 sm:pt-20">
+    <article className="mx-auto w-full max-w-3xl pb-32 pt-20 sm:pt-24">
       <PageHeader label="[0x00] POSTS" title="文章" sub="关于技术、设计与生活的一切记录。">
         {/* 原左栏统计并入 PageHeader 下方:mono 小字 */}
         <div className="mt-6 flex gap-6 font-mono text-xs text-faint">
@@ -37,7 +37,7 @@ export default function BlogPage() {
 
       {/* 原左栏终端行并入:mono 提示 */}
       <FadeIn>
-        <div className="mb-14 font-mono text-xs text-accent">
+        <div className="mb-20 font-mono text-xs text-accent">
           zenix@0xff:~/posts$ ls -lt
           <span className="cursor-blink ml-0.5">▍</span>
         </div>
@@ -47,8 +47,8 @@ export default function BlogPage() {
         <PostSearch posts={allPosts} />
 
         {groups.map(([year, posts]) => (
-          <section key={year} className="mb-12">
-            <h2 className="mb-4 font-mono text-xs tracking-widest text-faint">
+          <section key={year} className="mb-16">
+            <h2 className="mb-6 font-mono text-xs tracking-widest text-faint">
               {year}
               <span className="ml-2">· {posts.length} 篇</span>
             </h2>

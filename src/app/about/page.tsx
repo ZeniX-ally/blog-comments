@@ -33,7 +33,7 @@ const NOW_ITEMS = [
 
 export default function AboutPage() {
   return (
-    <article className="mx-auto w-full max-w-3xl pb-24 pt-16 sm:pt-20">
+    <article className="mx-auto w-full max-w-3xl pb-32 pt-20 sm:pt-24">
       {/* 大标题锚点 */}
       <PageHeader
         label="[0x00] ABOUT"
@@ -43,7 +43,7 @@ export default function AboutPage() {
 
       {/* 身份信息行:头像 + 名字 + 终端行(替代原左栏 sticky 信息牌) */}
       <FadeIn>
-        <div className="mb-16 flex items-center gap-5">
+        <div className="mb-20 flex items-center gap-5">
           <div className="relative shrink-0">
             <img
               src="https://github.com/ZeniX-ally.png?size=256"
@@ -75,16 +75,16 @@ export default function AboutPage() {
 
       {/* 引言 */}
       <FadeIn>
-        <p className="mb-16 max-w-xl border-l-2 border-accent pl-4 text-[15px] leading-relaxed text-muted">
+        <p className="mb-20 max-w-xl border-l-2 border-accent pl-4 text-[15px] leading-relaxed text-muted">
           你好，我是阿九。一名测试工程师，方向是测试研发（FCT/IGBT 测试）。
           完美主义者，对界面有洁癖——所以这个站长这样。
         </p>
       </FadeIn>
 
       {/* [0x01] 这个网站 */}
-      <section className="mb-16">
+      <section className="mb-20">
         <FadeIn>
-          <header className="mb-5 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+          <header className="mb-8 flex flex-wrap items-baseline gap-x-3 gap-y-1">
             <span className="font-mono text-xs text-faint">[0x01]</span>
             <h2 className="font-display text-2xl font-medium">这个网站</h2>
             <span className="font-mono text-[10px] tracking-[0.25em] text-accent">
@@ -117,9 +117,9 @@ export default function AboutPage() {
       </section>
 
       {/* [0x02] 我在做什么 */}
-      <section className="mb-16">
+      <section className="mb-20">
         <FadeIn>
-          <header className="mb-5 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+          <header className="mb-8 flex flex-wrap items-baseline gap-x-3 gap-y-1">
             <span className="font-mono text-xs text-faint">[0x02]</span>
             <h2 className="font-display text-2xl font-medium">我在做什么</h2>
             <span className="font-mono text-[10px] tracking-[0.25em] text-accent">
@@ -127,10 +127,10 @@ export default function AboutPage() {
             </span>
           </header>
         </FadeIn>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
           {NOW_ITEMS.map((item, i) => (
             <FadeIn key={item.id} delay={i * 60}>
-              <div className="light-card flex min-h-[8.5rem] flex-col justify-between gap-2 p-5">
+              <div className="light-card flex min-h-[8.5rem] flex-col justify-between gap-2 p-6">
                 <div>
                   <div className="flex items-center gap-2.5">
                     <span className={`led ${item.led}`} aria-hidden="true" />
@@ -153,7 +153,7 @@ export default function AboutPage() {
       {/* [0x03] 联系 */}
       <section>
         <FadeIn>
-          <header className="mb-5 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+          <header className="mb-8 flex flex-wrap items-baseline gap-x-3 gap-y-1">
             <span className="font-mono text-xs text-faint">[0x03]</span>
             <h2 className="font-display text-2xl font-medium">联系我</h2>
             <span className="font-mono text-[10px] tracking-[0.25em] text-accent">

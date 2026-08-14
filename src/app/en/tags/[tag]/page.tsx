@@ -34,9 +34,9 @@ export default async function TagPageEn({ params }: { params: Promise<Params> })
   if (posts.length === 0) notFound();
 
   return (
-    <article className="mx-auto w-full max-w-3xl pb-24 pt-16 sm:pt-20">
+    <article className="mx-auto w-full max-w-3xl pb-32 pt-20 sm:pt-24">
       <PageHeader label="[0x00] TAG" title={`#${tag}`} sub={`${posts.length} ${posts.length === 1 ? "post" : "posts"}.`} />
-      <div className="pb-10">
+      <div className="pb-4">
         <PostList posts={posts} basePath="/en" />
       </div>
     </article>

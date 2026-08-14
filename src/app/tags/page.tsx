@@ -14,13 +14,13 @@ export default function TagsPage() {
 
   return (
     <>
-      <article className="mx-auto w-full max-w-3xl pb-24 pt-16 sm:pt-20">
+      <article className="mx-auto w-full max-w-3xl pb-32 pt-20 sm:pt-24">
         <PageHeader label="[0x00] TAGS" title="标签" sub="按主题浏览全部文章。" />
         <div className="pb-10">
           {tags.length === 0 ? (
-            <p className="border-t border-line pt-6 text-muted">还没有标签，给文章加上 tags 字段后这里会出现。</p>
+            <p className="border-t border-line pt-10 text-muted">还没有标签，给文章加上 tags 字段后这里会出现。</p>
           ) : (
-            <ul className="flex flex-wrap gap-x-6 gap-y-3 border-t border-line pt-6">
+            <ul className="flex flex-wrap gap-x-8 gap-y-5 border-t border-line pt-10">
               {tags.map(({ tag, count }) => (
                 <li key={tag}>
                   <Link

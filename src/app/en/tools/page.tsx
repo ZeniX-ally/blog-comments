@@ -82,14 +82,14 @@ export default function ToolsPageEn() {
   const total = SECTIONS.reduce((n, s) => n + s.tools.length, 0);
 
   return (
-    <article className="mx-auto w-full max-w-3xl pb-24 pt-16 sm:pt-20">
+    <article className="mx-auto w-full max-w-3xl pb-32 pt-20 sm:pt-24">
       <PageHeader
         label="[0x00] ARSENAL"
         title="Toolbox"
         sub="Self-hosted services and everyday tools."
       />
       <FadeIn>
-        <div className="mb-14 font-mono text-sm">
+        <div className="mb-20 font-mono text-sm">
           <span className="text-accent">zenix@0xff</span>
           <span className="text-faint">:~$</span>{" "}
           <span className="text-fg">cat arsenal.toml</span>
@@ -97,11 +97,11 @@ export default function ToolsPageEn() {
         </div>
       </FadeIn>
 
-      <div className="space-y-14">
+      <div className="space-y-20">
         {SECTIONS.map((sec, si) => (
           <section key={sec.hex}>
             <FadeIn delay={si * 60}>
-              <header className="mb-5 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+              <header className="mb-8 flex flex-wrap items-baseline gap-x-3 gap-y-1">
                 <span className="font-mono text-xs text-faint">[{sec.hex}]</span>
                 <h2 className="font-display text-2xl font-medium">{sec.title}</h2>
                 <span className="font-mono text-[10px] tracking-[0.25em] text-accent">
@@ -109,12 +109,12 @@ export default function ToolsPageEn() {
                 </span>
               </header>
             </FadeIn>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
               {sec.tools.map((t, ti) => {
                 const meta = STATUS_META[t.status];
                 return (
                   <FadeIn key={t.id} delay={si * 60 + ti * 40}>
-                    <div className="light-card flex min-h-[8.5rem] flex-col justify-between gap-2 p-5">
+                    <div className="light-card flex min-h-[8.5rem] flex-col justify-between gap-2 p-6">
                       <div className="flex items-start gap-3">
                         <span className={`led ${meta.led} mt-1.5`} aria-hidden="true" />
                         <div className="min-w-0 flex-1">
@@ -131,7 +131,7 @@ export default function ToolsPageEn() {
                           </p>
                         </div>
                       </div>
-                      <div className="flex items-center justify-between border-t border-line pt-2.5 font-mono text-[11px] text-faint">
+                      <div className="flex items-center justify-between border-t border-line pt-3 font-mono text-[11px] text-faint">
                         <span>{t.id}</span>
                         <span>{t.tag}</span>
                       </div>
@@ -145,7 +145,7 @@ export default function ToolsPageEn() {
       </div>
 
       <FadeIn delay={200}>
-        <footer className="mt-14 flex flex-wrap items-center gap-x-3 gap-y-1 border border-line bg-surface px-4 py-2.5 font-mono text-xs text-muted">
+        <footer className="mt-20 flex flex-wrap items-center gap-x-3 gap-y-1 border border-line bg-surface px-4 py-2.5 font-mono text-xs text-muted">
           <span className="text-accent">●</span>
           <span>[ OK ] {total} modules loaded</span>
           <span className="text-faint">·</span>

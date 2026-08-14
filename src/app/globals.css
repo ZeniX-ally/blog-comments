@@ -404,7 +404,7 @@ body {
 .post-row {
   display: block;
   border-bottom: 1px solid var(--line);
-  padding: 1rem 0.25rem;
+  padding: 1.25rem 0.25rem;
   transition: padding-left 300ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -418,8 +418,8 @@ body {
 
 /* 首页首屏全览:紧凑行(压缩上下内边距) */
 .post-row--tight {
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
 }
 
 .post-row-title {
