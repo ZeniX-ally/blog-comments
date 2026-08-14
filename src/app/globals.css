@@ -221,16 +221,33 @@ body {
 /* 首页首屏全览:标题略收敛,给下方内容留位 */
 .page-title--hero {
   font-size: clamp(3rem, 8vw, 5.5rem);
-  letter-spacing: -0.03em;
+  letter-spacing: -0.045em;
+  line-height: 1.05;
 }
 
-/* 首页 hero 大标题框:高度 ≥ 6 倍标题字号(面积≈当前2倍),文字垂直居中 */
+/* 首页 hero 大标题框:横向宽框(≈2× 原宽),苹果玻璃材质,文字垂直居中 */
 .hero-frame {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: calc(clamp(3rem, 8vw, 5.5rem) * 6);
+  min-height: calc(clamp(3rem, 8vw, 5.5rem) * 3);
   text-align: center;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.74), rgba(255, 255, 255, 0.5));
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  backdrop-filter: blur(24px) saturate(180%);
+  border-radius: 2rem;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    0 24px 64px -32px rgba(0, 0, 0, 0.14);
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .hero-frame {
+    background: #ffffff;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
 }
 
 /* 首页 hero 品牌标识 */

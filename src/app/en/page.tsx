@@ -21,8 +21,8 @@ export default function HomeEn() {
             <FadeIn>
             <div className="hero-brand">0xff.zone</div>
 
-            {/* title frame with ink particles */}
-            <div className="hero-frame relative mt-8 w-full max-w-3xl overflow-hidden rounded-2xl border border-line px-6">
+            {/* title frame: wide glass material with ink particles */}
+            <div className="hero-frame relative mt-8 w-full max-w-6xl overflow-hidden px-8">
               <InkParticles />
               <div className="relative z-10">
                 <h1 className="page-title page-title--hero">

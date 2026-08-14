@@ -24,8 +24,8 @@ export default function Home() {
             {/* 品牌标识(与顶栏呼应,内容区上方第二处) */}
             <div className="hero-brand">0xff.zone</div>
 
-            {/* 大标题矩形框:至少2倍字号高,框内黑色粒子缓慢漂浮,文字居中 */}
-            <div className="hero-frame relative mt-8 w-full max-w-3xl overflow-hidden rounded-2xl border border-line px-6">
+            {/* 大标题框:横向宽框苹果玻璃材质,粒子漂浮,文字居中 */}
+            <div className="hero-frame relative mt-8 w-full max-w-6xl overflow-hidden px-8">
               <InkParticles />
               <div className="relative z-10">
                 <h1 className="page-title page-title--hero">
