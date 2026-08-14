@@ -92,6 +92,7 @@ body {
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  overflow-x: clip;
 }
 
 ::selection {
@@ -225,12 +226,14 @@ body {
   line-height: 1.05;
 }
 
-/* 首页 hero 大标题框:横向宽框(≈2× 原宽),苹果玻璃材质,文字垂直居中 */
+/* 首页 hero 大标题框:横向全宽玻璃材质,高度 6× 标题字号,文字垂直居中 */
 .hero-frame {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: calc(clamp(3rem, 8vw, 5.5rem) * 3);
+  width: min(144rem, calc(100vw - 2rem));
+  margin-inline: auto;
+  min-height: calc(clamp(3rem, 8vw, 5.5rem) * 6);
   text-align: center;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.74), rgba(255, 255, 255, 0.5));
   -webkit-backdrop-filter: blur(24px) saturate(180%);
@@ -250,25 +253,7 @@ body {
   }
 }
 
-/* 首页 hero 品牌标识 */
-.hero-brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
-  font-family: var(--font-mono);
-  font-size: 0.8125rem;
-  letter-spacing: 0.18em;
-  color: var(--faint);
-}
-
-.hero-brand::before {
-  content: "";
-  width: 5px;
-  height: 5px;
-  border-radius: 9999px;
-  background: var(--accent);
-}
-
+/* 首页 hero 品牌标识(已移除,2016-08-14 删除) */
 .page-sub {
   font-size: 1rem;
   color: var(--muted);
