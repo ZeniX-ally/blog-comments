@@ -36,7 +36,7 @@ export function SignIn() {
     return (
       <a
         href="/api/auth/github"
-        className="btn-pill btn-ghost btn-pill-sm font-mono text-xs"
+        className="btn-pill btn-primary font-mono"
       >
         <span>{GITHUB_ICON}</span>
         sign in with GitHub

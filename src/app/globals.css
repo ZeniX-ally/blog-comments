@@ -121,14 +121,16 @@ body {
   line-height: 1.4;
   white-space: nowrap;
   transition:
-    background-color 300ms ease,
-    color 300ms ease,
-    border-color 300ms ease,
-    transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
+    background-color 180ms cubic-bezier(0.16, 1, 0.3, 1),
+    color 180ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 180ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 180ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.btn-pill:hover {
-  transform: translateY(-1px);
+@media (hover: hover) and (pointer: fine) {
+  .btn-pill:hover {
+    transform: translateY(-1px);
+  }
 }
 
 /* 点击瞬间微缩 */
@@ -222,12 +224,12 @@ body {
   letter-spacing: -0.03em;
 }
 
-/* 首页 hero 大标题框:高度 ≥ 3 倍标题字号,文字垂直居中 */
+/* 首页 hero 大标题框:高度 ≥ 6 倍标题字号(面积≈当前2倍),文字垂直居中 */
 .hero-frame {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: calc(clamp(3rem, 8vw, 5.5rem) * 3);
+  min-height: calc(clamp(3rem, 8vw, 5.5rem) * 6);
   text-align: center;
 }
 
