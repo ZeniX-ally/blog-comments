@@ -7,6 +7,7 @@ import { FadeIn } from "@/components/fade-in";
 import { Comments } from "@/components/comments";
 import { ScrollSpy } from "@/components/scroll-spy";
 import { ProseTilt } from "@/components/prose-tilt";
+import { BookTransition } from "@/components/book-transition";
 
 type Params = { slug: string };
 
@@ -46,7 +47,8 @@ export default async function PostPage({ params }: { params: Promise<Params> }) 
   const adjacent = getAdjacentPosts(slug);
 
   return (
-    <article className="mx-auto w-full max-w-6xl pb-32 pt-20 sm:pt-24">
+    <BookTransition>
+      <article className="mx-auto w-full max-w-6xl pb-32 pt-20 sm:pt-24">
       {/* 阅读进度条:Tan 细线 */}
       <ReadingProgress />
       {/* 章节联动:正文滚动高亮当前标题 */}
@@ -116,6 +118,7 @@ export default async function PostPage({ params }: { params: Promise<Params> }) 
 
       {/* 评论区 */}
       <Comments />
-    </article>
+      </article>
+    </BookTransition>
   );
 }

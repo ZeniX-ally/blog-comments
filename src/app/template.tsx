@@ -24,6 +24,12 @@ export default function Template({ children }: { children: React.ReactNode }) {
     const host = ref.current;
     if (!host) return;
 
+    // 支持 View Transitions 的浏览器:翻书页转场由 BookTransition 接管,
+    // 这里不再播放入场动画,避免双重动画
+    if (typeof document !== "undefined" && "startViewTransition" in document) {
+      return;
+    }
+
     if (typeof host.animate !== "function") return;
 
     // 无障碍：系统开启"减少动态效果"时降级为纯淡入(去掉位移与交错)，

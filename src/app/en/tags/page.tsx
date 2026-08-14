@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getAllTags, slugToHref } from "@/lib/posts";
 import { PageHeader } from "@/components/page-header";
+import { BookTransition } from "@/components/book-transition";
 
 export const metadata: Metadata = {
   title: "Tags",
@@ -12,8 +13,9 @@ export default function TagsPageEn() {
   const tags = getAllTags("en");
 
   return (
-    <>
-      <article className="mx-auto w-full max-w-6xl pb-32 pt-20 sm:pt-24">
+    <BookTransition>
+      <>
+        <article className="mx-auto w-full max-w-6xl pb-32 pt-20 sm:pt-24">
         <PageHeader label="[0x00] TAGS" title="Tags" sub="Browse all posts by topic." />
         <div className="pb-10">
           {tags.length === 0 ? (
@@ -40,7 +42,8 @@ export default function TagsPageEn() {
             </ul>
           )}
         </div>
-      </article>
-    </>
+        </article>
+      </>
+    </BookTransition>
   );
 }

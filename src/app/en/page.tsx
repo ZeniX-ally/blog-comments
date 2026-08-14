@@ -4,6 +4,7 @@ import { projects } from "@/lib/projects";
 import { FadeIn } from "@/components/fade-in";
 import { TypewriterText } from "@/components/typewriter-text";
 import { CommandLine } from "@/components/command-line";
+import { BookTransition } from "@/components/book-transition";
 
 /** 终端提示行(纯装饰) */
 function TerminalHint() {
@@ -26,7 +27,8 @@ export default function HomeEn() {
   const tagCount = new Set(posts.flatMap((p) => p.tags ?? [])).size;
 
   return (
-    <article className="mx-auto w-full max-w-6xl pb-24 pt-8 sm:pt-12">
+    <BookTransition>
+      <article className="mx-auto w-full max-w-6xl pb-24 pt-8 sm:pt-12">
       <section className="flex flex-col lg:min-h-[calc(100vh-5.75rem)]">
         {/* ============ HERO: vertically centered single column ============ */}
         <div className="hero-scroll relative flex flex-col items-center pt-8 text-center lg:pt-14">
@@ -192,6 +194,7 @@ export default function HomeEn() {
           )}
         </div>
       </section>
-    </article>
+      </article>
+    </BookTransition>
   );
 }

@@ -7,6 +7,7 @@ import { FadeIn } from "@/components/fade-in";
 import { Comments } from "@/components/comments";
 import { ScrollSpy } from "@/components/scroll-spy";
 import { ProseTilt } from "@/components/prose-tilt";
+import { BookTransition } from "@/components/book-transition";
 
 type Params = { slug: string };
 
@@ -45,7 +46,8 @@ export default async function PostPageEn({ params }: { params: Promise<Params> }
   const adjacent = getAdjacentPosts(slug, "en");
 
   return (
-    <article className="mx-auto w-full max-w-6xl pb-32 pt-20 sm:pt-24">
+    <BookTransition>
+      <article className="mx-auto w-full max-w-6xl pb-32 pt-20 sm:pt-24">
       <ReadingProgress />
       <ScrollSpy />
       <FadeIn>
@@ -108,6 +110,7 @@ export default async function PostPageEn({ params }: { params: Promise<Params> }
       </footer>
 
       <Comments />
-    </article>
+      </article>
+    </BookTransition>
   );
 }

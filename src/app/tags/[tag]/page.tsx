@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { decodeSlug, getAllTags, getPostsByTag } from "@/lib/posts";
 import { PostList } from "@/components/post-list";
 import { PageHeader } from "@/components/page-header";
+import { BookTransition } from "@/components/book-transition";
 
 type Params = { tag: string };
 
@@ -36,11 +37,13 @@ export default async function TagPage({ params }: { params: Promise<Params> }) {
   if (posts.length === 0) notFound();
 
   return (
-    <article className="mx-auto w-full max-w-6xl pb-32 pt-20 sm:pt-24">
+    <BookTransition>
+      <article className="mx-auto w-full max-w-6xl pb-32 pt-20 sm:pt-24">
       <PageHeader label="[0x00] TAG" title={`#${tag}`} sub={`共 ${posts.length} 篇文章。`} />
       <div className="pb-4">
         <PostList posts={posts} />
       </div>
-    </article>
+      </article>
+    </BookTransition>
   );
 }

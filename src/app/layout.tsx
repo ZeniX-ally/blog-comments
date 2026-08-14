@@ -7,6 +7,7 @@ import { BackButton } from "@/components/back-button";
 import { EffectLayer } from "@/components/effect-layer";
 import { ParticleField } from "@/components/particle-field";
 import { ClickFx } from "@/components/click-fx";
+import { TransitionNav } from "@/components/transition-nav";
 import "./globals.css";
 
 const umamiEnabled = Boolean(site.umami.scriptSrc && site.umami.websiteId);
@@ -58,6 +59,8 @@ export default function RootLayout({
         <EffectLayer />
         {/* 全站点击特效(粒子爆裂 + 涟漪),reduced-motion 自动降级 */}
         <ClickFx />
+        {/* 翻书页转场导航(原生 View Transitions API) */}
+        <TransitionNav />
         <SiteHeader />
         <main className="w-full grow px-5 sm:px-12 md:px-16 lg:px-20 xl:px-24">
           {children}

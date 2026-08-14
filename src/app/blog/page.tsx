@@ -3,6 +3,7 @@ import { getAllPosts, type PostMeta } from "@/lib/posts";
 import { PostList } from "@/components/post-list";
 import { PostSearch } from "@/components/post-search";
 import { FadeIn } from "@/components/fade-in";
+import { BookTransition } from "@/components/book-transition";
 
 export const metadata: Metadata = {
   title: "文章",
@@ -25,7 +26,8 @@ export default function BlogPage() {
   const tagCount = new Set(allPosts.flatMap((p) => p.tags ?? [])).size;
 
   return (
-    <article className="mx-auto w-full max-w-6xl pb-32 pt-20 sm:pt-24">
+    <BookTransition>
+      <article className="mx-auto w-full max-w-6xl pb-32 pt-20 sm:pt-24">
       <div className="grid gap-14 lg:grid-cols-[300px_1fr] lg:gap-20">
         {/* 左栏:sticky 介绍牌 */}
         <FadeIn>
@@ -63,6 +65,7 @@ export default function BlogPage() {
           ))}
         </div>
       </div>
-    </article>
+      </article>
+    </BookTransition>
   );
 }

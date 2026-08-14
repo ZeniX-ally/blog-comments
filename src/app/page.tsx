@@ -6,6 +6,7 @@ import { FadeIn } from "@/components/fade-in";
 import { SignIn } from "@/components/sign-in";
 import { TypewriterText } from "@/components/typewriter-text";
 import { CommandLine } from "@/components/command-line";
+import { BookTransition } from "@/components/book-transition";
 
 /** 终端提示行:极简,一行提示 + 闪烁光标(装饰,不动画交错) */
 function TerminalHint() {
@@ -28,7 +29,8 @@ export default function Home() {
   const tagCount = new Set(posts.flatMap((p) => p.tags ?? [])).size;
 
   return (
-    <article className="mx-auto w-full max-w-6xl pb-24 pt-8 sm:pt-12">
+    <BookTransition>
+      <article className="mx-auto w-full max-w-6xl pb-24 pt-8 sm:pt-12">
       <section className="flex flex-col lg:min-h-[calc(100vh-5.75rem)]">
         {/* ============ HERO:垂直居中单栏,简约高级 ============ */}
         <div className="hero-scroll relative flex flex-col items-center pt-8 text-center lg:pt-14">
@@ -199,6 +201,7 @@ export default function Home() {
           )}
         </div>
       </section>
-    </article>
+      </article>
+    </BookTransition>
   );
 }

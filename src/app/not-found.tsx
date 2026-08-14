@@ -1,9 +1,11 @@
 import Link from "next/link";
+import { BookTransition } from "@/components/book-transition";
 
 /** 404 页:域名梗彩蛋 —— "404 not found" 反写为 "404 found" */
 export default function NotFound() {
   return (
-    <section className="flex min-h-[50vh] flex-col items-center justify-center py-32 text-center">
+    <BookTransition>
+      <section className="flex min-h-[50vh] flex-col items-center justify-center py-32 text-center">
       <p className="font-mono text-sm uppercase tracking-widest text-faint">404 found</p>
       <h1 className="page-title mt-8">很好，你找到了这里</h1>
       <p className="mt-6 max-w-sm text-muted">
@@ -14,6 +16,7 @@ export default function NotFound() {
       <Link href="/" className="btn-pill btn-ghost mt-10">
         ← 回到首页
       </Link>
-    </section>
+      </section>
+    </BookTransition>
   );
 }
