@@ -27,9 +27,11 @@ export function TransitionNav() {
       const pathname = link.pathname;
       // 同页锚点/同路径:不触发转场
       if (pathname === location.pathname) return;
+      // 相对路径导航(绝对 URL 会被 Next 当作外部导航,导致整页硬跳转)
+      const to = pathname + link.search + link.hash;
       e.preventDefault();
       document.startViewTransition(async () => {
-        router.push(url);
+        router.push(to);
         await waitForNav(pathname);
       });
     };
@@ -41,17 +43,31 @@ export function TransitionNav() {
   return null;
 }
 
-/** 等待目标路由 DOM 提交:监听 body 变化,确认 pathname 到位后再等两帧 */
+/** 等待目标路由切换完成:轮询 pathname + 标题更新(渲染提交信号)。
+ *  注意:View Transition 的 update 阶段渲染被冻结,rAF 不触发,
+ *  必须用 setTimeout 轮询(定时器在冻结期间仍正常执行)。 */
 function waitForNav(pathname: string): Promise<void> {
   return new Promise((resolve) => {
-    const timer = setTimeout(resolve, 3000); // 兜底超时
-    const obs = new MutationObserver(() => {
-      if (location.pathname === pathname) {
-        clearTimeout(timer);
-        obs.disconnect();
-        requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
+    const start = performance.now();
+    const prevTitle = document.title;
+    const check = () => {
+      const elapsed = performance.now() - start;
+      const committed =
+        location.pathname === pathname &&
+        (document.title !== prevTitle || elapsed > 400);
+      if (committed) {
+        // 再等两拍(定时器)让新页面 DOM 提交完成
+        setTimeout(() => setTimeout(() => resolve(), 16), 16);
+      } else if (elapsed > 3000) {
+        // 兜底:3s 内导航未完成(异常情况),硬跳转保证到达目标页
+        if (location.pathname !== pathname) {
+          window.location.assign(location.origin + pathname + location.search);
+        }
+        resolve();
+      } else {
+        setTimeout(check, 16);
       }
-    });
-    obs.observe(document.body, { childList: true, subtree: true });
+    };
+    check();
   });
 }
