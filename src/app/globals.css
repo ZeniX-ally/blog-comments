@@ -231,7 +231,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: min(144rem, calc(100vw - 2rem));
+  width: min(80rem, calc(100vw - 2rem));
   margin-inline: auto;
   min-height: calc(clamp(3rem, 8vw, 5.5rem) * 6);
   text-align: center;
