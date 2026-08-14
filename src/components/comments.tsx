@@ -16,8 +16,8 @@ export function Comments() {
     if (!enabled || !ref.current || ref.current.dataset.loaded) return;
     ref.current.dataset.loaded = "1";
 
-    // 全站锁定暗色(0xff 极客暗色主题),giscus 固定 dark
-    const theme = () => "dark";
+    // 全站浅色主题,giscus 固定 light
+    const theme = () => "light";
 
     const script = document.createElement("script");
     script.src = "https://giscus.app/client.js";

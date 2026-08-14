@@ -31,20 +31,7 @@ export default function HomeEn() {
       <article className="mx-auto w-full max-w-6xl pb-24 pt-8 sm:pt-12">
       <section className="flex flex-col lg:min-h-[calc(100vh-5.75rem)]">
         {/* ============ HERO: vertically centered single column ============ */}
-        <div className="hero-scroll relative flex flex-col items-center pt-8 text-center lg:pt-14">
-          {/* Remotion hero background video (decorative layer) */}
-          <video
-            className="hero-video"
-            src="/videos/hero-bg.webm"
-            poster="/videos/hero-poster.png"
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            aria-hidden="true"
-          />
-          <div className="relative z-10">
+        <div className="hero-scroll flex flex-col items-center pt-8 text-center lg:pt-14">
             <FadeIn>
             <div className="hero-brand">0xff.zone</div>
             <h1 className="page-title page-title--hero mt-6">
@@ -89,7 +76,6 @@ export default function HomeEn() {
               <TerminalHint />
             </div>
             </FadeIn>
-          </div>
         </div>
 
         {/* ============ Command easter egg: centered, sinks on scroll ============ */}

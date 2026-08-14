@@ -33,20 +33,7 @@ export default function Home() {
       <article className="mx-auto w-full max-w-6xl pb-24 pt-8 sm:pt-12">
       <section className="flex flex-col lg:min-h-[calc(100vh-5.75rem)]">
         {/* ============ HERO:垂直居中单栏,简约高级 ============ */}
-        <div className="hero-scroll relative flex flex-col items-center pt-8 text-center lg:pt-14">
-          {/* Remotion 渲染的粒子流背景视频(装饰层) */}
-          <video
-            className="hero-video"
-            src="/videos/hero-bg.webm"
-            poster="/videos/hero-poster.png"
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            aria-hidden="true"
-          />
-          <div className="relative z-10">
+        <div className="hero-scroll flex flex-col items-center pt-8 text-center lg:pt-14">
             <FadeIn>
             {/* 品牌标识(与顶栏呼应,内容区上方第二处) */}
             <div className="hero-brand">0xff.zone</div>
@@ -98,7 +85,6 @@ export default function Home() {
               <SignIn />
             </div>
             </FadeIn>
-          </div>
         </div>
 
         {/* ============ 命令彩蛋:居中,随滚动下沉淡出 ============ */}

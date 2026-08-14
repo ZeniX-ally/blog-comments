@@ -13,11 +13,6 @@ echo "==> 1.5/4 安装依赖(如需)"
 cd "$BUILD"
 [ -d node_modules ] || npm install
 
-echo "==> 1.8/4 渲染 Remotion hero 背景视频(与代码同步,失败则用已入库产物)"
-if [ -d node_modules/remotion ]; then
-  npm run render:hero || echo "  [warn] remotion 渲染失败,使用已入库的 public/videos 产物"
-fi
-
 echo "==> 2/4 构建"
 rm -rf .next
 npm run build

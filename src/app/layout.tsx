@@ -5,9 +5,6 @@ import { SiteFooter } from "@/components/site-footer";
 import { BackToTop } from "@/components/back-to-top";
 import { BackButton } from "@/components/back-button";
 import { EffectLayer } from "@/components/effect-layer";
-import { ParticleField } from "@/components/particle-field";
-import { ClickFx } from "@/components/click-fx";
-import { BookMorph } from "@/components/book-morph";
 import "./globals.css";
 
 const umamiEnabled = Boolean(site.umami.scriptSrc && site.umami.websiteId);
@@ -42,7 +39,7 @@ export default function RootLayout({
             (Cloudflare Pages 对带 query 的静态文件请求返回 404) */}
         <link rel="icon" href="/favicon.png" type="image/png" />
         <link rel="apple-touch-icon" href="/apple-icon.png" />
-        <meta name="theme-color" content="#0a0a0c" />
+        <meta name="theme-color" content="#ffffff" />
         {umamiEnabled && (
           <script
             defer
@@ -52,15 +49,9 @@ export default function RootLayout({
         )}
       </head>
       <body className="flex min-h-screen flex-col">
-        {/* 背景装饰层:绿光晕 + 粒子场,pointer-events: none */}
-        <div aria-hidden="true" className="bg-fx">
-          <ParticleField />
-        </div>
+        {/* 背景装饰层:极淡绿光晕,pointer-events: none */}
+        <div aria-hidden="true" className="bg-fx" />
         <EffectLayer />
-        {/* 全站点击特效(粒子爆裂 + 涟漪),reduced-motion 自动降级 */}
-        <ClickFx />
-        {/* 文章行点击 → 变形成翻页的书(元素级动画) */}
-        <BookMorph />
         <SiteHeader />
         <main className="w-full grow px-5 sm:px-12 md:px-16 lg:px-20 xl:px-24">
           {children}
