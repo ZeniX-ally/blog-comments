@@ -3,11 +3,11 @@
 import { useRouter, usePathname } from "next/navigation";
 
 /**
- * 文章页右上角常驻「返回上一页」按钮。
+ * 文章页右上角常驻「返回上一页」胶囊按钮。
  * - 挂在 layout 的 body 层:避免页面 template 入场动画的 transform
  *   改变 fixed 定位基准(祖先 transform 会让 fixed 相对祖先而非视口,导致跳位)
  * - 仅文章页(/blog/xxx)显示
- * - hover:箭头左移 + Tan 描边,纯 CSS 小动画
+ * - hover:箭头左移 + 绿描边,纯 CSS 小动画
  * - 站内历史不足时(直接打开文章链接)回落到文章列表页
  */
 export function BackButton() {
@@ -31,7 +31,7 @@ export function BackButton() {
       type="button"
       onClick={goBack}
       aria-label="返回上一页"
-      className="group fixed right-4 top-20 z-30 flex items-center gap-1.5 rounded-md border border-line bg-surface/85 px-3 py-1.5 font-mono text-xs text-muted shadow-sm backdrop-blur-sm transition-colors duration-300 hover:border-accent/60 hover:text-accent sm:right-6"
+      className="group fixed right-5 top-20 z-30 flex items-center gap-1.5 rounded-full border border-line bg-background/85 px-4 py-1.5 font-mono text-xs text-muted backdrop-blur-sm transition-colors duration-300 hover:border-accent/50 hover:text-accent sm:right-8"
     >
       <span
         aria-hidden="true"

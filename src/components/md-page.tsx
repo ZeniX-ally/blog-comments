@@ -25,8 +25,13 @@ export async function MdPage({
   const html = await renderMarkdown(markdown);
 
   return (
-    <article className="mx-auto w-full max-w-3xl py-12 sm:py-16">
+    <article className="mx-auto w-full max-w-3xl pb-24 pt-14 sm:pt-20">
       <FadeIn>
+        <header className="mb-12">
+          <div className="page-head-label mb-6">0xFF / MD</div>
+          <h1 className="page-title">{title}</h1>
+          {description && <p className="page-sub mt-5">{description}</p>}
+        </header>
         <div className="prose" dangerouslySetInnerHTML={{ __html: html }} />
       </FadeIn>
     </article>

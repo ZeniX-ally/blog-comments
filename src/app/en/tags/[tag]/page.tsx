@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { decodeSlug, getAllTags, getPostsByTag } from "@/lib/posts";
 import { PostList } from "@/components/post-list";
+import { PageHeader } from "@/components/page-header";
 
 type Params = { tag: string };
 
@@ -33,18 +34,11 @@ export default async function TagPageEn({ params }: { params: Promise<Params> })
   if (posts.length === 0) notFound();
 
   return (
-    <>
-      <header className="py-12 sm:py-16">
-        <h1 className="font-display text-3xl font-normal tracking-tight sm:text-4xl">
-          <span className="text-faint">#</span>
-          {tag}
-        </h1>
-        <p className="mt-3 text-muted">{posts.length} {posts.length === 1 ? "post" : "posts"}.</p>
-      </header>
-
-      <div className="pb-20">
+    <article className="mx-auto w-full max-w-3xl pb-24 pt-16 sm:pt-20">
+      <PageHeader label="[0x00] TAG" title={`#${tag}`} sub={`${posts.length} ${posts.length === 1 ? "post" : "posts"}.`} />
+      <div className="pb-10">
         <PostList posts={posts} basePath="/en" />
       </div>
-    </>
+    </article>
   );
 }

@@ -12,7 +12,7 @@ const GITHUB_ICON = (
 
 /**
  * 主页 GitHub 登录区。
- * 未登录 → Sign in with GitHub 按钮(跳 /api/auth/github)
+ * 未登录 → 次级胶囊按钮(跳 /api/auth/github)
  * 已登录 → 头像 + 用户名 + 退出
  * 登录态由 CF Pages Functions(/api/auth/me)提供,静态预览时 404 → 按未登录处理。
  */
@@ -36,15 +36,10 @@ export function SignIn() {
     return (
       <a
         href="/api/auth/github"
-        className="group inline-flex items-center gap-2 rounded-md border border-line bg-surface/70 px-3.5 py-2 font-mono text-xs text-muted transition-colors hover:border-accent/60 hover:text-accent"
+        className="btn-pill btn-ghost btn-pill-sm font-mono text-xs"
       >
-        <span className="transition-transform group-hover:-translate-y-0.5">
-          {GITHUB_ICON}
-        </span>
+        <span>{GITHUB_ICON}</span>
         sign in with GitHub
-        <span className="text-faint transition-transform group-hover:translate-x-0.5">
-          →
-        </span>
       </a>
     );
   }

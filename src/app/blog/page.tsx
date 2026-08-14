@@ -3,6 +3,7 @@ import { getAllPosts, type PostMeta } from "@/lib/posts";
 import { PostList } from "@/components/post-list";
 import { PostSearch } from "@/components/post-search";
 import { FadeIn } from "@/components/fade-in";
+import { PageHeader } from "@/components/page-header";
 
 export const metadata: Metadata = {
   title: "文章",
@@ -25,48 +26,35 @@ export default function BlogPage() {
   const tagCount = new Set(allPosts.flatMap((p) => p.tags ?? [])).size;
 
   return (
-    <article className="mx-auto w-full max-w-4xl py-12 sm:py-16">
-      <div className="grid gap-12 lg:grid-cols-[250px_1fr]">
-        {/* 左栏:sticky 信息牌 */}
-        <FadeIn>
-          <aside className="lg:sticky lg:top-24 lg:self-start">
-            <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-              <span className="font-mono text-xs text-faint">[0x00]</span>
-              <h1 className="font-display text-2xl font-medium">文章</h1>
-              <span className="font-mono text-[10px] tracking-[0.25em] text-accent">
-                POSTS
-              </span>
-            </div>
-            <p className="mt-3 text-[15px] leading-relaxed text-muted">
-              关于技术、设计与生活的一切记录。
-            </p>
-            <div className="mt-5 font-mono text-xs text-accent">
-              zenix@0xff:~/posts$ ls -lt
-              <span className="cursor-blink ml-0.5">▍</span>
-            </div>
-            <div className="mt-6 space-y-1 border-t border-line pt-4 font-mono text-xs text-faint">
-              <div>{allPosts.length} posts</div>
-              <div>{tagCount} tags</div>
-            </div>
-          </aside>
-        </FadeIn>
-
-        {/* 右栏:搜索 + 年份列表 */}
-        <div className="min-w-0 pb-20">
-          <PostSearch posts={allPosts} />
-
-          {groups.map(([year, posts]) => (
-            <section key={year} className="mb-12">
-              <h2 className="font-mono text-xs tracking-widest text-faint">
-                {year}
-                <span className="ml-2">· {posts.length} 篇</span>
-              </h2>
-              <div className="mt-3">
-                <PostList posts={posts} />
-              </div>
-            </section>
-          ))}
+    <article className="mx-auto w-full max-w-3xl pb-24 pt-16 sm:pt-20">
+      <PageHeader label="[0x00] POSTS" title="文章" sub="关于技术、设计与生活的一切记录。">
+        {/* 原左栏统计并入 PageHeader 下方:mono 小字 */}
+        <div className="mt-6 flex gap-6 font-mono text-xs text-faint">
+          <span>{allPosts.length} posts</span>
+          <span>{tagCount} tags</span>
         </div>
+      </PageHeader>
+
+      {/* 原左栏终端行并入:mono 提示 */}
+      <FadeIn>
+        <div className="mb-14 font-mono text-xs text-accent">
+          zenix@0xff:~/posts$ ls -lt
+          <span className="cursor-blink ml-0.5">▍</span>
+        </div>
+      </FadeIn>
+
+      <div className="min-w-0 pb-10">
+        <PostSearch posts={allPosts} />
+
+        {groups.map(([year, posts]) => (
+          <section key={year} className="mb-12">
+            <h2 className="mb-4 font-mono text-xs tracking-widest text-faint">
+              {year}
+              <span className="ml-2">· {posts.length} 篇</span>
+            </h2>
+            <PostList posts={posts} />
+          </section>
+        ))}
       </div>
     </article>
   );

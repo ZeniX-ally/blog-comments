@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { FadeIn } from "@/components/fade-in";
-import { TiltCard } from "@/components/tilt-card";
+import { PageHeader } from "@/components/page-header";
 
 export const metadata: Metadata = {
   title: "Tools",
@@ -82,9 +82,14 @@ export default function ToolsPageEn() {
   const total = SECTIONS.reduce((n, s) => n + s.tools.length, 0);
 
   return (
-    <article className="mx-auto w-full max-w-3xl py-12 sm:py-16">
+    <article className="mx-auto w-full max-w-3xl pb-24 pt-16 sm:pt-20">
+      <PageHeader
+        label="[0x00] ARSENAL"
+        title="Toolbox"
+        sub="Self-hosted services and everyday tools."
+      />
       <FadeIn>
-        <div className="mb-10 font-mono text-sm">
+        <div className="mb-14 font-mono text-sm">
           <span className="text-accent">zenix@0xff</span>
           <span className="text-faint">:~$</span>{" "}
           <span className="text-fg">cat arsenal.toml</span>
@@ -92,13 +97,13 @@ export default function ToolsPageEn() {
         </div>
       </FadeIn>
 
-      <div className="space-y-10">
+      <div className="space-y-14">
         {SECTIONS.map((sec, si) => (
           <section key={sec.hex}>
             <FadeIn delay={si * 60}>
-              <header className="mb-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 border-b border-line pb-2">
+              <header className="mb-5 flex flex-wrap items-baseline gap-x-3 gap-y-1">
                 <span className="font-mono text-xs text-faint">[{sec.hex}]</span>
-                <h2 className="font-display text-xl font-medium">{sec.title}</h2>
+                <h2 className="font-display text-2xl font-medium">{sec.title}</h2>
                 <span className="font-mono text-[10px] tracking-[0.25em] text-accent">
                   {sec.en}
                 </span>
@@ -109,30 +114,28 @@ export default function ToolsPageEn() {
                 const meta = STATUS_META[t.status];
                 return (
                   <FadeIn key={t.id} delay={si * 60 + ti * 40}>
-                    <TiltCard className="h-full">
-                      <div className="tool-card flex min-h-[8.5rem] flex-col justify-between gap-2 rounded-lg p-4">
-                        <div className="flex items-start gap-3">
-                          <span className={`led ${meta.led} mt-1.5`} aria-hidden="true" />
-                          <div className="min-w-0 flex-1">
-                            <div className="flex items-baseline justify-between gap-2">
-                              <span className="font-medium leading-snug">{t.name}</span>
-                              <span
-                                className={`shrink-0 font-mono text-[10px] tracking-widest ${meta.led === "led-running" ? "text-[#4caf7d]" : "text-accent/80"}`}
-                              >
-                                {meta.label}
-                              </span>
-                            </div>
-                            <p className="mt-1 text-sm leading-relaxed text-muted">
-                              {t.desc}
-                            </p>
+                    <div className="light-card flex min-h-[8.5rem] flex-col justify-between gap-2 p-5">
+                      <div className="flex items-start gap-3">
+                        <span className={`led ${meta.led} mt-1.5`} aria-hidden="true" />
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-baseline justify-between gap-2">
+                            <span className="font-medium leading-snug">{t.name}</span>
+                            <span
+                              className={`shrink-0 font-mono text-[10px] tracking-widest ${meta.led === "led-running" ? "text-accent" : "text-accent/80"}`}
+                            >
+                              {meta.label}
+                            </span>
                           </div>
-                        </div>
-                        <div className="flex items-center justify-between border-t border-line/80 pt-2 font-mono text-[11px] text-faint">
-                          <span>{t.id}</span>
-                          <span>{t.tag}</span>
+                          <p className="mt-1 text-sm leading-relaxed text-muted">
+                            {t.desc}
+                          </p>
                         </div>
                       </div>
-                    </TiltCard>
+                      <div className="flex items-center justify-between border-t border-line pt-2.5 font-mono text-[11px] text-faint">
+                        <span>{t.id}</span>
+                        <span>{t.tag}</span>
+                      </div>
+                    </div>
                   </FadeIn>
                 );
               })}
@@ -142,8 +145,8 @@ export default function ToolsPageEn() {
       </div>
 
       <FadeIn delay={200}>
-        <footer className="mt-10 flex flex-wrap items-center gap-x-3 gap-y-1 border border-line bg-surface/70 px-4 py-2.5 font-mono text-xs text-muted">
-          <span className="text-[#4caf7d]">●</span>
+        <footer className="mt-14 flex flex-wrap items-center gap-x-3 gap-y-1 border border-line bg-surface px-4 py-2.5 font-mono text-xs text-muted">
+          <span className="text-accent">●</span>
           <span>[ OK ] {total} modules loaded</span>
           <span className="text-faint">·</span>
           <span>all systems operational</span>

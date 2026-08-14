@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getAllTags, slugToHref } from "@/lib/posts";
+import { PageHeader } from "@/components/page-header";
 
 export const metadata: Metadata = {
   title: "标签",
@@ -13,36 +14,34 @@ export default function TagsPage() {
 
   return (
     <>
-      <header className="py-12 sm:py-16">
-        <h1 className="font-display text-3xl font-normal tracking-tight sm:text-4xl">标签</h1>
-        <p className="mt-3 text-muted">按主题浏览全部文章。</p>
-      </header>
-
-      <div className="pb-20">
-        {tags.length === 0 ? (
-          <p className="border-t border-line pt-6 text-muted">还没有标签，给文章加上 tags 字段后这里会出现。</p>
-        ) : (
-          <ul className="flex flex-wrap gap-x-6 gap-y-3 border-t border-line pt-6">
-            {tags.map(({ tag, count }) => (
-              <li key={tag}>
-                <Link
-                  href={`/tags/${slugToHref(tag)}`}
-                  className="group inline-flex items-baseline gap-1.5"
-                >
-                  <span
-                    className={`${
-                      count >= 4 ? "text-2xl" : count >= 2 ? "text-xl" : "text-base"
-                    } transition-colors group-hover:text-accent`}
+      <article className="mx-auto w-full max-w-3xl pb-24 pt-16 sm:pt-20">
+        <PageHeader label="[0x00] TAGS" title="标签" sub="按主题浏览全部文章。" />
+        <div className="pb-10">
+          {tags.length === 0 ? (
+            <p className="border-t border-line pt-6 text-muted">还没有标签，给文章加上 tags 字段后这里会出现。</p>
+          ) : (
+            <ul className="flex flex-wrap gap-x-6 gap-y-3 border-t border-line pt-6">
+              {tags.map(({ tag, count }) => (
+                <li key={tag}>
+                  <Link
+                    href={`/tags/${slugToHref(tag)}`}
+                    className="group inline-flex items-baseline gap-1.5"
                   >
-                    #{tag}
-                  </span>
-                  <span className="font-mono text-xs text-faint">{count}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
+                    <span
+                      className={`${
+                        count >= 4 ? "text-2xl" : count >= 2 ? "text-xl" : "text-base"
+                      } transition-colors group-hover:text-accent`}
+                    >
+                      #{tag}
+                    </span>
+                    <span className="font-mono text-xs text-faint">{count}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </article>
     </>
   );
 }

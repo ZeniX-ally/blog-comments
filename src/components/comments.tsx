@@ -16,13 +16,8 @@ export function Comments() {
     if (!enabled || !ref.current || ref.current.dataset.loaded) return;
     ref.current.dataset.loaded = "1";
 
-    const theme = () => {
-      const dark =
-        document.documentElement.getAttribute("data-theme") === "dark" ||
-        (!document.documentElement.getAttribute("data-theme") &&
-          window.matchMedia("(prefers-color-scheme: dark)").matches);
-      return dark ? "dark" : "light";
-    };
+    // 全站锁定暗色(0xff 极客暗色主题),giscus 固定 dark
+    const theme = () => "dark";
 
     const script = document.createElement("script");
     script.src = "https://giscus.app/client.js";

@@ -46,18 +46,16 @@ export default async function PostPage({ params }: { params: Promise<Params> }) 
   const adjacent = getAdjacentPosts(slug);
 
   return (
-    <article className="mx-auto w-full max-w-3xl py-12 sm:py-16">
+    <article className="mx-auto w-full max-w-3xl pb-24 pt-14 sm:pt-20">
       {/* 阅读进度条:Tan 细线 */}
       <ReadingProgress />
       {/* 章节联动:正文滚动高亮当前标题 */}
       <ScrollSpy />
       {/* 文章头部 */}
       <FadeIn>
-      <header className="border-b border-line pb-6">
-        <h1 className="font-serif text-4xl font-normal leading-tight tracking-tight sm:text-5xl">
-          {post.title}
-        </h1>
-        <div className="mt-4 flex flex-wrap items-center gap-4 font-mono text-xs text-faint">
+      <header className="border-b border-line pb-8">
+        <h1 className="page-title text-balance">{post.title}</h1>
+        <div className="mt-5 flex flex-wrap items-center gap-4 font-mono text-xs text-faint">
           <time>{formatDate(post.date)}</time>
           <span>约 {post.readingTime} 分钟</span>
           {post.tags.map((tag) => (

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { FadeIn } from "@/components/fade-in";
-import { TiltCard } from "@/components/tilt-card";
+import { PageHeader } from "@/components/page-header";
 
 export const metadata: Metadata = {
   title: "About",
@@ -33,156 +33,160 @@ const NOW_ITEMS = [
 
 export default function AboutPageEn() {
   return (
-    <article className="mx-auto w-full max-w-4xl py-12 sm:py-16">
-      <div className="grid gap-12 lg:grid-cols-[250px_1fr]">
-        <FadeIn>
-          <aside className="lg:sticky lg:top-24 lg:self-start">
-            <div className="flex items-center gap-5 lg:flex-col lg:items-start lg:gap-0">
-              <div className="relative shrink-0 lg:mb-6">
-                <img
-                  src="https://github.com/ZeniX-ally.png?size=256"
-                  alt="GitHub avatar"
-                  width={112}
-                  height={112}
-                  className="h-24 w-24 rounded-full border-2 border-accent/50 object-cover lg:h-28 lg:w-28"
-                />
-                <span
-                  className="led led-running absolute bottom-0.5 right-0.5 h-3 w-3 ring-2 ring-background"
-                  aria-hidden="true"
-                />
-              </div>
-              <div className="min-w-0">
-                <div className="font-display text-xl font-medium">
-                  Ajiu
-                  <span className="text-faint"> / ZeniX-ally</span>
-                </div>
-                <div className="mt-1 font-mono text-xs text-muted">
-                  test-engineer · 0xff enthusiast
-                </div>
-                <div className="mt-2 font-mono text-xs text-accent">
-                  zenix@0xff:~$ whoami
-                  <span className="cursor-blink ml-0.5">▍</span>
-                </div>
-              </div>
+    <article className="mx-auto w-full max-w-3xl pb-24 pt-16 sm:pt-20">
+      {/* 大标题锚点 */}
+      <PageHeader
+        label="[0x00] ABOUT"
+        title="About"
+        sub="Test engineer · documenting life and the things I learn"
+      />
+
+      {/* 身份信息行:头像 + 名字 + 终端行(替代原左栏 sticky 信息牌) */}
+      <FadeIn>
+        <div className="mb-16 flex items-center gap-5">
+          <div className="relative shrink-0">
+            <img
+              src="https://github.com/ZeniX-ally.png?size=256"
+              alt="GitHub avatar"
+              width={72}
+              height={72}
+              className="h-[4.5rem] w-[4.5rem] rounded-full border border-line object-cover"
+            />
+            <span
+              className="led led-running absolute bottom-0.5 right-0.5 h-3 w-3 ring-2 ring-background"
+              aria-hidden="true"
+            />
+          </div>
+          <div className="min-w-0">
+            <div className="font-display text-xl font-medium">
+              Ajiu
+              <span className="text-faint"> / ZeniX-ally</span>
             </div>
-          </aside>
-        </FadeIn>
-
-        <div className="min-w-0 space-y-12">
-          <FadeIn>
-            <p className="border-l-2 border-accent pl-4 text-[15px] leading-relaxed text-muted">
-              Hi, I'm Ajiu. A test engineer focused on test R&amp;D (FCT/IGBT testing).
-              A perfectionist with a clean-interface obsession — hence this site.
-            </p>
-          </FadeIn>
-
-          <section>
-            <FadeIn>
-              <header className="mb-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 border-b border-line pb-2">
-                <span className="font-mono text-xs text-faint">[0x01]</span>
-                <h2 className="font-display text-xl font-medium">The Site</h2>
-                <span className="font-mono text-[10px] tracking-[0.25em] text-accent">
-                  THE SITE
-                </span>
-              </header>
-            </FadeIn>
-            <FadeIn delay={60}>
-              <div className="space-y-3 text-[15px] leading-relaxed text-muted">
-                <p>
-                  A place to record life and share what I learn. All posts also come with{" "}
-                  <a
-                    href="/feed.xml"
-                    className="font-mono text-[13px] text-accent underline decoration-accent/40 underline-offset-4 transition-colors hover:decoration-accent"
-                  >
-                    RSS
-                  </a>
-                  .
-                </p>
-                <p>
-                  The domain{" "}
-                  <span className="font-mono text-[13px] text-accent">
-                    404-found.uk
-                  </span>{" "}
-                  is a pun: 404 usually means "not found" — but here, it found you.
-                </p>
-              </div>
-            </FadeIn>
-          </section>
-
-          <section>
-            <FadeIn>
-              <header className="mb-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 border-b border-line pb-2">
-                <span className="font-mono text-xs text-faint">[0x02]</span>
-                <h2 className="font-display text-xl font-medium">What I'm Doing</h2>
-                <span className="font-mono text-[10px] tracking-[0.25em] text-accent">
-                  NOW
-                </span>
-              </header>
-            </FadeIn>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-              {NOW_ITEMS.map((item, i) => (
-                <FadeIn key={item.id} delay={i * 60}>
-                  <TiltCard className="h-full">
-                    <div className="tool-card flex min-h-[9.5rem] flex-col justify-between gap-2 rounded-lg p-4">
-                      <div>
-                        <div className="flex items-center gap-2.5">
-                          <span className={`led ${item.led}`} aria-hidden="true" />
-                          <span className="font-medium">{item.title}</span>
-                        </div>
-                        <p className="mt-2.5 text-sm leading-relaxed text-muted">
-                          {item.desc}
-                        </p>
-                      </div>
-                      <div className="flex items-center justify-between border-t border-line/80 pt-2 font-mono text-[11px] text-faint">
-                        <span>{item.id}</span>
-                        <span>{item.label}</span>
-                      </div>
-                    </div>
-                  </TiltCard>
-                </FadeIn>
-              ))}
+            <div className="mt-1 font-mono text-xs text-muted">
+              test-engineer · 0xff enthusiast
             </div>
-          </section>
-
-          <section>
-            <FadeIn>
-              <header className="mb-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 border-b border-line pb-2">
-                <span className="font-mono text-xs text-faint">[0x03]</span>
-                <h2 className="font-display text-xl font-medium">Contact</h2>
-                <span className="font-mono text-[10px] tracking-[0.25em] text-accent">
-                  CONTACT
-                </span>
-              </header>
-            </FadeIn>
-            <FadeIn delay={60}>
-              <TiltCard>
-                <a
-                  href="https://github.com/ZeniX-ally"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="tool-card group flex items-center justify-between gap-4 rounded-lg px-4 py-3.5"
-                >
-                  <div className="flex items-center gap-3">
-                    <span className="led led-local" aria-hidden="true" />
-                    <div>
-                      <div className="font-medium">GitHub</div>
-                      <div className="font-mono text-xs text-faint">
-                        github.com/ZeniX-ally
-                      </div>
-                    </div>
-                  </div>
-                  <span className="font-mono text-sm text-accent transition-transform group-hover:translate-x-0.5">
-                    →
-                  </span>
-                </a>
-              </TiltCard>
-              <p className="mt-3 text-sm text-muted">
-                Corrections, ideas, or just a hello — all welcome.
-              </p>
-            </FadeIn>
-          </section>
+            <div className="mt-2 font-mono text-xs text-accent">
+              zenix@0xff:~$ whoami
+              <span className="cursor-blink ml-0.5">▍</span>
+            </div>
+          </div>
         </div>
-      </div>
+      </FadeIn>
+
+      {/* 引言 */}
+      <FadeIn>
+        <p className="mb-16 max-w-xl border-l-2 border-accent pl-4 text-[15px] leading-relaxed text-muted">
+          Hi, I&apos;m Ajiu. A test engineer focused on test R&amp;D (FCT/IGBT testing).
+          A perfectionist with a clean-interface obsession — hence this site.
+        </p>
+      </FadeIn>
+
+      {/* [0x01] 这个网站 */}
+      <section className="mb-16">
+        <FadeIn>
+          <header className="mb-5 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+            <span className="font-mono text-xs text-faint">[0x01]</span>
+            <h2 className="font-display text-2xl font-medium">The Site</h2>
+            <span className="font-mono text-[10px] tracking-[0.25em] text-accent">
+              THE SITE
+            </span>
+          </header>
+        </FadeIn>
+        <FadeIn delay={60}>
+          <div className="space-y-3 text-[15px] leading-relaxed text-muted">
+            <p>
+              A place to record life and share what I learn. All posts also come
+              with{" "}
+              <a
+                href="/feed.xml"
+                className="font-mono text-[13px] text-accent underline decoration-accent/40 underline-offset-4 transition-colors hover:decoration-accent"
+              >
+                RSS
+              </a>
+              .
+            </p>
+            <p>
+              The domain{" "}
+              <span className="font-mono text-[13px] text-accent">
+                404-found.uk
+              </span>{" "}
+              is a pun: 404 usually means &quot;not found&quot; — but here, it found
+              you.
+            </p>
+          </div>
+        </FadeIn>
+      </section>
+
+      {/* [0x02] 我在做什么 */}
+      <section className="mb-16">
+        <FadeIn>
+          <header className="mb-5 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+            <span className="font-mono text-xs text-faint">[0x02]</span>
+            <h2 className="font-display text-2xl font-medium">What I&apos;m Doing</h2>
+            <span className="font-mono text-[10px] tracking-[0.25em] text-accent">
+              NOW
+            </span>
+          </header>
+        </FadeIn>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          {NOW_ITEMS.map((item, i) => (
+            <FadeIn key={item.id} delay={i * 60}>
+              <div className="light-card flex min-h-[8.5rem] flex-col justify-between gap-2 p-5">
+                <div>
+                  <div className="flex items-center gap-2.5">
+                    <span className={`led ${item.led}`} aria-hidden="true" />
+                    <span className="font-medium">{item.title}</span>
+                  </div>
+                  <p className="mt-2.5 text-sm leading-relaxed text-muted">
+                    {item.desc}
+                  </p>
+                </div>
+                <div className="flex items-center justify-between font-mono text-[11px] text-faint">
+                  <span>{item.id}</span>
+                  <span>{item.label}</span>
+                </div>
+              </div>
+            </FadeIn>
+          ))}
+        </div>
+      </section>
+
+      {/* [0x03] 联系 */}
+      <section>
+        <FadeIn>
+          <header className="mb-5 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+            <span className="font-mono text-xs text-faint">[0x03]</span>
+            <h2 className="font-display text-2xl font-medium">Contact</h2>
+            <span className="font-mono text-[10px] tracking-[0.25em] text-accent">
+              CONTACT
+            </span>
+          </header>
+        </FadeIn>
+        <FadeIn delay={60}>
+          <a
+            href="https://github.com/ZeniX-ally"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="light-card group flex items-center justify-between gap-4 px-5 py-4"
+          >
+            <div className="flex items-center gap-3">
+              <span className="led led-local" aria-hidden="true" />
+              <div>
+                <div className="font-medium">GitHub</div>
+                <div className="font-mono text-xs text-faint">
+                  github.com/ZeniX-ally
+                </div>
+              </div>
+            </div>
+            <span className="font-mono text-sm text-accent transition-transform duration-300 group-hover:translate-x-1">
+              →
+            </span>
+          </a>
+          <p className="mt-4 text-sm text-muted">
+            Corrections, ideas, or just a hello — all welcome.
+          </p>
+        </FadeIn>
+      </section>
     </article>
   );
 }

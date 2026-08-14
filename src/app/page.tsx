@@ -4,42 +4,8 @@ import { getAllPosts, formatDate, slugToHref } from "@/lib/posts";
 import { projects } from "@/lib/projects";
 import { FadeIn } from "@/components/fade-in";
 import { SignIn } from "@/components/sign-in";
-import { TiltCard } from "@/components/tilt-card";
 import { TypewriterText } from "@/components/typewriter-text";
 import { CommandLine } from "@/components/command-line";
-
-function SectionHeader({
-  hex,
-  title,
-  en,
-  moreHref,
-}: {
-  hex: string;
-  title: string;
-  en: string;
-  moreHref?: string;
-}) {
-  return (
-    <header className="mb-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 border-b border-line pb-2">
-      <span className="font-mono text-xs text-faint">[{hex}]</span>
-      <h2 className="font-display text-xl font-medium">{title}</h2>
-      <span className="font-mono text-[10px] tracking-[0.25em] text-accent">
-        {en}
-      </span>
-      {moreHref && (
-        <Link
-          href={moreHref}
-          className="group ml-auto font-mono text-xs text-muted transition-colors hover:text-accent"
-        >
-          全部{" "}
-          <span className="inline-block transition-transform group-hover:translate-x-0.5">
-            →
-          </span>
-        </Link>
-      )}
-    </header>
-  );
-}
 
 /** 终端提示行:极简,一行提示 + 闪烁光标(装饰,不动画交错) */
 function TerminalHint() {
@@ -47,7 +13,7 @@ function TerminalHint() {
     <p className="font-mono text-sm leading-relaxed text-muted">
       <span className="text-accent">zenix@0xff</span>
       <span className="text-faint">:~$</span>{" "}
-      <span className="text-fg">whoami</span>
+      <span className="text-foreground">whoami</span>
       <span aria-hidden="true" className="cursor-blink ml-0.5 text-accent">
         ▍
       </span>
@@ -62,31 +28,43 @@ export default function Home() {
   const tagCount = new Set(posts.flatMap((p) => p.tags ?? [])).size;
 
   return (
-    <div className="mx-auto w-full max-w-5xl py-12 sm:py-16">
-      {/* ============ HERO ============ */}
-      <section className="grid gap-14 lg:grid-cols-[1fr_1.15fr] lg:items-center">
-        {/* 左:打字机标题 + 简介 + 实时统计 */}
+    <article className="mx-auto w-full max-w-4xl pb-24 pt-16 sm:pt-20">
+      {/* ============ HERO: 左对齐,大留白 ============ */}
+      <section className="hero-scroll">
         <FadeIn>
-          <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-            <span className="font-mono text-xs text-faint">[0x00]</span>
-            <span className="font-mono text-[10px] tracking-[0.25em] text-accent">
-              HOME
-            </span>
-          </div>
-          <h1 className="mt-4 font-display text-5xl font-normal leading-[1.08] tracking-tight sm:text-6xl">
-            <TypewriterText text={site.hero.greeting} speed={120} startDelay={300} />
+          <div className="page-head-label mb-6">[0x00] HOME</div>
+          <h1 className="page-title">
+            <TypewriterText
+              text={site.hero.greeting}
+              speed={120}
+              startDelay={300}
+            />
           </h1>
-          <div className="mt-5 space-y-2 text-[15px] leading-relaxed text-muted">
+          <div className="mt-6 max-w-xl space-y-2 text-base leading-relaxed text-muted">
             {site.hero.bio.map((line) => (
               <p key={line}>{line}</p>
             ))}
           </div>
+          {/* 胶囊操作行 */}
+          <div className="mt-10 flex flex-wrap items-center gap-3">
+            <a
+              href={site.links.github}
+              target="_blank"
+              rel="noreferrer"
+              className="btn-pill btn-primary"
+            >
+              GitHub ↗
+            </a>
+            <Link href="/about" className="btn-pill btn-ghost">
+              关于我
+            </Link>
+          </div>
           {/* 终端提示行(纯装饰) */}
-          <div className="mt-6">
+          <div className="mt-10">
             <TerminalHint />
           </div>
           {/* 统计数字 */}
-          <div className="mt-8 flex gap-10 border-t border-line pt-6">
+          <div className="mt-10 flex gap-12 border-t border-line pt-6">
             {[
               { n: posts.length, label: "posts" },
               { n: projects.length, label: "projects" },
@@ -103,119 +81,113 @@ export default function Home() {
             ))}
           </div>
           {/* 登录区 */}
-          <div className="mt-6">
+          <div className="mt-8">
             <SignIn />
           </div>
         </FadeIn>
+      </section>
 
-        {/* 右:命令彩蛋 */}
-        <FadeIn delay={150}>
-          <CommandLine />
+      {/* ============ 命令彩蛋: hero 下方独立区块,单列 ============ */}
+      <section className="mt-24 max-w-2xl">
+        <FadeIn delay={120}>
+          <CommandLine lang="zh" />
         </FadeIn>
       </section>
 
-      {/* ============ 内容区 ============ */}
-      <div className="mt-20 grid gap-12 lg:grid-cols-2 lg:items-start">
-        {/* 最新文章 */}
-        <section>
+      {/* ============ 最新文章: 行式列表 ============ */}
+      <section className="mt-24">
+        <FadeIn>
+          <header className="mb-2 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+            <span className="font-mono text-xs text-faint">[0x01]</span>
+            <h2 className="font-display text-2xl font-medium">最新文章</h2>
+            <span className="font-mono text-[10px] tracking-[0.25em] text-accent">
+              LATEST POSTS
+            </span>
+            <Link
+              href="/blog"
+              className="group ml-auto font-mono text-xs text-muted transition-colors hover:text-accent"
+            >
+              全部{" "}
+              <span className="inline-block transition-transform group-hover:translate-x-0.5">
+                →
+              </span>
+            </Link>
+          </header>
+        </FadeIn>
+        <FadeIn delay={60}>
+          {latestPosts.map((post, i) => (
+            <FadeIn key={post.slug} delay={i * 40}>
+              <Link
+                href={`/blog/${slugToHref(post.slug)}`}
+                className="post-row grid gap-x-6 gap-y-1.5 sm:grid-cols-[7.5rem_1fr]"
+              >
+                <time className="post-row-meta pt-[3px]">
+                  {formatDate(post.date)}
+                </time>
+                <div className="min-w-0">
+                  <div className="post-row-title">{post.title}</div>
+                  {post.excerpt && (
+                    <p className="mt-1 line-clamp-1 text-sm leading-relaxed text-muted">
+                      {post.excerpt}
+                    </p>
+                  )}
+                </div>
+              </Link>
+            </FadeIn>
+          ))}
+        </FadeIn>
+      </section>
+
+      {/* ============ 精选项目: 行式 ============ */}
+      {featuredProjects.length > 0 && (
+        <section className="mt-20">
           <FadeIn>
-            <SectionHeader
-              hex="0x01"
-              title="最新文章"
-              en="LATEST POSTS"
-              moreHref="/blog"
-            />
+            <header className="mb-2 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+              <span className="font-mono text-xs text-faint">[0x02]</span>
+              <h2 className="font-display text-2xl font-medium">精选项目</h2>
+              <span className="font-mono text-[10px] tracking-[0.25em] text-accent">
+                FEATURED
+              </span>
+              <Link
+                href="/projects"
+                className="group ml-auto font-mono text-xs text-muted transition-colors hover:text-accent"
+              >
+                全部{" "}
+                <span className="inline-block transition-transform group-hover:translate-x-0.5">
+                  →
+                </span>
+              </Link>
+            </header>
           </FadeIn>
           <FadeIn delay={60}>
-            <div className="grid grid-cols-1 gap-4">
-              {latestPosts.map((post, i) => (
-                <FadeIn key={post.slug} delay={i * 60}>
-                  <TiltCard className="h-full">
-                    <Link
-                      href={`/blog/${slugToHref(post.slug)}`}
-                      className="tool-card group flex min-h-[8.5rem] flex-col justify-between gap-2 rounded-lg p-4"
-                    >
-                      <div>
-                        <div className="flex items-center gap-2.5">
-                          <span className="led led-lab" aria-hidden="true" />
-                          <span className="font-medium leading-snug group-hover:text-accent">
-                            {post.title}
-                          </span>
-                        </div>
-                        {post.excerpt && (
-                          <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-muted">
-                            {post.excerpt}
-                          </p>
-                        )}
-                      </div>
-                      <div className="flex items-center justify-between border-t border-line/80 pt-2 font-mono text-[11px] text-faint">
-                        <time>{formatDate(post.date)}</time>
-                        {post.tags.length > 0 && (
-                          <span className="truncate">
-                            {post.tags.map((t) => `#${t}`).join(" ")}
-                          </span>
-                        )}
-                        <span
-                          aria-hidden="true"
-                          className="text-accent opacity-0 transition-all duration-200 group-hover:translate-x-0.5 group-hover:opacity-100"
+            {featuredProjects.map((p, i) => (
+              <FadeIn key={p.name} delay={i * 40}>
+                <div className="post-row grid gap-x-6 gap-y-1.5 sm:grid-cols-[7.5rem_1fr]">
+                  <div className="post-row-meta pt-[3px]">{p.year}</div>
+                  <div className="min-w-0">
+                    <div className="post-row-title flex flex-wrap items-center gap-x-2.5">
+                      <span>{p.name}</span>
+                      {p.link && (
+                        <a
+                          href={p.link}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="font-mono text-xs text-accent transition-colors hover:underline"
                         >
-                          →
-                        </span>
-                      </div>
-                    </Link>
-                  </TiltCard>
-                </FadeIn>
-              ))}
-            </div>
+                          访问 ↗
+                        </a>
+                      )}
+                    </div>
+                    <p className="mt-1 line-clamp-1 text-sm leading-relaxed text-muted">
+                      {p.description}
+                    </p>
+                  </div>
+                </div>
+              </FadeIn>
+            ))}
           </FadeIn>
         </section>
-
-        {/* 精选项目 */}
-        {featuredProjects.length > 0 && (
-          <section>
-            <FadeIn>
-              <SectionHeader
-                hex="0x02"
-                title="精选项目"
-                en="FEATURED"
-                moreHref="/projects"
-              />
-            </FadeIn>
-            <div className="grid grid-cols-1 gap-4">
-              {featuredProjects.map((p, i) => (
-                <FadeIn key={p.name} delay={i * 60}>
-                  <TiltCard className="h-full">
-                    <div className="tool-card flex min-h-[7.5rem] flex-col justify-between gap-2 rounded-lg p-4">
-                      <div>
-                        <div className="flex items-center gap-2.5">
-                          <span className="led led-local" aria-hidden="true" />
-                          <span className="font-medium">{p.name}</span>
-                        </div>
-                        <p className="mt-2 text-sm leading-relaxed text-muted">
-                          {p.description}
-                        </p>
-                      </div>
-                      <div className="flex items-center justify-between border-t border-line/80 pt-2 font-mono text-[11px] text-faint">
-                        <span>{p.year}</span>
-                        {p.link && (
-                          <a
-                            href={p.link}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="text-accent transition-colors hover:underline"
-                          >
-                            访问 ↗
-                          </a>
-                        )}
-                      </div>
-                    </div>
-                  </TiltCard>
-                </FadeIn>
-              ))}
-            </div>
-          </section>
-        )}
-      </div>
-    </div>
+      )}
+    </article>
   );
 }

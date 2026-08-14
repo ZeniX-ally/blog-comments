@@ -2,13 +2,15 @@
 @plugin "@tailwindcss/typography";
 
 /* ============================================================
-   设计系统 —— Anthropic Brand Style
-   规范:Tan #D4A27F / Black #191919 / White #FFFFFF / Warm Gray #E8E0D8
-   暖色克制风。语义化色彩 token，亮 / 暗由 prefers-color-scheme 自动切换。
-   改配色只需要动 :root 与 dark 两处变量。
+   0xff.zone 设计系统 —— Antigravity Design Language × 0xff 极客基因
+   ------------------------------------------------------------
+   色彩:近黑 #0a0a0c / 主文字 #f2f2f2 / 次级 #8a8a92
+   强调:hex 绿 #00ff9c(仅用于选中态 / hover / 代码高亮 / 粒子)
+   布局:大标题锚点 + 留白(8px 步进)+ 单列内容 + 胶囊按钮
+   动效:克制、轻盈、慢节奏(300-600ms),一次只动一个属性
    ============================================================ */
 
-/* 本地字体：品牌参考里的 4 个 woff2 已下载到 public/fonts/ */
+/* ---------- 本地字体:标题保留 Styrene A(几何无衬线,Google Sans 气质) ---------- */
 @font-face {
   font-family: "Styrene A";
   src: url("/fonts/styrene-a-regular.woff2") format("woff2");
@@ -17,173 +19,70 @@
   font-display: swap;
 }
 
-@font-face {
-  font-family: "Anthropic Sans";
-  src: url("/fonts/anthropic-sans-roman.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Anthropic Serif";
-  src: url("/fonts/anthropic-serif-roman.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Anthropic Mono";
-  src: url("/fonts/anthropic-mono-roman.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
 @theme inline {
   --color-background: var(--bg);
   --color-foreground: var(--fg);
+  --color-fg: var(--fg);
   --color-muted: var(--muted);
   --color-faint: var(--faint);
   --color-line: var(--line);
   --color-accent: var(--accent);
   --color-accent-strong: var(--accent-strong);
   --color-surface: var(--surface);
+  --color-code-bg: var(--code-bg);
 
-  /* 标题 / Display —— Styrene A，中文回退到系统黑体 */
-  --font-display: "Styrene A", "Anthropic Sans", ui-sans-serif, system-ui,
-    -apple-system, "Segoe UI", "PingFang SC", "Hiragino Sans GB",
-    "Microsoft YaHei", "Noto Sans SC", sans-serif;
-
-  /* 正文 / UI —— Anthropic Sans */
-  --font-sans: "Anthropic Sans", ui-sans-serif, system-ui, -apple-system,
+  /* 标题 / Display —— Styrene A,中文回退系统黑体 */
+  --font-display: "Styrene A", ui-sans-serif, system-ui, -apple-system,
     "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
     "Noto Sans SC", sans-serif;
 
-  /* 编辑 / 长文 —— Anthropic Serif，中文回退到宋体 */
-  --font-serif: "Anthropic Serif", ui-serif, Georgia, "Songti SC", "STSong",
-    "Noto Serif SC", "SimSun", serif;
+  /* 正文 —— 系统无衬线栈 */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC",
+    sans-serif;
 
-  /* 代码 / 技术 —— Anthropic Mono */
-  --font-mono: "Anthropic Mono", ui-monospace, "SF Mono", "Cascadia Code",
-    "JetBrains Mono", Consolas, "Liberation Mono", monospace;
+  /* 代码 / 终端感 —— 等宽栈 */
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", "Cascadia Code",
+    Consolas, "Liberation Mono", monospace;
 }
 
+/* ---------- 设计 token(暗色单主题,antigravity 白底换成 0xff 近黑) ---------- */
 :root {
-  color-scheme: light;
-  accent-color: var(--accent-strong);
-
-  /* 规范品牌色(CSS Variables) */
-  --brand-primary: #d4a27f;
-  --brand-black: #191919;
-  --brand-white: #ffffff;
-  --brand-warm-gray: #e8e0d8;
-  /* 2026-08-08 重新设计: 官方语言的奶油白底 / 暖灰表面 */
-  --brand-cream: #faf9f5;
-  --brand-surface: #f5f2ed;
-
-  --bg: var(--brand-cream);
-  --fg: var(--brand-black);
-  --muted: #6b6459;
-  --faint: #9c948a;
-  --line: var(--brand-warm-gray);
-  --accent: var(--brand-primary);
-  --accent-strong: #b9855c;
-  --surface: var(--brand-surface);
-  --code-bg: #f3efe9;
-
-  /* 背景氛围:极淡暖色渐晕(官方式干净,只留呼吸感,不有点阵) */
-  --glow: rgba(212, 162, 127, 0.055);
-  --glow-2: rgba(185, 133, 92, 0.035);
-
-  /* TiltCard 跟手光斑:亮底用淡 Tan 暖光 */
-  --tilt-spot: rgba(212, 162, 127, 0.15);
-
-  /* Spotlight 局部照亮(文章行/卡片) */
-  --spotlight-glow: rgba(212, 162, 127, 0.1);
-
-  /* 卡片 hover 极淡表面 */
-  --surface-soft: rgba(245, 242, 237, 0.65);
-
-  /* 卡片常显边框:比 --line 略深,亮暗底上都可辨 */
-  --card-border: rgba(25, 25, 25, 0.16);
-
-  --tok-keyword: #9a5b23;
-  --tok-string: #6b7f3e;
-  --tok-number: #b4542a;
-  --tok-comment: #a39c90;
-  --tok-title: #7a4a2b;
-  --tok-attr: #8a6d1d;
-}
-
-/* 手动切换到暗色：Anthropic Black #191919 打底 */
-:root[data-theme="dark"] {
   color-scheme: dark;
-  --bg: var(--brand-black);
-  --fg: #edeae4;
-  --muted: #a8a29a;
-  --faint: #6b665f;
-  --line: #2e2b26;
-  --accent: var(--brand-primary);
-  --accent-strong: #e4b794;
-  --surface: #211f1c;
-  --code-bg: #23211d;
+  accent-color: var(--accent);
 
-  --glow: rgba(212, 162, 127, 0.05);
-  --glow-2: rgba(212, 162, 127, 0.035);
+  --bg: #0a0a0c;
+  --fg: #f2f2f2;
+  --muted: #8a8a92;
+  --faint: #7a7a85;
+  --line: rgba(255, 255, 255, 0.08);
+  --accent: #00ff9c;
+  --accent-strong: #4dffb3;
+  --surface: #101014;
+  --surface-soft: rgba(255, 255, 255, 0.03);
+  --code-bg: #0e0e13;
+  --card-border: rgba(255, 255, 255, 0.07);
 
-  /* TiltCard 跟手高光:暗底用白高光 */
-  --tilt-spot: rgba(255, 255, 255, 0.08);
+  /* 氛围光:hex 绿,极淡 */
+  --glow: rgba(0, 255, 156, 0.055);
+  --glow-2: rgba(77, 159, 255, 0.035);
 
-  --spotlight-glow: rgba(255, 255, 255, 0.06);
+  /* 跟手光斑 */
+  --tilt-spot: rgba(0, 255, 156, 0.06);
+  --spotlight-glow: rgba(0, 255, 156, 0.05);
 
-  --surface-soft: rgba(33, 31, 28, 0.7);
-
-  --card-border: rgba(255, 255, 255, 0.14);
-
-  --tok-keyword: #e0a264;
-  --tok-string: #a3b866;
-  --tok-number: #e08a5e;
-  --tok-comment: #7a746c;
-  --tok-title: #d9a879;
-  --tok-attr: #d4b26a;
-}
-
-/* 未手动设置时,跟随系统偏好(无 JS 也能正确显示暗色) */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme]) {
-    color-scheme: dark;
-    --bg: var(--brand-black);
-    --fg: #edeae4;
-    --muted: #a8a29a;
-    --faint: #6b665f;
-    --line: #2e2b26;
-    --accent: var(--brand-primary);
-    --accent-strong: #e4b794;
-    --surface: #211f1c;
-    --code-bg: #23211d;
-
-    --glow: rgba(212, 162, 127, 0.05);
-    --glow-2: rgba(212, 162, 127, 0.035);
-
-    --card-border: rgba(255, 255, 255, 0.14);
-    --spotlight-glow: rgba(255, 255, 255, 0.06);
-    --surface-soft: rgba(33, 31, 28, 0.7);
-
-    --tok-keyword: #e0a264;
-    --tok-string: #a3b866;
-    --tok-number: #e08a5e;
-    --tok-comment: #7a746c;
-    --tok-title: #d9a879;
-    --tok-attr: #d4b26a;
-  }
+  /* 代码高亮:绿色系(0xff 品牌),点缀蓝/紫/青 */
+  --tok-keyword: #00e68c;
+  --tok-string: #7fe8a8;
+  --tok-number: #7fd4ff;
+  --tok-comment: #7a857f;
+  --tok-title: #5eead4;
+  --tok-attr: #c4b5fd;
 }
 
 html {
-  /* 不用 scroll-behavior: smooth —— 会让 Next SPA 导航的滚顶变成平滑动画,
-     页面滚动时 fixed 按钮相对内容位置变化,用户感知为「跳位」 */
-  scroll-padding-top: 5rem;
+  /* 不用 scroll-behavior: smooth —— Next SPA 导航滚顶会变成动画,fixed 按钮感知跳位 */
+  scroll-padding-top: 4.5rem;
 }
 
 body {
@@ -193,21 +92,73 @@ body {
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 ::selection {
   background: var(--accent);
-  color: var(--brand-black);
+  color: #0a0a0c;
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent-strong);
+  outline: 2px solid var(--accent);
   outline-offset: 2px;
+  border-radius: 2px;
 }
 
 /* ------------------------------------------------------------
-   导航链接下划线动画:Tan 细线从左滑入(纯 CSS,零 JS)
+   胶囊按钮(pill)
+   主按钮:近白实底 + 近黑文字(antigravity 式,单色克制)
+   次级按钮:透明底 + 细描边
+   ------------------------------------------------------------ */
+.btn-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  padding: 0.625rem 1.375rem;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 1.4;
+  white-space: nowrap;
+  transition:
+    background-color 300ms ease,
+    color 300ms ease,
+    border-color 300ms ease,
+    transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-pill:hover {
+  transform: translateY(-1px);
+}
+
+.btn-primary {
+  background: var(--fg);
+  color: #0a0a0c;
+}
+
+.btn-primary:hover {
+  background: #ffffff;
+}
+
+.btn-ghost {
+  border: 1px solid var(--line);
+  color: var(--fg);
+  background: transparent;
+}
+
+.btn-ghost:hover {
+  border-color: rgba(0, 255, 156, 0.45);
+  color: var(--accent);
+}
+
+/* 小号胶囊(顶栏右侧 / 文章页返回) */
+.btn-pill-sm {
+  padding: 0.375rem 1rem;
+  font-size: 0.8125rem;
+}
+
+/* ------------------------------------------------------------
+   导航链接下划线:绿细线从左滑入(纯 CSS)
    ------------------------------------------------------------ */
 .nav-underline {
   position: relative;
@@ -223,7 +174,7 @@ body {
   background: var(--accent);
   transform: scaleX(0);
   transform-origin: left;
-  transition: transform 250ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .nav-underline:hover::after,
@@ -232,53 +183,433 @@ body {
 }
 
 /* ------------------------------------------------------------
-   TiltCard 3D 倾斜卡片:倾斜角度与光斑位置由 JS 写入 CSS 变量,
-   悬停时过渡近乎即时(跟手),移出后 400ms 回正
+   页面标题锚点:每页唯一超大标题 + mono 标签行
    ------------------------------------------------------------ */
-
-.tilt-card {
-  position: relative;
-  transform-style: preserve-3d;
-  will-change: transform;
-  transition: transform 400ms ease-out, border-color 250ms ease, background-color 250ms ease;
+.page-head-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+  color: var(--accent);
 }
 
-.tilt-card.is-hovering {
-  transition: transform 60ms linear, border-color 250ms ease, background-color 250ms ease;
+.page-head-label::before {
+  content: "";
+  width: 1.5rem;
+  height: 1px;
+  background: var(--accent);
+  opacity: 0.5;
 }
 
-/* 内容层:轻微抬起,增强景深 */
-.tilt-card-inner {
-  transform: translateZ(30px);
-  transform-style: preserve-3d;
+.page-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 6vw, 3.5rem); /* 40-56px */
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.12;
 }
 
-/* 表面光斑:跟随鼠标的径向渐变,纯装饰,不挡交互 */
-.tilt-card-spot {
+.page-sub {
+  font-size: 1rem;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+/* ------------------------------------------------------------
+   Hero 滚动联动:标题随滚动轻微上移 + 淡出(scroll-driven,零 JS)
+   ------------------------------------------------------------ */
+@supports (animation-timeline: scroll()) {
+  .hero-scroll {
+    animation: hero-scroll linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 520px;
+  }
+}
+
+@keyframes hero-scroll {
+  to {
+    opacity: 0.3;
+    transform: translateY(-28px) scale(0.985);
+  }
+}
+
+/* ------------------------------------------------------------
+   背景装饰:粒子场容器(Canvas 由 JS 绘制)+ 绿光晕
+   ------------------------------------------------------------ */
+.bg-fx {
+  position: fixed;
+  inset: 0;
+  z-index: -10;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.bg-fx::after {
+  content: "";
   position: absolute;
   inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  background: radial-gradient(
-    26rem circle at var(--spot-x, 50%) var(--spot-y, 50%),
-    var(--tilt-spot),
-    transparent 70%
-  );
-  opacity: 0;
-  transition: opacity 300ms ease;
+  background:
+    radial-gradient(circle at 8% -5%, var(--glow) 0%, transparent 55%),
+    radial-gradient(circle at 94% 108%, var(--glow-2) 0%, transparent 58%);
 }
 
-.tilt-card:hover .tilt-card-spot {
+.particle-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* 光标光晕:绿柔光跟随鼠标 */
+.cursor-glow {
+  position: fixed;
+  inset: 0;
+  z-index: -9;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 600ms ease;
+  background: radial-gradient(
+    42rem circle at var(--glow-x, 50%) var(--glow-y, 50%),
+    var(--glow) 0%,
+    transparent 60%
+  );
+}
+
+.cursor-glow:not(.is-idle) {
   opacity: 1;
 }
 
 /* ------------------------------------------------------------
-   ProseTilt 正文块交互:段落/标题/列表项鼠标经过时,
-   跟手暖光斑 + 微倾斜(与 TiltCard 同 --tilt-spot,手感统一)
-   - 光斑:伪元素径向渐变,位置由 JS 写入 --pt-x/--pt-y
-   - 倾斜:h3/h4/p/li 无 scroll 动画可安全 transform(±2°)
-   - h2/pre/blockquote/table 有 scroll-driven 动画占用 transform,
-     只显示光斑不倾斜;img 是替换元素无伪元素,用边框提亮
+   闪烁光标(终端)
+   ------------------------------------------------------------ */
+@keyframes cursor-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.cursor-blink {
+  animation: cursor-blink 1.1s steps(1) infinite;
+}
+
+/* ------------------------------------------------------------
+   Spotlight 局部照亮
+   ------------------------------------------------------------ */
+.spotlight {
+  position: relative;
+  border-radius: inherit;
+  overflow: hidden;
+}
+
+.spotlight-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 300ms ease;
+  background: radial-gradient(
+    22rem circle at var(--sx, 50%) var(--sy, 50%),
+    var(--spotlight-glow) 0%,
+    transparent 65%
+  );
+}
+
+.spotlight:hover .spotlight-overlay {
+  opacity: 1;
+}
+
+/* ------------------------------------------------------------
+   滚动渐显(useInView 调用方加 .reveal)
+   ------------------------------------------------------------ */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 500ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal.reveal-in {
+  opacity: 1;
+  transform: none;
+}
+
+.reveal-item {
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity 420ms cubic-bezier(0.16, 1, 0.3, 1)
+      calc(var(--reveal-i, 0) * 55ms),
+    transform 420ms cubic-bezier(0.16, 1, 0.3, 1)
+      calc(var(--reveal-i, 0) * 55ms);
+}
+
+.reveal-item.reveal-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* ------------------------------------------------------------
+   行式列表(antigravity 式克制列表,替代卡片墙)
+   分隔线行:mono 日期 | 标题 + 摘要,hover 标题变绿
+   ------------------------------------------------------------ */
+.post-row {
+  display: block;
+  border-bottom: 1px solid var(--line);
+  padding: 1rem 0.25rem;
+  transition: padding-left 300ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.post-row:first-child {
+  border-top: 1px solid var(--line);
+}
+
+.post-row:hover {
+  padding-left: 0.5rem;
+}
+
+.post-row-title {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 1.55;
+  color: var(--fg);
+  transition: color 250ms ease;
+}
+
+.post-row:hover .post-row-title {
+  color: var(--accent);
+}
+
+.post-row-meta {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  color: var(--faint);
+  white-space: nowrap;
+}
+
+/* ------------------------------------------------------------
+   轻卡片:底色比页面深一档、边框极淡(rgba 白 6-8%)、无投影
+   ------------------------------------------------------------ */
+.light-card {
+  border: 1px solid var(--card-border);
+  background: var(--surface);
+  border-radius: 0.75rem;
+  transition:
+    border-color 300ms ease,
+    background-color 300ms ease;
+}
+
+.light-card:hover {
+  border-color: rgba(0, 255, 156, 0.35);
+}
+
+/* 兼容别名(旧类名 → 轻卡片) */
+.tool-card {
+  border: 1px solid var(--card-border);
+  background: var(--surface);
+  border-radius: 0.75rem;
+  transition:
+    border-color 300ms ease,
+    background-color 300ms ease;
+}
+
+.tool-card:hover {
+  border-color: rgba(0, 255, 156, 0.35);
+}
+
+/* 工具页状态灯 */
+.led {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
+.led-running {
+  background: #00ff9c;
+  box-shadow: 0 0 6px rgba(0, 255, 156, 0.6);
+}
+
+.led-lab,
+.led-local {
+  background: #7fd4ff;
+}
+
+.led-daily {
+  background: #ffd166;
+}
+
+/* ---------- 命令彩蛋终端框 ---------- */
+.terminal-box {
+  background: var(--surface);
+  border: 1px solid var(--card-border);
+  border-radius: 0.75rem;
+  transition: border-color 300ms ease;
+}
+
+.terminal-box:hover {
+  border-color: rgba(0, 255, 156, 0.35);
+}
+
+/* ---------- 交互元素微动 ---------- */
+.interactive {
+  transition:
+    transform 180ms cubic-bezier(0.16, 1, 0.3, 1),
+    color 180ms ease,
+    text-shadow 180ms ease;
+}
+
+.interactive:hover {
+  transform: translateY(-1px);
+  text-shadow: 0 0 18px var(--accent);
+}
+
+/* ------------------------------------------------------------
+   文章正文排版:typography 插件接入语义 token,正文走系统无衬线
+   ------------------------------------------------------------ */
+
+.prose {
+  --tw-prose-body: var(--fg);
+  --tw-prose-headings: var(--fg);
+  --tw-prose-lead: var(--muted);
+  --tw-prose-links: var(--accent-strong);
+  --tw-prose-bold: var(--fg);
+  --tw-prose-counters: var(--faint);
+  --tw-prose-bullets: var(--faint);
+  --tw-prose-hr: var(--line);
+  --tw-prose-quotes: var(--muted);
+  --tw-prose-quote-borders: var(--accent);
+  --tw-prose-captions: var(--faint);
+  --tw-prose-kbd: var(--fg);
+  --tw-prose-code: var(--fg);
+  --tw-prose-pre-code: var(--fg);
+  --tw-prose-pre-bg: var(--code-bg);
+  --tw-prose-th-borders: var(--line);
+  --tw-prose-td-borders: var(--line);
+
+  max-width: 44rem;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.9;
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.prose a {
+  font-weight: normal;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: rgba(0, 255, 156, 0.35);
+  transition: text-decoration-color 0.2s ease, color 0.2s ease;
+}
+
+.prose a:hover {
+  color: var(--accent);
+  text-decoration-color: var(--accent);
+}
+
+.prose blockquote {
+  font-style: normal;
+  border-left-width: 2px;
+  color: var(--muted);
+}
+
+/* 行内代码:极淡绿底、无反引号伪元素 */
+.prose :where(code):not(:where(pre code)) {
+  background-color: rgba(0, 255, 156, 0.08);
+  padding: 0.15em 0.4em;
+  border-radius: 0.375rem;
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  font-weight: normal;
+  color: var(--accent-strong);
+}
+
+.prose :where(code):not(:where(pre code))::before,
+.prose :where(code):not(:where(pre code))::after {
+  content: none;
+}
+
+.prose pre {
+  border: 1px solid var(--card-border);
+  border-radius: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  line-height: 1.75;
+}
+
+.prose hr {
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+  border-color: var(--line);
+}
+
+.prose img {
+  border: 1px solid var(--card-border);
+  border-radius: 0.75rem;
+}
+
+.prose figcaption {
+  margin-top: 0.5rem;
+  text-align: center;
+  font-size: 0.8125rem;
+}
+
+/* 正文滚动渐入:纯 CSS Scroll-Driven Animations(零 JS) */
+@supports (animation-timeline: view()) {
+  .prose h2,
+  .prose pre,
+  .prose blockquote,
+  .prose img,
+  .prose table {
+    animation: prose-in linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 22%;
+  }
+}
+
+@keyframes prose-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---------- 章节联动:正文 h2/h3 滚动高亮(ScrollSpy) ---------- */
+.prose h2,
+.prose h3 {
+  scroll-margin-top: 4.5rem;
+}
+
+.prose h2.is-spy,
+.prose h3.is-spy {
+  color: var(--accent);
+}
+
+/* ------------------------------------------------------------
+   ProseTilt 正文块交互:跟手绿光斑 + 微倾斜(±2°,克制)
    ------------------------------------------------------------ */
 
 .pt-host .prose p,
@@ -293,7 +624,6 @@ body {
   transition: transform 300ms ease-out;
 }
 
-/* 可倾斜块:跟手微倾斜,移出后 300ms 回正 */
 .pt-host .prose p.pt-active,
 .pt-host .prose h3.pt-active,
 .pt-host .prose h4.pt-active,
@@ -304,7 +634,6 @@ body {
   transition: transform 60ms linear;
 }
 
-/* 光斑层:半透明暖光覆盖块面,不挡交互 */
 .pt-host .prose p::after,
 .pt-host .prose h2::after,
 .pt-host .prose h3::after,
@@ -339,241 +668,13 @@ body {
   opacity: 1;
 }
 
-/* img 无伪元素:悬停时边框提亮 */
 .pt-host .prose img.pt-active {
   border-color: var(--accent);
   transition: border-color 200ms ease;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .pt-host .prose p,
-  .pt-host .prose h2,
-  .pt-host .prose h3,
-  .pt-host .prose h4,
-  .pt-host .prose li,
-  .pt-host .prose pre,
-  .pt-host .prose blockquote,
-  .pt-host .prose table {
-    transition: none;
-  }
-  .pt-host .prose p.pt-active,
-  .pt-host .prose h3.pt-active,
-  .pt-host .prose h4.pt-active,
-  .pt-host .prose li.pt-active {
-    transform: none;
-  }
-  .pt-host .prose p::after,
-  .pt-host .prose h2::after,
-  .pt-host .prose h3::after,
-  .pt-host .prose h4::after,
-  .pt-host .prose li::after,
-  .pt-host .prose pre::after,
-  .pt-host .prose blockquote::after,
-  .pt-host .prose table::after {
-    opacity: 0 !important;
-  }
-}
-
 /* ------------------------------------------------------------
-   正文滚动渐入:纯 CSS Scroll-Driven Animations(零 JS)
-   h2/代码块/引用/图片进入视口时淡入上移;
-   不支持 animation-timeline 的浏览器自动跳过(优雅降级)
-   ------------------------------------------------------------ */
-
-@supports (animation-timeline: view()) {
-  .prose h2,
-  .prose pre,
-  .prose blockquote,
-  .prose img,
-  .prose table {
-    animation: prose-in linear both;
-    animation-timeline: view();
-    animation-range: entry 0% entry 22%;
-  }
-}
-
-@keyframes prose-in {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .prose h2,
-  .prose pre,
-  .prose blockquote,
-  .prose img,
-  .prose table {
-    animation: none;
-  }
-}
-
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--line);
-  border: 2px solid transparent;
-  border-radius: 9999px;
-  background-clip: padding-box;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--faint);
-  border: 2px solid transparent;
-  background-clip: padding-box;
-}
-
-* {
-  scrollbar-width: thin;
-  scrollbar-color: var(--line) transparent;
-}
-
-/* ------------------------------------------------------------
-   背景氛围:极淡暖色渐晕(官方式干净,零装饰,只留呼吸感)
-   pointer-events: none,不干扰交互;z-index 压在内容之下
-   ------------------------------------------------------------ */
-
-.bg-fx {
-  position: fixed;
-  inset: 0;
-  z-index: -10;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-/* 光晕层:左上主光 + 右下辅光,随视口缩放 */
-.bg-fx::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(circle at 10% -5%, var(--glow) 0%, transparent 55%),
-    radial-gradient(circle at 92% 105%, var(--glow-2) 0%, transparent 58%);
-}
-
-/* ------------------------------------------------------------
-   文章正文排版:typography 插件接入语义 token,正文走 Anthropic Serif
-   ------------------------------------------------------------ */
-
-.prose {
-  --tw-prose-body: var(--fg);
-  --tw-prose-headings: var(--fg);
-  --tw-prose-lead: var(--muted);
-  --tw-prose-links: var(--fg);
-  --tw-prose-bold: var(--fg);
-  --tw-prose-counters: var(--faint);
-  --tw-prose-bullets: var(--faint);
-  --tw-prose-hr: var(--line);
-  --tw-prose-quotes: var(--muted);
-  --tw-prose-quote-borders: var(--accent);
-  --tw-prose-captions: var(--faint);
-  --tw-prose-kbd: var(--fg);
-  --tw-prose-code: var(--fg);
-  --tw-prose-pre-code: var(--fg);
-  --tw-prose-pre-bg: var(--code-bg);
-  --tw-prose-th-borders: var(--line);
-  --tw-prose-td-borders: var(--line);
-
-  max-width: 44rem;
-  font-family: var(--font-serif);
-  font-size: 1.0625rem;
-  line-height: 1.9;
-}
-
-.prose h1,
-.prose h2,
-.prose h3,
-.prose h4 {
-  font-family: var(--font-serif);
-  font-weight: 400;
-  letter-spacing: -0.01em;
-}
-
-.prose a {
-  font-weight: normal;
-  text-decoration: underline;
-  text-underline-offset: 4px;
-  text-decoration-color: var(--faint);
-  transition: text-decoration-color 0.2s ease, color 0.2s ease;
-}
-
-.prose a:hover {
-  color: var(--accent-strong);
-  text-decoration-color: var(--accent);
-}
-
-/* 重新设计:正文链接常驻为 Tan 弱化,悬停加深——官方站点的暖色链接语言 */
-.prose p a,
-.prose li a,
-.prose td a {
-  color: var(--accent-strong);
-}
-
-.prose p a:hover,
-.prose li a:hover,
-.prose td a:hover {
-  color: var(--accent);
-}
-
-.prose blockquote {
-  font-style: normal;
-  border-left-width: 2px;
-  color: var(--muted);
-}
-
-/* 行内代码:暖灰浅底、无反引号伪元素 */
-.prose :where(code):not(:where(pre code)) {
-  background-color: var(--code-bg);
-  padding: 0.15em 0.4em;
-  border-radius: 0.25rem;
-  font-family: var(--font-mono);
-  font-size: 0.875em;
-  font-weight: normal;
-}
-
-.prose :where(code):not(:where(pre code))::before,
-.prose :where(code):not(:where(pre code))::after {
-  content: none;
-}
-
-.prose pre {
-  border: 1px solid var(--line);
-  border-radius: 0.5rem;
-  font-family: var(--font-mono);
-  font-size: 0.875rem;
-  line-height: 1.7;
-}
-
-.prose hr {
-  margin-top: 3rem;
-  margin-bottom: 3rem;
-}
-
-.prose img {
-  border: 1px solid var(--line);
-  border-radius: 0.5rem;
-}
-
-.prose figcaption {
-  margin-top: 0.5rem;
-  text-align: center;
-  font-size: 0.8125rem;
-}
-
-/* ------------------------------------------------------------
-   代码高亮(highlight.js)—— 暖色系,与 Anthropic 调色板协调
+   代码高亮(highlight.js)—— hex 绿色系
    ------------------------------------------------------------ */
 
 .hljs-comment,
@@ -633,189 +734,103 @@ body {
   font-weight: bold;
 }
 
-/* ============================================================
-   交互层(2026-08-12 改版新增)
-   光标光晕 / 闪烁光标 / 打字机 / Spotlight / 命令彩蛋 / 卡片简约化
-   所有动效在 prefers-reduced-motion 时降级
-   ============================================================ */
-
-/* ---------- 全局光标光晕(EffectLayer) ---------- */
-.cursor-glow {
-  position: fixed;
-  inset: 0;
-  z-index: -9; /* 内容之下,bg-fx(-10)之上 */
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 600ms ease;
-  background: radial-gradient(
-    42rem circle at var(--glow-x, 50%) var(--glow-y, 50%),
-    var(--glow) 0%,
-    transparent 60%
-  );
+/* ------------------------------------------------------------
+   滚动条
+   ------------------------------------------------------------ */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
 }
 
-.cursor-glow.is-idle {
-  opacity: 0;
+::-webkit-scrollbar-track {
+  background: transparent;
 }
 
-.cursor-glow:not(.is-idle) {
-  opacity: 1;
-}
-
-/* ---------- 闪烁光标 ---------- */
-@keyframes cursor-blink {
-  0%,
-  49% {
-    opacity: 1;
-  }
-  50%,
-  100% {
-    opacity: 0;
-  }
-}
-
-.cursor-blink {
-  animation: cursor-blink 1.1s steps(1) infinite;
-}
-
-/* ---------- Spotlight 局部照亮 ---------- */
-.spotlight {
-  position: relative;
-  border-radius: inherit;
-  overflow: hidden;
-}
-
-.spotlight-overlay {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  border-radius: inherit;
-  opacity: 0;
-  transition: opacity 300ms ease;
-  background: radial-gradient(
-    22rem circle at var(--sx, 50%) var(--sy, 50%),
-    var(--spotlight-glow) 0%,
-    transparent 65%
-  );
-}
-
-.spotlight:hover .spotlight-overlay {
-  opacity: 1;
-}
-
-/* ---------- 滚动渐显(useInView 调用方加 .reveal) ---------- */
-.reveal {
-  opacity: 0;
-  transform: translateY(14px);
-  transition:
-    opacity 500ms cubic-bezier(0.16, 1, 0.3, 1),
-    transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.reveal.reveal-in {
-  opacity: 1;
-  transform: none;
-}
-
-/* 逐行浮现:列表项由父级传 --reveal-i 交错 delay */
-.reveal-item {
-  opacity: 0;
-  transform: translateY(10px);
-  transition:
-    opacity 420ms cubic-bezier(0.16, 1, 0.3, 1)
-      calc(var(--reveal-i, 0) * 55ms),
-    transform 420ms cubic-bezier(0.16, 1, 0.3, 1)
-      calc(var(--reveal-i, 0) * 55ms);
-}
-
-.reveal-item.reveal-in {
-  opacity: 1;
-  transform: none;
-}
-
-/* ---------- 简约化:终端卡片统一样式(细边框保边界,留白加大) ---------- */
-.tool-card {
-  border: 1px solid var(--card-border);
-  background: var(--surface-soft);
-  transition:
-    background-color 250ms ease,
-    border-color 250ms ease;
-}
-
-.tool-card:hover {
-  border-color: var(--accent);
-  background: var(--surface);
-}
-
-/* LED 状态灯:极小圆点(原装饰类此前无定义,补一个克制版) */
-.led {
-  display: inline-block;
-  width: 6px;
-  height: 6px;
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border: 2px solid transparent;
   border-radius: 9999px;
-  background: var(--accent);
-  flex-shrink: 0;
+  background-clip: padding-box;
 }
 
-.led-running {
-  background: #4caf7d;
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.22);
+  border: 2px solid transparent;
+  background-clip: padding-box;
 }
 
-.led-lab,
-.led-local {
-  background: var(--accent);
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.12) transparent;
 }
 
-/* ---------- 命令彩蛋终端框 ---------- */
-.terminal-box {
-  background: var(--surface-soft);
-  border: 1px solid var(--card-border);
-  transition: border-color 250ms ease;
-}
-
-.terminal-box:hover {
-  border-color: var(--accent);
-}
-
-/* ---------- 交互元素微动(链接/按钮 hover 轻移发光) ---------- */
-.interactive {
-  transition:
-    transform 180ms cubic-bezier(0.16, 1, 0.3, 1),
-    color 180ms ease,
-    text-shadow 180ms ease;
-}
-
-.interactive:hover {
-  transform: translateY(-1px);
-  text-shadow: 0 0 18px var(--accent);
-}
-
-/* ---------- 章节联动:正文 h2/h3 滚动高亮(ScrollSpy) ---------- */
-.prose h2,
-.prose h3 {
-  scroll-margin-top: 5rem;
-}
-
-.prose h2.is-spy,
-.prose h3.is-spy {
-  color: var(--accent-strong);
-}
-
-/* ---------- 通用降级 ---------- */
+/* ------------------------------------------------------------
+   通用降级:prefers-reduced-motion 全站停用动效
+   ------------------------------------------------------------ */
 @media (prefers-reduced-motion: reduce) {
-  .cursor-glow {
-    display: none;
+  html {
+    scroll-behavior: auto;
   }
+
+  .hero-scroll,
+  .cursor-blink,
+  .prose h2,
+  .prose pre,
+  .prose blockquote,
+  .prose img,
+  .prose table {
+    animation: none !important;
+  }
+
+  .cursor-glow,
   .spotlight-overlay {
     display: none;
   }
+
   .reveal,
   .reveal-item {
     opacity: 1;
     transform: none;
     transition: none;
   }
-  .cursor-blink {
-    animation: none;
+
+  .btn-pill,
+  .btn-pill:hover,
+  .post-row,
+  .interactive,
+  .light-card,
+  .terminal-box,
+  .nav-underline::after {
+    transform: none;
+    transition: none;
+  }
+
+  .pt-host .prose p,
+  .pt-host .prose h2,
+  .pt-host .prose h3,
+  .pt-host .prose h4,
+  .pt-host .prose li,
+  .pt-host .prose pre,
+  .pt-host .prose blockquote,
+  .pt-host .prose table {
+    transition: none;
+  }
+
+  .pt-host .prose p.pt-active,
+  .pt-host .prose h3.pt-active,
+  .pt-host .prose h4.pt-active,
+  .pt-host .prose li.pt-active {
+    transform: none;
+  }
+
+  .pt-host .prose p::after,
+  .pt-host .prose h2::after,
+  .pt-host .prose h3::after,
+  .pt-host .prose h4::after,
+  .pt-host .prose li::after,
+  .pt-host .prose pre::after,
+  .pt-host .prose blockquote::after,
+  .pt-host .prose table::after {
+    opacity: 0 !important;
   }
 }
