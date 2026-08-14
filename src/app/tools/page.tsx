@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { FadeIn } from "@/components/fade-in";
-import { PageHeader } from "@/components/page-header";
 
 export const metadata: Metadata = {
   title: "工具清单",
@@ -83,78 +82,92 @@ export default function ToolsPage() {
 
   return (
     <article className="mx-auto w-full max-w-6xl pb-32 pt-20 sm:pt-24">
-      <PageHeader
-        label="[0x00] ARSENAL"
-        title="工具清单"
-        sub="自建服务与常用工具。"
-      />
-      {/* 终端标题行 */}
-      <FadeIn>
-        <div className="mb-20 font-mono text-sm">
-          <span className="text-accent">zenix@0xff</span>
-          <span className="text-faint">:~$</span>{" "}
-          <span className="text-fg">cat arsenal.toml</span>
-          <span className="cursor-blink ml-0.5 text-accent">▍</span>
-        </div>
-      </FadeIn>
-
-      <div className="space-y-20">
-        {SECTIONS.map((sec, si) => (
-          <section key={sec.hex}>
-            <FadeIn delay={si * 60}>
-              <header className="mb-8 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                <span className="font-mono text-xs text-faint">[{sec.hex}]</span>
-                <h2 className="font-display text-2xl font-medium">{sec.title}</h2>
-                <span className="font-mono text-[10px] tracking-[0.25em] text-accent">
-                  {sec.en}
-                </span>
-              </header>
-            </FadeIn>
-            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {sec.tools.map((t, ti) => {
-                const meta = STATUS_META[t.status];
-                return (
-                  <FadeIn key={t.id} delay={si * 60 + ti * 40}>
-                    <div className="light-card flex min-h-[8.5rem] flex-col justify-between gap-2 p-6">
-                      <div className="flex items-start gap-3">
-                        <span className={`led ${meta.led} mt-1.5`} aria-hidden="true" />
-                        <div className="min-w-0 flex-1">
-                          <div className="flex items-baseline justify-between gap-2">
-                            <span className="font-medium leading-snug">{t.name}</span>
-                            <span
-                              className={`shrink-0 font-mono text-[10px] tracking-widest ${meta.led === "led-running" ? "text-accent" : "text-accent/80"}`}
-                            >
-                              {meta.label}
-                            </span>
-                          </div>
-                          <p className="mt-1 text-sm leading-relaxed text-muted">
-                            {t.desc}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex items-center justify-between border-t border-line pt-3 font-mono text-[11px] text-faint">
-                        <span>{t.id}</span>
-                        <span>{t.tag}</span>
-                      </div>
-                    </div>
-                  </FadeIn>
-                );
-              })}
+      <div className="grid gap-14 lg:grid-cols-[300px_1fr] lg:gap-20">
+        {/* 左栏:sticky 介绍牌 */}
+        <FadeIn>
+          <aside className="lg:sticky lg:top-24 lg:self-start">
+            <div className="page-head-label mb-6">[0x00] ARSENAL</div>
+            <h1 className="font-display text-3xl font-medium tracking-tight sm:text-4xl">
+              工具清单
+            </h1>
+            <p className="mt-4 text-[15px] leading-relaxed text-muted">
+              自建服务与常用工具。
+            </p>
+            <div className="mt-8 flex gap-6 font-mono text-xs text-faint">
+              <span>{total} modules</span>
             </div>
-          </section>
-        ))}
-      </div>
+            <div className="mt-6 font-mono text-sm">
+              <span className="text-accent">zenix@0xff</span>
+              <span className="text-faint">:~$</span>{" "}
+              <span className="text-foreground">cat arsenal.toml</span>
+              <span className="cursor-blink ml-0.5 text-accent">▍</span>
+            </div>
+          </aside>
+        </FadeIn>
 
-      {/* 状态栏 */}
-      <FadeIn delay={200}>
-        <footer className="mt-20 flex flex-wrap items-center gap-x-3 gap-y-1 border border-line bg-surface px-4 py-2.5 font-mono text-xs text-muted">
-          <span className="text-accent">●</span>
-          <span>[ OK ] {total} modules loaded</span>
-          <span className="text-faint">·</span>
-          <span>all systems operational</span>
-          <span className="ml-auto text-faint">uptime ∞</span>
-        </footer>
-      </FadeIn>
+        {/* 右栏:工具分区 */}
+        <div className="min-w-0 pb-10">
+          <div className="space-y-20">
+            {SECTIONS.map((sec, si) => (
+              <section key={sec.hex}>
+                <FadeIn delay={si * 60}>
+                  <header className="mb-8 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                    <span className="font-mono text-xs text-faint">[{sec.hex}]</span>
+                    <h2 className="font-display text-2xl font-medium">{sec.title}</h2>
+                    <span className="font-mono text-[10px] tracking-[0.25em] text-accent">
+                      {sec.en}
+                    </span>
+                  </header>
+                </FadeIn>
+                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                  {sec.tools.map((t, ti) => {
+                    const meta = STATUS_META[t.status];
+                    return (
+                      <FadeIn key={t.id} delay={si * 60 + ti * 40}>
+                        <div className="light-card flex min-h-[8.5rem] flex-col justify-between gap-2 p-6">
+                          <div className="flex items-start gap-3">
+                            <span className={`led ${meta.led} mt-1.5`} aria-hidden="true" />
+                            <div className="min-w-0 flex-1">
+                              <div className="flex items-baseline justify-between gap-2">
+                                <span className="font-medium leading-snug">{t.name}</span>
+                                <span
+                                  className={`shrink-0 font-mono text-[10px] tracking-widest ${
+                                    meta.led === "led-running" ? "text-accent" : "text-accent/80"
+                                  }`}
+                                >
+                                  {meta.label}
+                                </span>
+                              </div>
+                              <p className="mt-1 text-sm leading-relaxed text-muted">
+                                {t.desc}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex items-center justify-between border-t border-line pt-3 font-mono text-[11px] text-faint">
+                            <span>{t.id}</span>
+                            <span>{t.tag}</span>
+                          </div>
+                        </div>
+                      </FadeIn>
+                    );
+                  })}
+                </div>
+              </section>
+            ))}
+          </div>
+
+          {/* 状态栏 */}
+          <FadeIn delay={200}>
+            <footer className="mt-20 flex flex-wrap items-center gap-x-3 gap-y-1 border border-line bg-surface px-4 py-2.5 font-mono text-xs text-muted">
+              <span className="text-accent">●</span>
+              <span>[ OK ] {total} modules loaded</span>
+              <span className="text-faint">·</span>
+              <span>all systems operational</span>
+              <span className="ml-auto text-faint">uptime ∞</span>
+            </footer>
+          </FadeIn>
+        </div>
+      </div>
     </article>
   );
 }
