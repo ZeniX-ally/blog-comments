@@ -211,6 +211,32 @@ body {
   line-height: 1.12;
 }
 
+/* 首页首屏全览:标题略收敛,给下方内容留位 */
+.page-title--hero {
+  font-size: clamp(2.75rem, 6vw, 4.5rem);
+  letter-spacing: -0.03em;
+}
+
+/* 首页 hero 品牌标识:内容区上方的小字标(与顶栏呼应,共两处) */
+.hero-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  letter-spacing: 0.18em;
+  color: var(--faint);
+}
+
+.hero-brand::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 9999px;
+  background: var(--accent);
+  box-shadow: 0 0 8px rgba(0, 255, 156, 0.7);
+}
+
 .page-sub {
   font-size: 1rem;
   color: var(--muted);
@@ -218,20 +244,34 @@ body {
 }
 
 /* ------------------------------------------------------------
-   Hero 滚动联动:标题随滚动轻微上移 + 淡出(scroll-driven,零 JS)
+   Hero 滚动联动:标题随滚动上浮 + 淡出 + 微缩(scroll-driven,零 JS)
+   彩蛋面板反向下沉淡出(视差层次:hero 上浮、面板下沉、列表居中)
    ------------------------------------------------------------ */
 @supports (animation-timeline: scroll()) {
   .hero-scroll {
     animation: hero-scroll linear both;
     animation-timeline: scroll(root);
-    animation-range: 0 520px;
+    animation-range: 0 20vh;
+  }
+
+  .panel-sink {
+    animation: panel-sink linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 25vh;
   }
 }
 
 @keyframes hero-scroll {
   to {
+    opacity: 0.2;
+    transform: translateY(-40px) scale(0.97);
+  }
+}
+
+@keyframes panel-sink {
+  to {
     opacity: 0.3;
-    transform: translateY(-28px) scale(0.985);
+    transform: translateY(36px);
   }
 }
 
@@ -374,6 +414,12 @@ body {
 
 .post-row:hover {
   padding-left: 0.5rem;
+}
+
+/* 首页首屏全览:紧凑行(压缩上下内边距) */
+.post-row--tight {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
 }
 
 .post-row-title {
@@ -773,6 +819,7 @@ body {
   }
 
   .hero-scroll,
+  .panel-sink,
   .cursor-blink,
   .prose h2,
   .prose pre,
