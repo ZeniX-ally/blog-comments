@@ -422,6 +422,11 @@ body {
   padding-bottom: 0.75rem;
 }
 
+/* 文章列表双列网格:仅一个条目时占满全宽 */
+.post-list-grid > :only-child {
+  grid-column: 1 / -1;
+}
+
 .post-row-title {
   font-size: 0.9375rem;
   font-weight: 500;
@@ -544,7 +549,7 @@ body {
   --tw-prose-th-borders: var(--line);
   --tw-prose-td-borders: var(--line);
 
-  max-width: 44rem;
+  max-width: 48rem;
   font-family: var(--font-sans);
   font-size: 1rem;
   line-height: 1.9;

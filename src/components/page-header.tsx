@@ -19,7 +19,7 @@ export function PageHeader({
     <header className="mb-20 sm:mb-24">
       {label && <div className="page-head-label mb-6">{label}</div>}
       <h1 className="page-title">{title}</h1>
-      {sub && <p className="page-sub mt-5 max-w-xl">{sub}</p>}
+      {sub && <p className="page-sub mt-5 max-w-2xl">{sub}</p>}
       {children}
     </header>
   );

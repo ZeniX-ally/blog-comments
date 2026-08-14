@@ -13,7 +13,7 @@ export function PostList({ posts, basePath = "" }: { posts: PostMeta[]; basePath
   }
 
   return (
-    <div>
+    <div className="post-list-grid grid gap-x-12 sm:grid-cols-2">
       {posts.map((post, i) => (
         <FadeIn key={post.slug} delay={Math.min(i, 6) * 50}>
           <Link

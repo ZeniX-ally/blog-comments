@@ -25,7 +25,7 @@ export async function MdPage({
   const html = await renderMarkdown(markdown);
 
   return (
-    <article className="mx-auto w-full max-w-3xl pb-24 pt-14 sm:pt-20">
+    <article className="mx-auto w-full max-w-6xl pb-24 pt-14 sm:pt-20">
       <FadeIn>
         <header className="mb-12">
           <div className="page-head-label mb-6">0xFF / MD</div>

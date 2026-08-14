@@ -82,7 +82,7 @@ export default function ToolsPageEn() {
   const total = SECTIONS.reduce((n, s) => n + s.tools.length, 0);
 
   return (
-    <article className="mx-auto w-full max-w-3xl pb-32 pt-20 sm:pt-24">
+    <article className="mx-auto w-full max-w-6xl pb-32 pt-20 sm:pt-24">
       <PageHeader
         label="[0x00] ARSENAL"
         title="Toolbox"
@@ -109,7 +109,7 @@ export default function ToolsPageEn() {
                 </span>
               </header>
             </FadeIn>
-            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {sec.tools.map((t, ti) => {
                 const meta = STATUS_META[t.status];
                 return (

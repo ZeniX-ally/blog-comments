@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function ProjectsPageEn() {
   return (
-    <article className="mx-auto w-full max-w-3xl pb-32 pt-20 sm:pt-24">
+    <article className="mx-auto w-full max-w-6xl pb-32 pt-20 sm:pt-24">
       <PageHeader
         label="[0x00] PROJECTS"
         title="Projects"
@@ -31,7 +31,7 @@ export default function ProjectsPageEn() {
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-5">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           {projects.map((p, i) => (
             <FadeIn key={p.name} delay={i * 60}>
               <div className="light-card group p-6">

@@ -14,7 +14,7 @@ export default function TagsPage() {
 
   return (
     <>
-      <article className="mx-auto w-full max-w-3xl pb-32 pt-20 sm:pt-24">
+      <article className="mx-auto w-full max-w-6xl pb-32 pt-20 sm:pt-24">
         <PageHeader label="[0x00] TAGS" title="标签" sub="按主题浏览全部文章。" />
         <div className="pb-10">
           {tags.length === 0 ? (

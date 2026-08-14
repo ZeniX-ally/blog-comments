@@ -13,7 +13,7 @@ export default function TagsPageEn() {
 
   return (
     <>
-      <article className="mx-auto w-full max-w-3xl pb-32 pt-20 sm:pt-24">
+      <article className="mx-auto w-full max-w-6xl pb-32 pt-20 sm:pt-24">
         <PageHeader label="[0x00] TAGS" title="Tags" sub="Browse all posts by topic." />
         <div className="pb-10">
           {tags.length === 0 ? (

@@ -26,7 +26,7 @@ export default function BlogPage() {
   const tagCount = new Set(allPosts.flatMap((p) => p.tags ?? [])).size;
 
   return (
-    <article className="mx-auto w-full max-w-3xl pb-32 pt-20 sm:pt-24">
+    <article className="mx-auto w-full max-w-6xl pb-32 pt-20 sm:pt-24">
       <PageHeader label="[0x00] POSTS" title="文章" sub="关于技术、设计与生活的一切记录。">
         {/* 原左栏统计并入 PageHeader 下方:mono 小字 */}
         <div className="mt-6 flex gap-6 font-mono text-xs text-faint">

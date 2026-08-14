@@ -45,7 +45,7 @@ export default async function PostPageEn({ params }: { params: Promise<Params> }
   const adjacent = getAdjacentPosts(slug, "en");
 
   return (
-    <article className="mx-auto w-full max-w-3xl pb-32 pt-20 sm:pt-24">
+    <article className="mx-auto w-full max-w-6xl pb-32 pt-20 sm:pt-24">
       <ReadingProgress />
       <ScrollSpy />
       <FadeIn>

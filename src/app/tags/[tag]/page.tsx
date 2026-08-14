@@ -36,7 +36,7 @@ export default async function TagPage({ params }: { params: Promise<Params> }) {
   if (posts.length === 0) notFound();
 
   return (
-    <article className="mx-auto w-full max-w-3xl pb-32 pt-20 sm:pt-24">
+    <article className="mx-auto w-full max-w-6xl pb-32 pt-20 sm:pt-24">
       <PageHeader label="[0x00] TAG" title={`#${tag}`} sub={`共 ${posts.length} 篇文章。`} />
       <div className="pb-4">
         <PostList posts={posts} />

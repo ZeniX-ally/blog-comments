@@ -33,7 +33,7 @@ const NOW_ITEMS = [
 
 export default function AboutPageEn() {
   return (
-    <article className="mx-auto w-full max-w-3xl pb-32 pt-20 sm:pt-24">
+    <article className="mx-auto w-full max-w-6xl pb-32 pt-20 sm:pt-24">
       {/* 大标题锚点 */}
       <PageHeader
         label="[0x00] ABOUT"
@@ -93,7 +93,7 @@ export default function AboutPageEn() {
           </header>
         </FadeIn>
         <FadeIn delay={60}>
-          <div className="space-y-3 text-[15px] leading-relaxed text-muted">
+          <div className="max-w-3xl space-y-3 text-[15px] leading-relaxed text-muted">
             <p>
               A place to record life and share what I learn. All posts also come
               with{" "}
