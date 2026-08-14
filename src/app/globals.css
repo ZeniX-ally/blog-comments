@@ -247,6 +247,18 @@ body {
    Hero 滚动联动:标题随滚动上浮 + 淡出 + 微缩(scroll-driven,零 JS)
    彩蛋面板反向下沉淡出(视差层次:hero 上浮、面板下沉、列表居中)
    ------------------------------------------------------------ */
+/* hero 背景视频(Remotion 渲染):装饰层,不遮内容,reduced-motion 停用 */
+.hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.45;
+  pointer-events: none;
+  z-index: 0;
+}
+
 @supports (animation-timeline: scroll()) {
   .hero-scroll {
     animation: hero-scroll linear both;
@@ -821,6 +833,10 @@ body {
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  .hero-video {
+    display: none;
   }
 
   .hero-scroll,

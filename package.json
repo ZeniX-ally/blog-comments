@@ -5,9 +5,11 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build && node scripts/generate-feed.mjs && node scripts/generate-og.mjs",
-    "start": "next start"
+    "start": "next start",
+    "render:hero": "remotion render src/remotion/index.ts HeroBg public/videos/hero-bg.webm --codec=vp9 && remotion still src/remotion/index.ts HeroBg public/videos/hero-poster.png --frame=0"
   },
   "dependencies": {
+    "@remotion/cli": "^4.0.509",
     "gray-matter": "^4.0.3",
     "next": "^16.2.12",
     "react": "^19.2.8",
@@ -18,6 +20,7 @@
     "remark-gfm": "^4.0.1",
     "remark-parse": "^11.0.0",
     "remark-rehype": "^11.1.2",
+    "remotion": "^4.0.509",
     "unified": "^11.0.5"
   },
   "devDependencies": {
