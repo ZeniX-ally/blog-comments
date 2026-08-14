@@ -3,22 +3,8 @@ import { getAllPosts, formatDate, slugToHref } from "@/lib/posts";
 import { projects } from "@/lib/projects";
 import { FadeIn } from "@/components/fade-in";
 import { TypewriterText } from "@/components/typewriter-text";
-import { CommandLine } from "@/components/command-line";
+import { InkParticles } from "@/components/ink-particles";
 import { BookTransition } from "@/components/book-transition";
-
-/** 终端提示行(纯装饰) */
-function TerminalHint() {
-  return (
-    <p className="font-mono text-sm leading-relaxed text-muted">
-      <span className="text-accent">zenix@0xff</span>
-      <span className="text-faint">:~$</span>{" "}
-      <span className="text-foreground">whoami</span>
-      <span aria-hidden="true" className="cursor-blink ml-0.5 text-accent">
-        ▍
-      </span>
-    </p>
-  );
-}
 
 export default function HomeEn() {
   const posts = getAllPosts("en");
@@ -34,10 +20,18 @@ export default function HomeEn() {
         <div className="hero-scroll flex flex-col items-center pt-8 text-center lg:pt-14">
             <FadeIn>
             <div className="hero-brand">0xff.zone</div>
-            <h1 className="page-title page-title--hero mt-6">
-              <TypewriterText text="I'm Ajiu." speed={120} startDelay={300} />
-            </h1>
-            <p className="mt-5 max-w-lg text-base leading-relaxed text-muted">
+
+            {/* title frame with ink particles */}
+            <div className="relative mt-8 w-full max-w-3xl overflow-hidden rounded-2xl border border-line px-6 py-16 sm:py-20">
+              <InkParticles />
+              <div className="relative z-10">
+                <h1 className="page-title page-title--hero">
+                  <TypewriterText text="I'm Ajiu." speed={120} startDelay={300} />
+                </h1>
+              </div>
+            </div>
+
+            <p className="mt-8 max-w-lg text-base leading-relaxed text-muted">
               Test engineer in test R&amp;D. Minimal design. Clean text.
               Perfectionist.
             </p>
@@ -56,7 +50,7 @@ export default function HomeEn() {
               </Link>
             </div>
             {/* stats: no divider, whitespace only */}
-            <div className="mt-10 flex flex-wrap items-baseline justify-center gap-x-10 gap-y-2">
+            <div className="mt-8 flex flex-wrap items-baseline justify-center gap-x-10 gap-y-2">
               {[
                 { n: posts.length, label: "posts" },
                 { n: projects.length, label: "projects" },
@@ -72,17 +66,7 @@ export default function HomeEn() {
                 </div>
               ))}
             </div>
-            <div className="mt-8">
-              <TerminalHint />
-            </div>
             </FadeIn>
-        </div>
-
-        {/* ============ Command easter egg: centered, sinks on scroll ============ */}
-        <div className="panel-sink mx-auto mt-14 w-full max-w-2xl">
-          <FadeIn delay={100}>
-            <CommandLine lang="en" />
-          </FadeIn>
         </div>
 
         {/* ============ Two-column compact lists ============ */}

@@ -5,22 +5,8 @@ import { projects } from "@/lib/projects";
 import { FadeIn } from "@/components/fade-in";
 import { SignIn } from "@/components/sign-in";
 import { TypewriterText } from "@/components/typewriter-text";
-import { CommandLine } from "@/components/command-line";
+import { InkParticles } from "@/components/ink-particles";
 import { BookTransition } from "@/components/book-transition";
-
-/** 终端提示行:极简,一行提示 + 闪烁光标(装饰,不动画交错) */
-function TerminalHint() {
-  return (
-    <p className="font-mono text-sm leading-relaxed text-muted">
-      <span className="text-accent">zenix@0xff</span>
-      <span className="text-faint">:~$</span>{" "}
-      <span className="text-foreground">whoami</span>
-      <span aria-hidden="true" className="cursor-blink ml-0.5 text-accent">
-        ▍
-      </span>
-    </p>
-  );
-}
 
 export default function Home() {
   const posts = getAllPosts();
@@ -37,33 +23,28 @@ export default function Home() {
             <FadeIn>
             {/* 品牌标识(与顶栏呼应,内容区上方第二处) */}
             <div className="hero-brand">0xff.zone</div>
-            {/* 超大主标题 */}
-            <h1 className="page-title page-title--hero mt-6">
-              <TypewriterText
-                text={site.hero.greeting}
-                speed={120}
-                startDelay={300}
-              />
-            </h1>
-            <p className="mt-5 max-w-lg text-base leading-relaxed text-muted">
+
+            {/* 大标题矩形框:框内黑色粒子缓慢漂浮 */}
+            <div className="relative mt-8 w-full max-w-3xl overflow-hidden rounded-2xl border border-line px-6 py-16 sm:py-20">
+              <InkParticles />
+              <div className="relative z-10">
+                <h1 className="page-title page-title--hero">
+                  <TypewriterText
+                    text={site.hero.greeting}
+                    speed={120}
+                    startDelay={300}
+                  />
+                </h1>
+              </div>
+            </div>
+
+            {/* 副标题 */}
+            <p className="mt-8 max-w-lg text-base leading-relaxed text-muted">
               {site.hero.bio.join(" ")}
             </p>
-            {/* 双 CTA 胶囊 */}
-            <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
-              <a
-                href={site.links.github}
-                target="_blank"
-                rel="noreferrer"
-                className="btn-pill btn-primary"
-              >
-                GitHub ↗
-              </a>
-              <Link href="/about" className="btn-pill btn-ghost">
-                关于我
-              </Link>
-            </div>
+
             {/* 统计:无分隔线,留白分隔 */}
-            <div className="mt-10 flex flex-wrap items-baseline justify-center gap-x-10 gap-y-2">
+            <div className="mt-8 flex flex-wrap items-baseline justify-center gap-x-10 gap-y-2">
               {[
                 { n: posts.length, label: "posts" },
                 { n: projects.length, label: "projects" },
@@ -79,19 +60,15 @@ export default function Home() {
                 </div>
               ))}
             </div>
-            {/* 终端提示 + 登录区 */}
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
-              <TerminalHint />
+
+            {/* 操作行:关于我 + GitHub 登录,居中 */}
+            <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
+              <Link href="/about" className="btn-pill btn-ghost">
+                关于我
+              </Link>
               <SignIn />
             </div>
             </FadeIn>
-        </div>
-
-        {/* ============ 命令彩蛋:居中,随滚动下沉淡出 ============ */}
-        <div className="panel-sink mx-auto mt-14 w-full max-w-2xl">
-          <FadeIn delay={100}>
-            <CommandLine lang="zh" />
-          </FadeIn>
         </div>
 
         {/* ============ 双栏紧凑列表(首屏全览) ============ */}
