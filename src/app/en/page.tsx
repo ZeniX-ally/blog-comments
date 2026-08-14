@@ -22,7 +22,7 @@ export default function HomeEn() {
             <div className="hero-brand">0xff.zone</div>
 
             {/* title frame with ink particles */}
-            <div className="relative mt-8 w-full max-w-3xl overflow-hidden rounded-2xl border border-line px-6 py-16 sm:py-20">
+            <div className="hero-frame relative mt-8 w-full max-w-3xl overflow-hidden rounded-2xl border border-line px-6">
               <InkParticles />
               <div className="relative z-10">
                 <h1 className="page-title page-title--hero">

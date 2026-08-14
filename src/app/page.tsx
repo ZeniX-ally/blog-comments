@@ -24,8 +24,8 @@ export default function Home() {
             {/* 品牌标识(与顶栏呼应,内容区上方第二处) */}
             <div className="hero-brand">0xff.zone</div>
 
-            {/* 大标题矩形框:框内黑色粒子缓慢漂浮 */}
-            <div className="relative mt-8 w-full max-w-3xl overflow-hidden rounded-2xl border border-line px-6 py-16 sm:py-20">
+            {/* 大标题矩形框:至少2倍字号高,框内黑色粒子缓慢漂浮,文字居中 */}
+            <div className="hero-frame relative mt-8 w-full max-w-3xl overflow-hidden rounded-2xl border border-line px-6">
               <InkParticles />
               <div className="relative z-10">
                 <h1 className="page-title page-title--hero">
@@ -61,11 +61,8 @@ export default function Home() {
               ))}
             </div>
 
-            {/* 操作行:关于我 + GitHub 登录,居中 */}
+            {/* 操作行:GitHub 登录,居中 */}
             <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
-              <Link href="/about" className="btn-pill btn-ghost">
-                关于我
-              </Link>
               <SignIn />
             </div>
             </FadeIn>
