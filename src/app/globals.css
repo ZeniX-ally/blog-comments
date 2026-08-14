@@ -222,12 +222,12 @@ body {
   letter-spacing: -0.03em;
 }
 
-/* 首页 hero 大标题框:至少 2 倍标题字号高,文字垂直居中 */
+/* 首页 hero 大标题框:高度 ≥ 3 倍标题字号,文字垂直居中 */
 .hero-frame {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: calc(clamp(3rem, 8vw, 5.5rem) * 2);
+  min-height: calc(clamp(3rem, 8vw, 5.5rem) * 3);
   text-align: center;
 }
 
