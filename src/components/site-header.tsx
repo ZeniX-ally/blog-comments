@@ -40,27 +40,30 @@ export function SiteHeader() {
           <span className="aurora-blob aurora-3" />
         </div>
 
-        {/* 品牌:莫比乌斯环 + 字标 */}
+        {/* 品牌:莫比乌斯环(∞ 投影)+ 字标 */}
         <Link
           href="/"
           aria-label="0xff.zone 首页"
           className="group flex items-center gap-2.5 text-foreground"
         >
-          {/* 空心莫比乌斯环:纯黑线条,悬停微旋转 */}
+          {/* 空心莫比乌斯带:∞ 形(带子扭转一次的侧面投影),悬停微旋转 */}
           <svg
             viewBox="0 0 24 24"
             width="26"
             height="26"
             fill="none"
             stroke="currentColor"
-            strokeWidth="1.6"
+            strokeWidth="1.7"
             strokeLinecap="round"
             className="text-foreground transition-transform duration-700 group-hover:rotate-180"
             aria-hidden="true"
           >
-            {/* 莫比乌斯带:三圈扭曲环,路径跨中间再折返 */}
-            <path d="M2.5 12c0-5.2 4.3-9.5 9.5-9.5 5.2 0 9.5 4.3 9.5 9.5 0 5.2-4.3 9.5-9.5 9.5-5.2 0-9.5-4.3-9.5-9.5Z" />
-            <path d="M2.5 12c3.2 4 6.3 5.8 9.5 5.8 3.2 0 6.3-1.8 9.5-5.8" />
+            {/* 左环 + 右环,在中心 (12,12) 交叉,构成莫比乌斯带投影 */}
+            <path d="M12 12
+                     A 4 6 0 1 1 4 12
+                     A 4 6 0 1 1 12 12
+                     A 4 6 0 1 1 20 12
+                     A 4 6 0 1 1 12 12" />
           </svg>
           <span className="text-[15px] font-semibold tracking-tight">
             0xff.zone
