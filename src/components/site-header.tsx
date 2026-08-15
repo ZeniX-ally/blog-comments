@@ -40,33 +40,33 @@ export function SiteHeader() {
           <span className="aurora-blob aurora-3" />
         </div>
 
-        {/* 品牌:莫比乌斯带(分层交叉 ∞)+ 字标 */}
+        {/* 品牌:无限符号 ∞(单线连续)+ 字标 */}
         <Link
           href="/"
           aria-label="0xff.zone 首页"
           className="group flex items-center gap-2.5 text-foreground"
         >
+          {/* 标准 ∞:一条连续线贯穿左右环,中心交叉 */}
           <svg
             viewBox="0 0 24 24"
             width="28"
             height="28"
             fill="none"
             stroke="currentColor"
+            strokeWidth="1.8"
             strokeLinecap="round"
             className="text-foreground transition-transform duration-700 group-hover:rotate-180"
             aria-hidden="true"
           >
-            {/* 后层:右环(淡,被左环压过) */}
-            <path
-              d="M12 12 A 3.6 5.6 0 1 1 19 12 A 3.6 5.6 0 1 1 12 12"
-              strokeWidth="1.6"
-              opacity="0.28"
-            />
-            {/* 前层:左环(实,压住右环交叉处) */}
-            <path
-              d="M12 12 A 3.6 5.6 0 1 1 5 12 A 3.6 5.6 0 1 1 12 12"
-              strokeWidth="1.6"
-            />
+            <path d="M12 12
+                     C 12 7.5 14.5 5 17 5
+                     C 19.5 5 21.5 7 21.5 9.5
+                     C 21.5 12 19.5 14 17 14
+                     C 14.5 14 13 12.5 12 12
+                     C 11 10.5 9.5 9 7 9
+                     C 4.5 9 2.5 11 2.5 13.5
+                     C 2.5 16 4.5 18 7 18
+                     C 9.5 18 11 16.5 12 12" />
           </svg>
           <span className="text-[15px] font-semibold tracking-tight">
             0xff.zone
