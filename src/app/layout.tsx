@@ -54,7 +54,8 @@ export default function RootLayout({
         <RippleFx />
         <EffectLayer />
         <SiteHeader />
-        <main className="w-full grow px-5 sm:px-12 md:px-16 lg:px-20 xl:px-24">
+        {/* 顶栏 fixed 悬浮:内容区顶部留出悬浮胶囊高度(mt-4 + 胶囊高度 ≈ 4.5rem) */}
+        <main className="w-full grow px-5 pt-16 sm:px-12 md:px-16 lg:px-20 xl:px-24">
           {children}
         </main>
         {/* 返回按钮放在 body 层:避免被页面模板的入场动画 transform 影响

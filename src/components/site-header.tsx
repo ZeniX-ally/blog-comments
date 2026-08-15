@@ -10,7 +10,7 @@ import { dict, getLangFromPath } from "@/lib/i18n";
 
 /**
  * 顶栏:悬浮液态玻璃胶囊导航条(iOS 26 Liquid Glass 风)。
- * 两端全圆角、高模糊高饱和、内高光光泽;距顶部留空,滚动后玻璃更实。
+ * fixed 固定定位,不随滚动移动;距顶部留空,滚动后玻璃更实。
  * 左:圆点 + 站点字标;中:导航链接;右:语言切换 + GitHub 按钮。
  */
 export function SiteHeader() {
@@ -27,9 +27,9 @@ export function SiteHeader() {
   }, []);
 
   return (
-    <header className="px-3 sm:px-6">
+    <header className="fixed inset-x-0 top-0 z-40 px-3 sm:px-6">
       <div
-        className={`liquid-glass sticky top-3 z-40 mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-2.5 transition-all duration-300 sm:top-4 sm:px-5 ${
+        className={`liquid-glass mx-auto mt-3 flex w-full max-w-6xl items-center justify-between px-4 py-2.5 transition-all duration-300 sm:mt-4 sm:px-5 ${
           scrolled ? "is-scrolled" : ""
         }`}
       >
