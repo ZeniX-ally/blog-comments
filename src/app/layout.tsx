@@ -5,7 +5,6 @@ import { SiteFooter } from "@/components/site-footer";
 import { BackToTop } from "@/components/back-to-top";
 import { BackButton } from "@/components/back-button";
 import { EffectLayer } from "@/components/effect-layer";
-import { WaveField } from "@/components/wave-field";
 import "./globals.css";
 
 const umamiEnabled = Boolean(site.umami.scriptSrc && site.umami.websiteId);
@@ -50,10 +49,8 @@ export default function RootLayout({
         )}
       </head>
       <body className="flex min-h-screen flex-col">
-        {/* 背景装饰层:极淡绿光晕 + 全屏大波浪,pointer-events: none */}
-        <div aria-hidden="true" className="bg-fx">
-          <WaveField />
-        </div>
+        {/* 背景装饰层:极淡绿光晕,pointer-events: none */}
+        <div aria-hidden="true" className="bg-fx" />
         <EffectLayer />
         <SiteHeader />
         <main className="w-full grow px-5 sm:px-12 md:px-16 lg:px-20 xl:px-24">
