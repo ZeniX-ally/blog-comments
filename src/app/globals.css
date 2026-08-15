@@ -666,18 +666,21 @@ body {
 }
 
 /* ------------------------------------------------------------
-   苹果式轻列表:无分隔线,间距分组,hover 淡灰底(News 风格)
+   苹果式轻列表:细边框分组,hover 淡灰底
    ------------------------------------------------------------ */
 .post-link {
-  display: block;
   padding: 1rem 0.75rem;
+  border: 1px solid var(--card-border);
   border-radius: 0.875rem;
-  transition: background-color 200ms var(--ease-out);
+  transition:
+    background-color 200ms var(--ease-out),
+    border-color 200ms var(--ease-out);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .post-link:hover {
     background: var(--surface-soft);
+    border-color: rgba(0, 168, 118, 0.35);
   }
 }
 
