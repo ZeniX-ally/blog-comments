@@ -28,7 +28,7 @@ export default function Home() {
             </div>
 
             {/* 副标题 */}
-            <p className="mt-8 max-w-lg text-base leading-relaxed text-muted">
+            <p className="mt-8 max-w-lg text-center text-base leading-relaxed text-muted">
               {site.hero.bio.join(" ")}
             </p>
 
