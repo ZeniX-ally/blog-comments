@@ -40,23 +40,28 @@ export function SiteHeader() {
           <span className="aurora-blob aurora-3" />
         </div>
 
-        {/* 品牌:0xFF 徽章 + 字标 */}
+        {/* 品牌:莫比乌斯环 + 字标 */}
         <Link
           href="/"
           aria-label="0xff.zone 首页"
           className="group flex items-center gap-2.5 text-foreground"
         >
-          {/* 0xFF 图形徽章:近黑圆角方块,绿字,悬停微亮 */}
-          <span
-            className="relative flex h-7 w-10 items-center justify-center overflow-hidden rounded-[0.6rem] bg-[var(--fg)] shadow-[0_2px_8px_rgba(29,29,31,0.25)] transition-all duration-300 group-hover:shadow-[0_2px_12px_rgba(0,255,156,0.35)]"
+          {/* 空心莫比乌斯环:纯黑线条,悬停微旋转 */}
+          <svg
+            viewBox="0 0 24 24"
+            width="26"
+            height="26"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.6"
+            strokeLinecap="round"
+            className="text-foreground transition-transform duration-700 group-hover:rotate-180"
             aria-hidden="true"
           >
-            <span className="font-mono text-[10px] font-bold tracking-tight text-[#00ff9c]">
-              0xFF
-            </span>
-            {/* 底部极光微光 */}
-            <span className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-[rgba(0,255,156,0.35)] to-transparent" />
-          </span>
+            {/* 莫比乌斯带:三圈扭曲环,路径跨中间再折返 */}
+            <path d="M2.5 12c0-5.2 4.3-9.5 9.5-9.5 5.2 0 9.5 4.3 9.5 9.5 0 5.2-4.3 9.5-9.5 9.5-5.2 0-9.5-4.3-9.5-9.5Z" />
+            <path d="M2.5 12c3.2 4 6.3 5.8 9.5 5.8 3.2 0 6.3-1.8 9.5-5.8" />
+          </svg>
           <span className="text-[15px] font-semibold tracking-tight">
             0xff.zone
           </span>

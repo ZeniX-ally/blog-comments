@@ -8,9 +8,20 @@ export function SiteFooter() {
     <footer className="mt-auto border-t border-line">
       <div className="flex w-full flex-col gap-3 px-5 py-8 text-sm text-faint sm:flex-row sm:items-baseline sm:justify-between sm:px-12 md:px-16 lg:px-20 xl:px-24">
         <p className="flex items-center gap-2.5">
-          <span className="flex h-4 w-6 items-center justify-center rounded-[0.35rem] bg-[var(--fg)] font-mono text-[7px] font-bold text-[#00ff9c]" aria-hidden="true">
-            0xFF
-          </span>
+          <svg
+            viewBox="0 0 24 24"
+            width="14"
+            height="14"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.6"
+            strokeLinecap="round"
+            className="text-muted"
+            aria-hidden="true"
+          >
+            <path d="M2.5 12c0-5.2 4.3-9.5 9.5-9.5 5.2 0 9.5 4.3 9.5 9.5 0 5.2-4.3 9.5-9.5 9.5-5.2 0-9.5-4.3-9.5-9.5Z" />
+            <path d="M2.5 12c3.2 4 6.3 5.8 9.5 5.8 3.2 0 6.3-1.8 9.5-5.8" />
+          </svg>
           <span className="text-xs text-muted">0xff.zone</span>
           <span className="text-faint/80">· © {year} {site.name}</span>
         </p>
