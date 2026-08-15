@@ -36,7 +36,7 @@ export function InkParticles() {
       canvas.width = Math.round(w * dpr);
       canvas.height = Math.round(h * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      const count = Math.max(80, Math.min(260, Math.round((w * h) / 4500)));
+      const count = Math.max(240, Math.min(780, Math.round((w * h) / 1500)));
       parts = Array.from({ length: count }, () => {
         const speed = 0.3 + Math.random() * 0.8;
         return {
