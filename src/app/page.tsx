@@ -20,7 +20,7 @@ export default function Home() {
         <div className="hero-scroll flex flex-col items-center pt-5 text-center lg:pt-7">
             <FadeIn>
             {/* 大标题框:玻璃材质,粒子漂浮,静态标题 */}
-            <div className="hero-frame relative mt-8 overflow-hidden px-8">
+            <div className="hero-frame relative mt-[59px] overflow-hidden px-8">
               <InkParticles />
               <div className="relative z-10">
                 <h1 className="page-title page-title--hero">{site.hero.greeting}</h1>

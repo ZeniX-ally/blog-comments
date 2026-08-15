@@ -20,7 +20,7 @@ export default function HomeEn() {
         <div className="hero-scroll flex flex-col items-center pt-5 text-center lg:pt-7">
             <FadeIn>
             {/* title frame: glass material with ink particles, static title */}
-            <div className="hero-frame relative mt-8 overflow-hidden px-8">
+            <div className="hero-frame relative mt-[59px] overflow-hidden px-8">
               <InkParticles />
               <div className="relative z-10">
                 <h1 className="page-title page-title--hero">I&apos;m Ajiu.</h1>
