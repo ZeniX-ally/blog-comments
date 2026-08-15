@@ -247,6 +247,109 @@ body {
     0 3px 8px rgba(0, 0, 0, 0.08);
 }
 
+/* ------------------------------------------------------------
+   顶栏极光:液态玻璃内的缓慢流动光斑(氛围装饰,非交互反馈)
+   - 三个大 blur 渐变光斑:品牌绿主光 + 蓝/紫副光,低饱和不干扰阅读
+   - 只动 transform(合成器友好),CSS 离屏动画
+   - reduced-motion / reduced-transparency 时静止
+   ------------------------------------------------------------ */
+.aurora {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.aurora-blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(32px);
+  opacity: 0.32;
+  will-change: transform;
+}
+
+.aurora-1 {
+  width: 260px;
+  height: 150px;
+  left: -60px;
+  top: -70px;
+  background: radial-gradient(
+    circle,
+    rgba(0, 168, 118, 0.6) 0%,
+    rgba(0, 168, 118, 0.18) 55%,
+    transparent 72%
+  );
+  animation: aurora-drift-1 13s ease-in-out infinite alternate;
+}
+
+.aurora-2 {
+  width: 200px;
+  height: 140px;
+  right: 12%;
+  top: -60px;
+  background: radial-gradient(
+    circle,
+    rgba(11, 102, 194, 0.42) 0%,
+    rgba(130, 80, 223, 0.22) 60%,
+    transparent 75%
+  );
+  animation: aurora-drift-2 17s ease-in-out infinite alternate;
+}
+
+.aurora-3 {
+  width: 180px;
+  height: 120px;
+  right: -40px;
+  top: 40%;
+  background: radial-gradient(
+    circle,
+    rgba(130, 80, 223, 0.35) 0%,
+    rgba(0, 168, 118, 0.15) 60%,
+    transparent 75%
+  );
+  animation: aurora-drift-3 21s ease-in-out infinite alternate;
+}
+
+@keyframes aurora-drift-1 {
+  from {
+    transform: translate(0, 0) scale(1);
+  }
+  to {
+    transform: translate(70px, 26px) scale(1.18);
+  }
+}
+
+@keyframes aurora-drift-2 {
+  from {
+    transform: translate(0, 0) scale(1);
+  }
+  to {
+    transform: translate(-52px, 30px) scale(0.86);
+  }
+}
+
+@keyframes aurora-drift-3 {
+  from {
+    transform: translate(0, 0) scale(1);
+  }
+  to {
+    transform: translate(-38px, -22px) scale(1.22);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aurora-blob {
+    animation: none;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .aurora {
+    display: none;
+  }
+}
+
 /* 系统关闭透明度:玻璃变实(无障碍) */
 @media (prefers-reduced-transparency: reduce) {
   .liquid-glass {

@@ -33,11 +33,18 @@ export function SiteHeader() {
           scrolled ? "is-scrolled" : ""
         }`}
       >
+        {/* 极光:液态玻璃内缓慢流动的光斑(纯装饰,不拦截事件) */}
+        <div className="aurora" aria-hidden="true">
+          <span className="aurora-blob aurora-1" />
+          <span className="aurora-blob aurora-2" />
+          <span className="aurora-blob aurora-3" />
+        </div>
+
         {/* 品牌:圆点 + 字标 */}
         <Link
           href="/"
           aria-label="0xff.zone 首页"
-          className="group flex items-center gap-2.5 text-foreground"
+          className="group relative z-10 flex items-center gap-2.5 text-foreground"
         >
           <span
             className="inline-block h-2 w-2 rounded-full bg-accent transition-transform duration-300 group-hover:scale-125"
@@ -48,7 +55,7 @@ export function SiteHeader() {
           </span>
         </Link>
 
-        <div className="flex items-center gap-4 sm:gap-6">
+        <div className="relative z-10 flex items-center gap-4 sm:gap-6">
           <nav className="hidden items-center gap-6 text-sm sm:flex">
             {nav.map((item) => (
               <NavLink key={item.href} href={item.href}>
