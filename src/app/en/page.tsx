@@ -17,7 +17,7 @@ export default function HomeEn() {
       <article className="mx-auto w-full max-w-6xl pb-24 pt-8 sm:pt-12">
       <section className="flex flex-col lg:min-h-[calc(100vh-5.75rem)]">
         {/* ============ HERO: vertically centered single column ============ */}
-        <div className="hero-scroll flex flex-col items-center pt-2 text-center lg:pt-4">
+        <div className="hero-scroll flex flex-col items-center pt-2 text-center">
             <FadeIn>
             {/* title frame: glass material with ink particles, static title */}
             <div className="hero-frame relative mt-4 overflow-hidden px-8">

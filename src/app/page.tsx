@@ -18,7 +18,7 @@ export default function Home() {
       <article className="mx-auto w-full max-w-6xl pb-24 pt-8 sm:pt-12">
       <section className="flex flex-col lg:min-h-[calc(100vh-5.75rem)]">
         {/* ============ HERO:垂直居中单栏,克制高级 ============ */}
-        <div className="hero-scroll flex flex-col items-center pt-2 text-center lg:pt-4">
+        <div className="hero-scroll flex flex-col items-center pt-2 text-center">
             <FadeIn>
             {/* 大标题框:玻璃材质,粒子漂浮,静态标题 */}
             <div className="hero-frame relative mt-4 overflow-hidden px-8">
