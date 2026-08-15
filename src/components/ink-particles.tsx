@@ -32,15 +32,19 @@ export function InkParticles() {
       canvas.height = Math.round(h * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       const count = Math.max(18, Math.min(70, Math.round((w * h) / 16000)));
-      parts = Array.from({ length: count }, () => ({
-        x: Math.random() * w,
-        y: Math.random() * h,
-        r: 0.6 + Math.random() * 1.8,
-        a: 0.12 + Math.random() * 0.3,
-        vx: (Math.random() - 0.5) * 0.12,
-        vy: -0.05 - Math.random() * 0.09,
-        ph: Math.random() * Math.PI * 2,
-      }));
+      parts = Array.from({ length: count }, () => {
+        // 高速:主导方向(左→右)+随机纵向,速度 0.8-2.6 px/帧
+        const speed = 0.8 + Math.random() * 1.8;
+        return {
+          x: Math.random() * w,
+          y: Math.random() * h,
+          r: 0.6 + Math.random() * 1.8,
+          a: 0.12 + Math.random() * 0.3,
+          vx: speed * (Math.random() < 0.5 ? 1 : -1),
+          vy: (Math.random() - 0.5) * 1.4,
+          ph: Math.random() * Math.PI * 2,
+        };
+      });
     };
 
     const frame = () => {
