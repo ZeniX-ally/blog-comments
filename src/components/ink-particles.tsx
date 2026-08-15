@@ -56,8 +56,8 @@ export function InkParticles() {
         return {
           x: Math.random() * w,
           y: Math.random() * h,
-          r: 0.5 + Math.random() * 0.9,
-          a: 0.08 + Math.random() * 0.1,
+          r: 0.7 + Math.random() * 1.1,
+          a: 0.13 + Math.random() * 0.13,
           bx: Math.cos(angle) * speed,
           by: Math.sin(angle) * speed,
           ix: 0,
