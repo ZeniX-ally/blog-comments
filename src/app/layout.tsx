@@ -49,8 +49,12 @@ export default function RootLayout({
         )}
       </head>
       <body className="flex min-h-screen flex-col">
-        {/* 背景装饰层:极淡绿光晕,pointer-events: none */}
-        <div aria-hidden="true" className="bg-fx" />
+        {/* 背景装饰层:星云光斑 + 极淡光晕,pointer-events: none */}
+        <div aria-hidden="true" className="bg-fx">
+          <div className="nebula nebula-1" />
+          <div className="nebula nebula-2" />
+          <div className="nebula nebula-3" />
+        </div>
         <EffectLayer />
         <SiteHeader />
         <main className="w-full grow px-5 sm:px-12 md:px-16 lg:px-20 xl:px-24">
