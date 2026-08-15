@@ -40,30 +40,34 @@ export function SiteHeader() {
           <span className="aurora-blob aurora-3" />
         </div>
 
-        {/* 品牌:莫比乌斯环(∞ 投影)+ 字标 */}
+        {/* 品牌:莫比乌斯环(带宽∞投影)+ 字标 */}
         <Link
           href="/"
           aria-label="0xff.zone 首页"
           className="group flex items-center gap-2.5 text-foreground"
         >
-          {/* 空心莫比乌斯带:∞ 形(带子扭转一次的侧面投影),悬停微旋转 */}
+          {/* 空心莫比乌斯带:双层 ∞ 带宽度感,中心交叉,悬停微旋转 */}
           <svg
             viewBox="0 0 24 24"
-            width="26"
-            height="26"
+            width="27"
+            height="27"
             fill="none"
             stroke="currentColor"
-            strokeWidth="1.7"
             strokeLinecap="round"
             className="text-foreground transition-transform duration-700 group-hover:rotate-180"
             aria-hidden="true"
           >
-            {/* 左环 + 右环,在中心 (12,12) 交叉,构成莫比乌斯带投影 */}
-            <path d="M12 12
-                     A 4 6 0 1 1 4 12
-                     A 4 6 0 1 1 12 12
-                     A 4 6 0 1 1 20 12
-                     A 4 6 0 1 1 12 12" />
+            {/* 后层(淡):完整 ∞ 外轮廓 */}
+            <path
+              d="M12 12 A 3.5 5.5 0 1 1 5 12 A 3.5 5.5 0 1 1 12 12 A 3.5 5.5 0 1 1 19 12 A 3.5 5.5 0 1 1 12 12"
+              strokeWidth="2.2"
+              opacity="0.3"
+            />
+            {/* 前层(实):压缩的 ∞,形成带宽层次 */}
+            <path
+              d="M12 12 A 3.5 5.5 0 1 0 5 12 A 3.5 5.5 0 1 0 12 12 A 3.5 5.5 0 1 0 19 12 A 3.5 5.5 0 1 0 12 12"
+              strokeWidth="1.1"
+            />
           </svg>
           <span className="text-[15px] font-semibold tracking-tight">
             0xff.zone

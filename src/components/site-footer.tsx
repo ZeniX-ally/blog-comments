@@ -10,20 +10,16 @@ export function SiteFooter() {
         <p className="flex items-center gap-2.5">
           <svg
             viewBox="0 0 24 24"
-            width="14"
-            height="14"
+            width="15"
+            height="15"
             fill="none"
             stroke="currentColor"
-            strokeWidth="1.7"
             strokeLinecap="round"
             className="text-muted"
             aria-hidden="true"
           >
-            <path d="M12 12
-                     A 4 6 0 1 1 4 12
-                     A 4 6 0 1 1 12 12
-                     A 4 6 0 1 1 20 12
-                     A 4 6 0 1 1 12 12" />
+            <path d="M12 12 A 3.5 5.5 0 1 1 5 12 A 3.5 5.5 0 1 1 12 12 A 3.5 5.5 0 1 1 19 12 A 3.5 5.5 0 1 1 12 12" strokeWidth="2.2" opacity="0.3" />
+            <path d="M12 12 A 3.5 5.5 0 1 0 5 12 A 3.5 5.5 0 1 0 12 12 A 3.5 5.5 0 1 0 19 12 A 3.5 5.5 0 1 0 12 12" strokeWidth="1.1" />
           </svg>
           <span className="text-xs text-muted">0xff.zone</span>
           <span className="text-faint/80">· © {year} {site.name}</span>
