@@ -14,7 +14,7 @@ export default function Home() {
 
   return (
     <BookTransition>
-      <article className="mx-auto w-full max-w-6xl pb-24 pt-5 sm:pt-7">
+      <article className="mx-auto w-full max-w-6xl pb-24 pt-5 sm:pt-8">
       <section className="flex flex-col lg:min-h-[calc(100vh-5.75rem)]">
         {/* ============ HERO:垂直居中单栏,克制高级 ============ */}
         <div className="hero-scroll flex flex-col items-center pt-5 text-center lg:pt-7">
