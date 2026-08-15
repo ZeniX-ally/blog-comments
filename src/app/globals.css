@@ -53,15 +53,15 @@
 
   --bg: #ffffff;
   --fg: #1d1d1f;
-  --muted: #56565c;
-  --faint: #6b6b72;
-  --line: rgba(29, 29, 31, 0.16);
+  --muted: #3f3f46;
+  --faint: #52525b;
+  --line: rgba(29, 29, 31, 0.28);
   --accent: #00a876;
   --accent-strong: #00845c;
-  --surface: #f4f4f5;
-  --surface-soft: rgba(29, 29, 31, 0.04);
-  --code-bg: #f2f2f3;
-  --card-border: rgba(29, 29, 31, 0.15);
+  --surface: #f0f0f2;
+  --surface-soft: rgba(29, 29, 31, 0.05);
+  --code-bg: #ececee;
+  --card-border: rgba(29, 29, 31, 0.24);
 
   /* 氛围光:品牌绿,极淡 */
   --glow: rgba(0, 168, 118, 0.04);
@@ -195,7 +195,7 @@ body {
   );
   -webkit-backdrop-filter: blur(28px) saturate(190%);
   backdrop-filter: blur(28px) saturate(190%);
-  border: 1px solid rgba(29, 29, 31, 0.12);
+  border: 1px solid rgba(29, 29, 31, 0.2);
   border-radius: 9999px;
   box-shadow:
     0 10px 34px rgba(0, 0, 0, 0.08),
