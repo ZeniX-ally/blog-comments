@@ -51,7 +51,7 @@ export function InkParticles() {
       const count = Math.max(120, Math.min(320, Math.round((w * h) / 4500)));
       parts = Array.from({ length: count }, () => {
         // 慢速漂移:0.3-0.8 px/帧,方向随机,优雅不躁
-        const speed = 0.3 + Math.random() * 0.5;
+        const speed = 0.15 + Math.random() * 0.25;
         const angle = Math.random() * Math.PI * 2;
         return {
           x: Math.random() * w,
@@ -98,18 +98,18 @@ export function InkParticles() {
         p.iy *= 0.9;
 
         // 总位移 = 基础漂移 + 随机游走抖动 + 冲击
-        p.x += p.bx + wander * 0.1;
-        p.y += p.by + wander2 * 0.1 + p.iy;
+        p.x += p.bx + wander * 0.05;
+        p.y += p.by + wander2 * 0.05 + p.iy;
         p.x += p.ix;
 
         // 漂移方向缓慢偏转(不走直线,更有生命感)
-        p.bx += wander * 0.002;
-        p.by += wander2 * 0.002;
+        p.bx += wander * 0.001;
+        p.by += wander2 * 0.001;
         // 限速:基础速度保持 0.3-0.8 区间
         const baseSpeed = Math.hypot(p.bx, p.by);
-        if (baseSpeed > 1.4) {
-          p.bx = (p.bx / baseSpeed) * 1.4;
-          p.by = (p.by / baseSpeed) * 1.4;
+        if (baseSpeed > 0.8) {
+          p.bx = (p.bx / baseSpeed) * 0.8;
+          p.by = (p.by / baseSpeed) * 0.8;
         }
 
         // 边界回绕
