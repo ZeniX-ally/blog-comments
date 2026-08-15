@@ -498,6 +498,54 @@ body {
 }
 
 /* ------------------------------------------------------------
+   苹果式分区标题:负字距大标题,配 page-head-label 小标签
+   ------------------------------------------------------------ */
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2.125rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+/* ------------------------------------------------------------
+   苹果式轻列表:无分隔线,间距分组,hover 淡灰底(News 风格)
+   ------------------------------------------------------------ */
+.post-link {
+  display: block;
+  padding: 1rem 0.75rem;
+  border-radius: 0.875rem;
+  transition: background-color 200ms var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .post-link:hover {
+    background: var(--surface-soft);
+  }
+}
+
+.post-link-date {
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  color: var(--faint);
+  white-space: nowrap;
+}
+
+.post-link-title {
+  font-size: 1.0625rem;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--fg);
+  transition: color 200ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .post-link:hover .post-link-title {
+    color: var(--accent-strong);
+  }
+}
+
+/* ------------------------------------------------------------
    卡片:浅灰苹果面 + 大圆角 + 细边框,hover 轻抬升
    ------------------------------------------------------------ */
 .light-card {
@@ -516,6 +564,19 @@ body {
     transform: translateY(-2px);
     border-color: rgba(0, 168, 118, 0.35);
     box-shadow: 0 8px 24px -12px rgba(29, 29, 31, 0.1);
+  }
+}
+
+/* 按下即时响应(苹果式:反馈在 pointer-down,不等 release) */
+.light-card:active {
+  transform: scale(0.985);
+  transition-duration: 100ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .light-card,
+  .post-link {
+    transition-duration: 0ms;
   }
 }
 

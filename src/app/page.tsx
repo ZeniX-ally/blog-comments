@@ -10,7 +10,7 @@ import { BookTransition } from "@/components/book-transition";
 export default function Home() {
   const posts = getAllPosts();
   const latestPosts = posts.slice(0, 4);
-  const featuredProjects = projects.filter((p) => p.featured).slice(0, 3);
+  const featuredProjects = projects.filter((p) => p.featured).slice(0, 4);
   const tagCount = new Set(posts.flatMap((p) => p.tags ?? [])).size;
 
   return (
@@ -56,16 +56,52 @@ export default function Home() {
             </FadeIn>
         </div>
 
-        {/* ============ 双栏紧凑列表(首屏全览) ============ */}
-        <div className="mt-14 grid gap-10 lg:mt-16 lg:grid-cols-2 lg:gap-16">
-          {/* 最新文章 */}
-          <section>
-            <FadeIn>
-              <header className="mb-3 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                <h2 className="font-display text-xl font-medium">最新文章</h2>
+        {/* ============ 最新文章:苹果式轻列表(无分隔线,间距分组) ============ */}
+        <section className="mt-24 sm:mt-28">
+          <FadeIn>
+            <header className="mb-9 flex flex-wrap items-end justify-between gap-x-6 gap-y-3">
+              <div>
+                <div className="page-head-label mb-3">Latest Writing</div>
+                <h2 className="section-title">最新文章</h2>
+              </div>
+              <Link
+                href="/blog"
+                className="group text-sm text-muted transition-colors hover:text-accent"
+              >
+                全部{" "}
+                <span className="inline-block transition-transform group-hover:translate-x-0.5">
+                  →
+                </span>
+              </Link>
+            </header>
+          </FadeIn>
+          <div className="flex flex-col">
+            {latestPosts.map((post, i) => (
+              <FadeIn key={post.slug} delay={i * 40}>
                 <Link
-                  href="/blog"
-                  className="group ml-auto text-xs text-muted transition-colors hover:text-accent"
+                  href={`/blog/${slugToHref(post.slug)}`}
+                  className="post-link grid gap-x-6 gap-y-0.5 sm:grid-cols-[8rem_1fr]"
+                >
+                  <time className="post-link-date">{formatDate(post.date)}</time>
+                  <span className="post-link-title">{post.title}</span>
+                </Link>
+              </FadeIn>
+            ))}
+          </div>
+        </section>
+
+        {/* ============ 精选项目:浅灰卡片墙(视觉重收尾) ============ */}
+        {featuredProjects.length > 0 && (
+          <section className="mt-20 sm:mt-24">
+            <FadeIn>
+              <header className="mb-9 flex flex-wrap items-end justify-between gap-x-6 gap-y-3">
+                <div>
+                  <div className="page-head-label mb-3">Selected Work</div>
+                  <h2 className="section-title">精选项目</h2>
+                </div>
+                <Link
+                  href="/projects"
+                  className="group text-sm text-muted transition-colors hover:text-accent"
                 >
                   全部{" "}
                   <span className="inline-block transition-transform group-hover:translate-x-0.5">
@@ -74,72 +110,62 @@ export default function Home() {
                 </Link>
               </header>
             </FadeIn>
-            <FadeIn delay={60}>
-              {latestPosts.map((post, i) => (
-                <FadeIn key={post.slug} delay={i * 40}>
-                  <Link
-                    href={`/blog/${slugToHref(post.slug)}`}
-                    className="post-row post-row--tight grid gap-x-5 gap-y-0.5 sm:grid-cols-[6rem_1fr]"
-                  >
-                    <time className="post-row-meta pt-[3px]">
-                      {formatDate(post.date)}
-                    </time>
-                    <div className="min-w-0">
-                      <div className="post-row-title">{post.title}</div>
+            <div className="grid gap-5 sm:grid-cols-2">
+              {featuredProjects.map((p, i) => {
+                const card = (
+                  <div className="light-card group flex h-full min-h-[11rem] flex-col gap-4 p-6">
+                    <div className="flex items-start justify-between gap-4">
+                      <h3 className="font-display text-xl font-medium tracking-tight">
+                        {p.name}
+                      </h3>
+                      <span className="shrink-0 text-xs text-faint">{p.year}</span>
                     </div>
-                  </Link>
-                </FadeIn>
-              ))}
-            </FadeIn>
-          </section>
-
-          {/* 精选项目 */}
-          {featuredProjects.length > 0 && (
-            <section>
-              <FadeIn>
-                <header className="mb-3 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                  <h2 className="font-display text-xl font-medium">精选项目</h2>
-                  <Link
-                    href="/projects"
-                    className="group ml-auto text-xs text-muted transition-colors hover:text-accent"
-                  >
-                    全部{" "}
-                    <span className="inline-block transition-transform group-hover:translate-x-0.5">
-                      →
-                    </span>
-                  </Link>
-                </header>
-              </FadeIn>
-              <FadeIn delay={60}>
-                {featuredProjects.map((p, i) => (
-                  <FadeIn key={p.name} delay={i * 40}>
-                    <div className="post-row post-row--tight grid gap-x-5 gap-y-0.5 sm:grid-cols-[6rem_1fr]">
-                      <div className="post-row-meta pt-[3px]">{p.year}</div>
-                      <div className="min-w-0">
-                        <div className="post-row-title flex flex-wrap items-center gap-x-2">
-                          <span>{p.name}</span>
-                          {p.link && (
-                            <a
-                              href={p.link}
-                              target="_blank"
-                              rel="noreferrer"
-                              className="text-xs text-accent transition-colors hover:underline"
-                            >
-                              访问 ↗
-                            </a>
-                          )}
-                        </div>
-                        <p className="mt-0.5 line-clamp-1 text-[13px] leading-relaxed text-muted">
-                          {p.description}
-                        </p>
-                      </div>
+                    <p className="line-clamp-2 text-sm leading-relaxed text-muted">
+                      {p.description}
+                    </p>
+                    <div className="mt-auto flex flex-wrap items-center gap-2">
+                      {p.tech.slice(0, 3).map((t) => (
+                        <span
+                          key={t}
+                          className="rounded-full bg-[var(--surface-soft)] px-2.5 py-1 text-xs text-muted"
+                        >
+                          {t}
+                        </span>
+                      ))}
+                      {p.link && (
+                        <span className="ml-auto inline-flex items-center gap-1 text-sm font-medium text-accent transition-colors group-hover:text-accent-strong">
+                          访问{" "}
+                          <span className="transition-transform group-hover:translate-x-0.5">
+                            ↗
+                          </span>
+                        </span>
+                      )}
+                      {p.repo && !p.link && (
+                        <span className="ml-auto text-sm text-muted">仓库 ↗</span>
+                      )}
                     </div>
+                  </div>
+                );
+                return (
+                  <FadeIn key={p.name} delay={i * 60}>
+                    {p.link ? (
+                      <a
+                        href={p.link}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="block h-full"
+                      >
+                        {card}
+                      </a>
+                    ) : (
+                      card
+                    )}
                   </FadeIn>
-                ))}
-              </FadeIn>
-            </section>
-          )}
-        </div>
+                );
+              })}
+            </div>
+          </section>
+        )}
       </section>
       </article>
     </BookTransition>
