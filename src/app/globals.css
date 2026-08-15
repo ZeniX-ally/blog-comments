@@ -248,11 +248,12 @@ body {
 }
 
 /* ------------------------------------------------------------
-   顶栏极光:液态玻璃内颜料入水般的交融流动
-   - 大光斑(覆盖整个胶囊)+ 强 blur(颜料扩散感)
-   - mix-blend-mode: screen:重叠处颜色相加变亮,互相交融
-   - 4 段蜿蜒关键帧 + 交叉穿越路径,错峰周期永不重复同步
-   - 只动 transform(合成器友好),reduced-motion / reduced-transparency 时静止
+   顶栏极光:颜料入水交融(液态玻璃内)
+   - 三个横向椭圆光斑水平铺满胶囊且大幅重叠(无空白)
+   - 垂直对准胶囊中心,高 150px 上下溢出被裁剪(无缝铺满高度)
+   - mix-blend-mode: multiply:重叠区颜色相乘,颜料混合感
+   - 小幅摆动(±60px)+ 呼吸缩放,慢周期,似颜料缓慢渗开
+   - 只动 transform,reduced-motion / reduced-transparency 时静止
    ------------------------------------------------------------ */
 .aurora {
   position: absolute;
@@ -264,111 +265,79 @@ body {
 
 .aurora-blob {
   position: absolute;
+  width: 620px;
+  height: 150px;
+  top: -50px;
   border-radius: 9999px;
   mix-blend-mode: multiply;
-  filter: blur(44px);
+  filter: blur(34px);
+  opacity: 0.9;
   will-change: transform;
 }
 
-/* 绿:主光,从左上蜿蜒横穿 */
+/* 绿:左(中心 25%) */
 .aurora-1 {
-  width: 420px;
-  height: 260px;
-  left: -140px;
-  top: -110px;
+  left: -12px;
   background: radial-gradient(
-    circle,
+    ellipse at center,
     rgba(0, 168, 118, 1) 0%,
-    rgba(0, 168, 118, 0.55) 40%,
-    rgba(0, 168, 118, 0.18) 60%,
-    transparent 75%
+    rgba(0, 168, 118, 0.6) 45%,
+    rgba(0, 168, 118, 0.2) 70%,
+    transparent 85%
   );
-  animation: aurora-drift-1 16s ease-in-out infinite;
+  animation: aurora-drift-1 15s ease-in-out infinite alternate;
 }
 
-/* 蓝:从右侧迂回,穿过绿光路径 */
+/* 蓝:中(中心 50%) */
 .aurora-2 {
-  width: 360px;
-  height: 240px;
-  right: -120px;
-  top: -90px;
+  left: 276px;
   background: radial-gradient(
-    circle,
+    ellipse at center,
     rgba(30, 120, 210, 1) 0%,
-    rgba(30, 120, 210, 0.5) 40%,
-    rgba(130, 80, 223, 0.22) 62%,
-    transparent 78%
+    rgba(30, 120, 210, 0.6) 45%,
+    rgba(130, 80, 223, 0.24) 70%,
+    transparent 85%
   );
-  animation: aurora-drift-2 22s ease-in-out infinite;
+  animation: aurora-drift-2 19s ease-in-out infinite alternate;
 }
 
-/* 紫:居中游走,负责与绿蓝混合出中间色 */
+/* 紫:右(中心 75%) */
 .aurora-3 {
-  width: 300px;
-  height: 200px;
-  left: 32%;
-  top: -60px;
+  left: 564px;
   background: radial-gradient(
-    circle,
+    ellipse at center,
     rgba(150, 90, 230, 1) 0%,
-    rgba(150, 90, 230, 0.48) 42%,
-    rgba(0, 168, 118, 0.2) 62%,
-    transparent 78%
+    rgba(150, 90, 230, 0.55) 45%,
+    rgba(0, 168, 118, 0.2) 70%,
+    transparent 85%
   );
-  animation: aurora-drift-3 28s ease-in-out infinite;
+  animation: aurora-drift-3 23s ease-in-out infinite alternate;
 }
 
 @keyframes aurora-drift-1 {
-  0% {
+  from {
     transform: translate(0, 0) scale(1);
   }
-  30% {
-    transform: translate(140px, 34px) scale(1.22);
-  }
-  55% {
-    transform: translate(220px, -6px) scale(1.1);
-  }
-  80% {
-    transform: translate(120px, 44px) scale(1.28);
-  }
-  100% {
-    transform: translate(0, 0) scale(1);
+  to {
+    transform: translate(60px, 4px) scale(1.08);
   }
 }
 
 @keyframes aurora-drift-2 {
-  0% {
+  from {
     transform: translate(0, 0) scale(1);
   }
-  28% {
-    transform: translate(-150px, 26px) scale(1.18);
-  }
-  58% {
-    transform: translate(-260px, -14px) scale(0.92);
-  }
-  82% {
-    transform: translate(-140px, 40px) scale(1.24);
-  }
-  100% {
-    transform: translate(0, 0) scale(1);
+  to {
+    transform: translate(-52px, -3px) scale(0.94);
   }
 }
 
 @keyframes aurora-drift-3 {
-  0% {
+  from {
     transform: translate(0, 0) scale(1);
   }
-  32% {
-    transform: translate(90px, 30px) scale(1.3);
-  }
-  60% {
-    transform: translate(-70px, 46px) scale(1.08);
-  }
-  84% {
-    transform: translate(-120px, 12px) scale(1.26);
-  }
-  100% {
-    transform: translate(0, 0) scale(1);
+  to {
+    transform: translate(-44px, 5px) scale(1.06);
   }
 }
 
