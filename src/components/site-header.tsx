@@ -40,17 +40,17 @@ export function SiteHeader() {
           <span className="aurora-blob aurora-3" />
         </div>
 
-        {/* 品牌:无限符号 ∞(单线连续)+ 字标 */}
+        {/* 品牌:无限符号 ∞(单线连续),无文字 */}
         <Link
           href="/"
-          aria-label="0xff.zone 首页"
+          aria-label="返回首页"
           className="group flex items-center gap-2.5 text-foreground"
         >
           {/* 标准 ∞:一条连续线贯穿左右环,中心交叉 */}
           <svg
             viewBox="0 0 24 24"
-            width="28"
-            height="28"
+            width="30"
+            height="30"
             fill="none"
             stroke="currentColor"
             strokeWidth="1.8"
@@ -68,9 +68,6 @@ export function SiteHeader() {
                      C 2.5 16 4.5 18 7 18
                      C 9.5 18 11 16.5 12 12" />
           </svg>
-          <span className="text-[15px] font-semibold tracking-tight">
-            0xff.zone
-          </span>
         </Link>
 
         <div className="relative z-10 flex items-center gap-4 sm:gap-6">

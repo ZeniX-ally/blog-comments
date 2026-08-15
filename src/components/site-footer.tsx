@@ -29,8 +29,7 @@ export function SiteFooter() {
                      C 2.5 16 4.5 18 7 18
                      C 9.5 18 11 16.5 12 12" />
           </svg>
-          <span className="text-xs text-muted">0xff.zone</span>
-          <span className="text-faint/80">· © {year} {site.name}</span>
+          <span className="text-faint/80">© {year} {site.name}</span>
         </p>
         {/* 右侧链接组右 padding 避让右下角固定按钮(BackToTop),防止滚动到底时被遮挡 */}
         <div className="flex gap-5 sm:pr-16">
