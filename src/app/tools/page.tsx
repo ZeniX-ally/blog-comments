@@ -10,7 +10,6 @@ export const metadata: Metadata = {
 type ToolStatus = "RUNNING" | "LOCAL" | "LAB" | "DAILY";
 
 interface Tool {
-  id: string;
   name: string;
   desc: string;
   status: ToolStatus;
@@ -18,7 +17,6 @@ interface Tool {
 }
 
 interface ToolSection {
-  hex: string;
   title: string;
   en: string;
   tools: Tool[];
@@ -26,56 +24,52 @@ interface ToolSection {
 
 const SECTIONS: ToolSection[] = [
   {
-    hex: "0x00",
     title: "自建服务",
-    en: "SELF-HOSTED",
+    en: "Self-hosted",
     tools: [
-      { id: "0x01", name: "Jellyfin", desc: "家庭媒体中心 · 影视管理", status: "RUNNING", tag: "iStoreOS" },
-      { id: "0x02", name: "Qdrant", desc: "知识库向量存储 · 记忆中枢", status: "RUNNING", tag: "Docker" },
-      { id: "0x03", name: "OpenClash", desc: "代理 · 家里的网络出口", status: "RUNNING", tag: "iStoreOS" },
-      { id: "0x04", name: "Vaultwarden", desc: "密码管理 · 替代 LastPass", status: "RUNNING", tag: "Docker" },
-      { id: "0x05", name: "Radarr · Sonarr · Bazarr", desc: "影音自动化下载管理", status: "RUNNING", tag: "ARR-Stack" },
-      { id: "0x06", name: "Prowlarr · qBittorrent", desc: "索引 + 下载引擎", status: "RUNNING", tag: "ARR-Stack" },
-      { id: "0x07", name: "Speedtest-tracker", desc: "网速历史记录", status: "RUNNING", tag: "Docker" },
+      { name: "Jellyfin", desc: "家庭媒体中心 · 影视管理", status: "RUNNING", tag: "iStoreOS" },
+      { name: "Qdrant", desc: "知识库向量存储 · 记忆中枢", status: "RUNNING", tag: "Docker" },
+      { name: "OpenClash", desc: "代理 · 家里的网络出口", status: "RUNNING", tag: "iStoreOS" },
+      { name: "Vaultwarden", desc: "密码管理 · 替代 LastPass", status: "RUNNING", tag: "Docker" },
+      { name: "Radarr · Sonarr · Bazarr", desc: "影音自动化下载管理", status: "RUNNING", tag: "ARR-Stack" },
+      { name: "Prowlarr · qBittorrent", desc: "索引 + 下载引擎", status: "RUNNING", tag: "ARR-Stack" },
+      { name: "Speedtest-tracker", desc: "网速历史记录", status: "RUNNING", tag: "Docker" },
     ],
   },
   {
-    hex: "0x10",
     title: "开发与工具",
-    en: "DEV TOOLS",
+    en: "Dev tools",
     tools: [
-      { id: "0x11", name: "VS Code", desc: "主力编辑器 · 深色主题", status: "LOCAL", tag: "editor" },
-      { id: "0x12", name: "OpenCode", desc: "vibe coding 主力 · AI 辅助写码", status: "LOCAL", tag: "agent" },
-      { id: "0x13", name: "git", desc: "代码版本管理", status: "LOCAL", tag: "vcs" },
-      { id: "0x14", name: "Python 3.x", desc: "脚本与自动化", status: "LOCAL", tag: "lang" },
+      { name: "VS Code", desc: "主力编辑器 · 深色主题", status: "LOCAL", tag: "editor" },
+      { name: "OpenCode", desc: "vibe coding 主力 · AI 辅助写码", status: "LOCAL", tag: "agent" },
+      { name: "git", desc: "代码版本管理", status: "LOCAL", tag: "vcs" },
+      { name: "Python 3.x", desc: "脚本与自动化", status: "LOCAL", tag: "lang" },
     ],
   },
   {
-    hex: "0x20",
     title: "测试相关",
-    en: "TEST LAB",
+    en: "Test lab",
     tools: [
-      { id: "0x21", name: "FCT / IGBT 测试", desc: "工作主战场 · 产线测试", status: "LAB", tag: "flex" },
-      { id: "0x22", name: "XCP 协议", desc: "ECU 标定与测量", status: "LAB", tag: "protocol" },
-      { id: "0x23", name: "上位机", desc: "与产线设备交互", status: "LAB", tag: "host-app" },
+      { name: "FCT / IGBT 测试", desc: "工作主战场 · 产线测试", status: "LAB", tag: "flex" },
+      { name: "XCP 协议", desc: "ECU 标定与测量", status: "LAB", tag: "protocol" },
+      { name: "上位机", desc: "与产线设备交互", status: "LAB", tag: "host-app" },
     ],
   },
   {
-    hex: "0x30",
     title: "生活向",
-    en: "DAILY",
+    en: "Daily",
     tools: [
-      { id: "0x31", name: "foobar2000", desc: "本地音乐播放", status: "DAILY", tag: "audio" },
-      { id: "0x32", name: "小米电视 + ADB", desc: "折腾电视装应用", status: "DAILY", tag: "tv" },
+      { name: "foobar2000", desc: "本地音乐播放", status: "DAILY", tag: "audio" },
+      { name: "小米电视 + ADB", desc: "折腾电视装应用", status: "DAILY", tag: "tv" },
     ],
   },
 ];
 
-const STATUS_META: Record<ToolStatus, { label: string; led: string }> = {
-  RUNNING: { label: "RUNNING", led: "led-running" },
-  LOCAL: { label: "LOCAL", led: "led-local" },
-  LAB: { label: "LAB", led: "led-lab" },
-  DAILY: { label: "DAILY", led: "led-daily" },
+const STATUS_META: Record<ToolStatus, { label: string; dot: string }> = {
+  RUNNING: { label: "运行中", dot: "dot-running" },
+  LOCAL: { label: "本机", dot: "dot-local" },
+  LAB: { label: "工作", dot: "dot-lab" },
+  DAILY: { label: "日常", dot: "dot-daily" },
 };
 
 export default function ToolsPage() {
@@ -88,22 +82,14 @@ export default function ToolsPage() {
         {/* 左栏:sticky 介绍牌 */}
         <FadeIn>
           <aside className="lg:sticky lg:top-24 lg:self-start">
-            <div className="page-head-label mb-6">[0x00] ARSENAL</div>
+            <div className="page-head-label mb-6">工具</div>
             <h1 className="font-display text-3xl font-medium tracking-tight sm:text-4xl">
               工具清单
             </h1>
             <p className="mt-4 text-[15px] leading-relaxed text-muted">
               自建服务与常用工具。
             </p>
-            <div className="mt-8 flex gap-6 font-mono text-xs text-faint">
-              <span>{total} modules</span>
-            </div>
-            <div className="mt-6 font-mono text-sm">
-              <span className="text-accent">zenix@0xff</span>
-              <span className="text-faint">:~$</span>{" "}
-              <span className="text-foreground">cat arsenal.toml</span>
-              <span className="cursor-blink ml-0.5 text-accent">▍</span>
-            </div>
+            <div className="mt-8 text-xs text-faint">{total} 项工具</div>
           </aside>
         </FadeIn>
 
@@ -111,32 +97,27 @@ export default function ToolsPage() {
         <div className="min-w-0 pb-10">
           <div className="space-y-20">
             {SECTIONS.map((sec, si) => (
-              <section key={sec.hex}>
+              <section key={sec.title}>
                 <FadeIn delay={si * 60}>
-                  <header className="mb-8 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                    <span className="font-mono text-xs text-faint">[{sec.hex}]</span>
+                  <header className="mb-8">
                     <h2 className="font-display text-2xl font-medium">{sec.title}</h2>
-                    <span className="font-mono text-[10px] tracking-[0.25em] text-accent">
+                    <p className="mt-1 text-xs uppercase tracking-[0.18em] text-faint">
                       {sec.en}
-                    </span>
+                    </p>
                   </header>
                 </FadeIn>
                 <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                   {sec.tools.map((t, ti) => {
                     const meta = STATUS_META[t.status];
                     return (
-                      <FadeIn key={t.id} delay={si * 60 + ti * 40}>
+                      <FadeIn key={t.name} delay={si * 60 + ti * 40}>
                         <div className="light-card flex min-h-[8.5rem] flex-col justify-between gap-2 p-6">
                           <div className="flex items-start gap-3">
-                            <span className={`led ${meta.led} mt-1.5`} aria-hidden="true" />
+                            <span className={`dot ${meta.dot} mt-1.5`} aria-hidden="true" />
                             <div className="min-w-0 flex-1">
                               <div className="flex items-baseline justify-between gap-2">
                                 <span className="font-medium leading-snug">{t.name}</span>
-                                <span
-                                  className={`shrink-0 font-mono text-[10px] tracking-widest ${
-                                    meta.led === "led-running" ? "text-accent" : "text-accent/80"
-                                  }`}
-                                >
+                                <span className="shrink-0 text-[10px] text-faint">
                                   {meta.label}
                                 </span>
                               </div>
@@ -145,8 +126,7 @@ export default function ToolsPage() {
                               </p>
                             </div>
                           </div>
-                          <div className="flex items-center justify-between border-t border-line pt-3 font-mono text-[11px] text-faint">
-                            <span>{t.id}</span>
+                          <div className="flex items-center justify-between border-t border-line pt-3 text-[11px] text-faint">
                             <span>{t.tag}</span>
                           </div>
                         </div>
@@ -157,17 +137,6 @@ export default function ToolsPage() {
               </section>
             ))}
           </div>
-
-          {/* 状态栏 */}
-          <FadeIn delay={200}>
-            <footer className="mt-20 flex flex-wrap items-center gap-x-3 gap-y-1 border border-line bg-surface px-4 py-2.5 font-mono text-xs text-muted">
-              <span className="text-accent">●</span>
-              <span>[ OK ] {total} modules loaded</span>
-              <span className="text-faint">·</span>
-              <span>all systems operational</span>
-              <span className="ml-auto text-faint">uptime ∞</span>
-            </footer>
-          </FadeIn>
         </div>
       </div>
       </article>

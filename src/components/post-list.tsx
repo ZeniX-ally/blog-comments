@@ -3,9 +3,8 @@ import { formatDate, slugToHref, type PostMeta } from "@/lib/posts";
 import { FadeIn } from "./fade-in";
 
 /**
- * 文章列表 —— 行式分隔线列表(Antigravity 式克制结构)。
- * 每行:mono 日期 | 标题 + 摘要 + 阅读时长/tags,hover 标题变绿。
- * 滚动进入视口时逐项淡入;basePath 用于英文站链接前缀(/en),中文站不传。
+ * 文章列表 —— 行式分隔线列表(克制结构)。
+ * 每行:日期 | 标题 + 摘要 + 阅读时长/tags,hover 标题变绿。
  */
 export function PostList({ posts, basePath = "" }: { posts: PostMeta[]; basePath?: string }) {
   if (posts.length === 0) {

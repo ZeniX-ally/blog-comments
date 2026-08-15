@@ -4,7 +4,6 @@ import { getAllPosts, formatDate, slugToHref } from "@/lib/posts";
 import { projects } from "@/lib/projects";
 import { FadeIn } from "@/components/fade-in";
 import { SignIn } from "@/components/sign-in";
-import { TypewriterText } from "@/components/typewriter-text";
 import { InkParticles } from "@/components/ink-particles";
 import { BookTransition } from "@/components/book-transition";
 
@@ -18,20 +17,14 @@ export default function Home() {
     <BookTransition>
       <article className="mx-auto w-full max-w-6xl pb-24 pt-8 sm:pt-12">
       <section className="flex flex-col lg:min-h-[calc(100vh-5.75rem)]">
-        {/* ============ HERO:垂直居中单栏,简约高级 ============ */}
+        {/* ============ HERO:垂直居中单栏,克制高级 ============ */}
         <div className="hero-scroll flex flex-col items-center pt-8 text-center lg:pt-14">
             <FadeIn>
-            {/* 大标题框:横向宽框苹果玻璃材质,粒子漂浮,文字居中 */}
+            {/* 大标题框:玻璃材质,粒子漂浮,静态标题 */}
             <div className="hero-frame relative mt-8 overflow-hidden px-8">
               <InkParticles />
               <div className="relative z-10">
-                <h1 className="page-title page-title--hero">
-                  <TypewriterText
-                    text={site.hero.greeting}
-                    speed={120}
-                    startDelay={300}
-                  />
-                </h1>
+                <h1 className="page-title page-title--hero">{site.hero.greeting}</h1>
               </div>
             </div>
 
@@ -40,20 +33,18 @@ export default function Home() {
               {site.hero.bio.join(" ")}
             </p>
 
-            {/* 统计:无分隔线,留白分隔 */}
+            {/* 统计:克制数字排版 */}
             <div className="mt-8 flex flex-wrap items-baseline justify-center gap-x-10 gap-y-2">
               {[
-                { n: posts.length, label: "posts" },
-                { n: projects.length, label: "projects" },
-                { n: tagCount, label: "tags" },
+                { n: posts.length, label: "文章" },
+                { n: projects.length, label: "作品" },
+                { n: tagCount, label: "标签" },
               ].map((s) => (
                 <div key={s.label}>
-                  <span className="font-display text-2xl font-medium text-accent-strong">
+                  <span className="font-display text-2xl font-medium tracking-tight">
                     {s.n}
                   </span>
-                  <span className="ml-2 font-mono text-[10px] tracking-widest text-faint">
-                    {s.label}
-                  </span>
+                  <span className="ml-2 text-xs text-faint">{s.label}</span>
                 </div>
               ))}
             </div>
@@ -71,14 +62,10 @@ export default function Home() {
           <section>
             <FadeIn>
               <header className="mb-3 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                <span className="font-mono text-xs text-faint">[0x01]</span>
                 <h2 className="font-display text-xl font-medium">最新文章</h2>
-                <span className="font-mono text-[10px] tracking-[0.25em] text-accent">
-                  LATEST
-                </span>
                 <Link
                   href="/blog"
-                  className="group ml-auto font-mono text-xs text-muted transition-colors hover:text-accent"
+                  className="group ml-auto text-xs text-muted transition-colors hover:text-accent"
                 >
                   全部{" "}
                   <span className="inline-block transition-transform group-hover:translate-x-0.5">
@@ -111,14 +98,10 @@ export default function Home() {
             <section>
               <FadeIn>
                 <header className="mb-3 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                  <span className="font-mono text-xs text-faint">[0x02]</span>
                   <h2 className="font-display text-xl font-medium">精选项目</h2>
-                  <span className="font-mono text-[10px] tracking-[0.25em] text-accent">
-                    FEATURED
-                  </span>
                   <Link
                     href="/projects"
-                    className="group ml-auto font-mono text-xs text-muted transition-colors hover:text-accent"
+                    className="group ml-auto text-xs text-muted transition-colors hover:text-accent"
                   >
                     全部{" "}
                     <span className="inline-block transition-transform group-hover:translate-x-0.5">
@@ -140,7 +123,7 @@ export default function Home() {
                               href={p.link}
                               target="_blank"
                               rel="noreferrer"
-                              className="font-mono text-xs text-accent transition-colors hover:underline"
+                              className="text-xs text-accent transition-colors hover:underline"
                             >
                               访问 ↗
                             </a>

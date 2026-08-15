@@ -12,9 +12,7 @@ const GITHUB_ICON = (
 
 /**
  * 主页 GitHub 登录区。
- * 未登录 → 次级胶囊按钮(跳 /api/auth/github)
- * 已登录 → 头像 + 用户名 + 退出
- * 登录态由 CF Pages Functions(/api/auth/me)提供,静态预览时 404 → 按未登录处理。
+ * 未登录 → 实底主按钮;已登录 → 头像 + 用户名 + 退出。
  */
 export function SignIn() {
   const [user, setUser] = useState<User | null>(null);
@@ -29,15 +27,12 @@ export function SignIn() {
   }, []);
 
   if (loading) {
-    return <div className="font-mono text-xs text-faint">auth…</div>;
+    return <div className="text-xs text-faint">登录中…</div>;
   }
 
   if (!user) {
     return (
-      <a
-        href="/api/auth/github"
-        className="btn-pill btn-primary font-mono"
-      >
+      <a href="/api/auth/github" className="btn-pill btn-primary">
         <span>{GITHUB_ICON}</span>
         sign in with GitHub
       </a>
@@ -53,12 +48,12 @@ export function SignIn() {
         height={28}
         className="h-7 w-7 rounded-full border border-line object-cover"
       />
-      <span className="font-mono text-xs text-muted">{user.name}</span>
+      <span className="text-xs text-muted">{user.name}</span>
       <a
         href="/api/auth/logout"
-        className="font-mono text-xs text-faint transition-colors hover:text-accent"
+        className="text-xs text-faint transition-colors hover:text-accent"
       >
-        [logout]
+        退出登录
       </a>
     </div>
   );

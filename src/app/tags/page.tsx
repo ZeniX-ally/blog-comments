@@ -15,9 +15,8 @@ export default function TagsPage() {
 
   return (
     <BookTransition>
-    <>
       <article className="mx-auto w-full max-w-6xl pb-32 pt-20 sm:pt-24">
-        <PageHeader label="[0x00] TAGS" title="标签" sub="按主题浏览全部文章。" />
+        <PageHeader label="标签" title="标签" sub="按主题浏览全部文章。" />
         <div className="pb-10">
           {tags.length === 0 ? (
             <p className="border-t border-line pt-10 text-muted">还没有标签，给文章加上 tags 字段后这里会出现。</p>
@@ -36,7 +35,7 @@ export default function TagsPage() {
                     >
                       #{tag}
                     </span>
-                    <span className="font-mono text-xs text-faint">{count}</span>
+                    <span className="text-xs text-faint">{count}</span>
                   </Link>
                 </li>
               ))}
@@ -44,7 +43,6 @@ export default function TagsPage() {
           )}
         </div>
       </article>
-    </>
     </BookTransition>
   );
 }

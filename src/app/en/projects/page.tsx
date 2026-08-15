@@ -16,19 +16,15 @@ export default function ProjectsPageEn() {
         {/* 左栏:sticky 介绍牌 */}
         <FadeIn>
           <aside className="lg:sticky lg:top-24 lg:self-start">
-            <div className="page-head-label mb-6">[0x00] PROJECTS</div>
+            <div className="page-head-label mb-6">作品</div>
             <h1 className="font-display text-3xl font-medium tracking-tight sm:text-4xl">
               Projects
             </h1>
             <p className="mt-4 text-[15px] leading-relaxed text-muted">
               Things I&apos;ve built, mostly born from my own real needs.
             </p>
-            <div className="mt-8 flex gap-6 font-mono text-xs text-faint">
-              <span>{projects.length} projects</span>
-            </div>
-            <div className="mt-6 font-mono text-xs text-accent">
-              zenix@0xff:~/projects$ ls
-              <span className="cursor-blink ml-0.5">▍</span>
+            <div className="mt-8 text-xs text-faint">
+              {projects.length} projects
             </div>
           </aside>
         </FadeIn>
@@ -47,22 +43,21 @@ export default function ProjectsPageEn() {
                 <FadeIn key={p.name} delay={i * 60}>
                   <div className="light-card group p-6">
                     <div className="flex items-start justify-between gap-3">
-                      <div className="flex items-center gap-2.5">
-                        <span className="led led-local" aria-hidden="true" />
-                        <span className="font-medium">{p.name}</span>
+                      <div>
+                        <div className="font-medium">{p.name}</div>
+                        <span className="mt-0.5 block text-xs text-faint">
+                          {p.year}
+                        </span>
                       </div>
-                      <span className="shrink-0 font-mono text-xs text-faint">
-                        {p.year}
-                      </span>
                     </div>
                     <p className="mt-2.5 text-sm leading-relaxed text-muted">
                       {p.description_en ?? p.description}
                     </p>
                     <div className="mt-4 flex items-center justify-between gap-3 border-t border-line pt-3">
-                      <span className="min-w-0 truncate font-mono text-[11px] text-faint">
+                      <span className="min-w-0 truncate text-[11px] text-faint">
                         {p.tech.join(" · ")}
                       </span>
-                      <span className="flex shrink-0 gap-4 font-mono text-xs">
+                      <span className="flex shrink-0 gap-4 text-xs">
                         {p.link && (
                           <a
                             href={p.link}
@@ -80,7 +75,7 @@ export default function ProjectsPageEn() {
                             rel="noreferrer"
                             className="text-muted transition-colors hover:text-foreground"
                           >
-                            Repo
+                            Repo ↗
                           </a>
                         )}
                       </span>

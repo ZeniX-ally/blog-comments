@@ -32,20 +32,15 @@ export default function BlogPage() {
         {/* 左栏:sticky 介绍牌 */}
         <FadeIn>
           <aside className="lg:sticky lg:top-24 lg:self-start">
-            <div className="page-head-label mb-6">[0x00] POSTS</div>
+            <div className="page-head-label mb-6">文章</div>
             <h1 className="font-display text-3xl font-medium tracking-tight sm:text-4xl">
               文章
             </h1>
             <p className="mt-4 text-[15px] leading-relaxed text-muted">
               关于技术、设计与生活的一切记录。
             </p>
-            <div className="mt-8 flex gap-6 font-mono text-xs text-faint">
-              <span>{allPosts.length} posts</span>
-              <span>{tagCount} tags</span>
-            </div>
-            <div className="mt-6 font-mono text-xs text-accent">
-              zenix@0xff:~/posts$ ls -lt
-              <span className="cursor-blink ml-0.5">▍</span>
+            <div className="mt-8 text-xs text-faint">
+              {allPosts.length} 篇文章 · {tagCount} 个标签
             </div>
           </aside>
         </FadeIn>
@@ -56,9 +51,9 @@ export default function BlogPage() {
 
           {groups.map(([year, posts]) => (
             <section key={year} className="mb-16">
-              <h2 className="mb-6 font-mono text-xs tracking-widest text-faint">
+              <h2 className="mb-6 text-xs font-semibold tracking-widest text-faint">
                 {year}
-                <span className="ml-2">· {posts.length} 篇</span>
+                <span className="ml-2 font-normal">· {posts.length} 篇</span>
               </h2>
               <PostList posts={posts} />
             </section>

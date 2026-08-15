@@ -5,13 +5,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { site } from "@/lib/site";
 import { NavLink } from "./nav-link";
-import { SfxToggle } from "./sfx-toggle";
 import { LanguageToggle } from "./language-toggle";
 import { dict, getLangFromPath } from "@/lib/i18n";
 
 /**
- * 顶栏(Antigravity 式细导航条)。
- * 左:0xff.zone 字符标;中:导航链接;右:语言/音效 + 胶囊主按钮(GitHub)。
+ * 顶栏:苹果式毛玻璃细导航条。
+ * 左:圆点 + 站点字标;中:导航链接;右:语言切换 + GitHub 按钮。
  */
 export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
@@ -28,8 +27,8 @@ export function SiteHeader() {
 
   return (
     <header
-      className={`sticky top-0 z-40 border-b border-line bg-background/80 backdrop-blur-sm transition-shadow duration-300 ${
-        scrolled ? "shadow-[0_1px_0_rgba(255,255,255,0.04)]" : ""
+      className={`sticky top-0 z-40 border-b border-line bg-white/70 backdrop-blur-xl backdrop-saturate-150 transition-shadow duration-300 ${
+        scrolled ? "shadow-[0_1px_0_rgba(255,255,255,0.6)]" : ""
       }`}
     >
       <div
@@ -37,17 +36,17 @@ export function SiteHeader() {
           scrolled ? "py-3" : "py-4"
         }`}
       >
-        {/* 品牌:0xff.zone 字符标 */}
+        {/* 品牌:圆点 + 字标 */}
         <Link
           href="/"
           aria-label="0xff.zone 首页"
           className="group flex items-center gap-2.5 text-foreground"
         >
           <span
-            className="inline-block h-2 w-2 rounded-full bg-accent transition-shadow duration-300 group-hover:shadow-[0_0_10px_rgba(0,255,156,0.8)]"
+            className="inline-block h-2 w-2 rounded-full bg-accent transition-transform duration-300 group-hover:scale-125"
             aria-hidden="true"
           />
-          <span className="font-mono text-[15px] font-medium tracking-tight">
+          <span className="text-[15px] font-semibold tracking-tight">
             0xff.zone
           </span>
         </Link>
@@ -62,13 +61,12 @@ export function SiteHeader() {
           </nav>
           <div className="hidden h-4 w-px bg-line sm:block" />
           <LanguageToggle />
-          <SfxToggle />
           {site.links.github && (
             <a
               href={site.links.github}
               target="_blank"
               rel="noreferrer"
-              className="btn-pill btn-primary btn-pill-sm hidden font-mono text-xs sm:inline-flex"
+              className="btn-pill btn-primary btn-pill-sm hidden text-xs sm:inline-flex"
             >
               GitHub
             </a>

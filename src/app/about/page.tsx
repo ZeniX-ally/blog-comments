@@ -9,25 +9,19 @@ export const metadata: Metadata = {
 
 const NOW_ITEMS = [
   {
-    id: "0x01",
     title: "工作",
     desc: "测试研发，FCT/IGBT 测试，上位机自动化",
-    led: "led-lab",
-    label: "WORK",
+    dot: "dot-running",
   },
   {
-    id: "0x02",
     title: "学习",
     desc: "C、C#、Rust、Go，上位机开发、自动化测试",
-    led: "led-local",
-    label: "LEARN",
+    dot: "dot-local",
   },
   {
-    id: "0x03",
     title: "生活",
     desc: "折腾数码、看动画、听音乐",
-    led: "led-daily",
-    label: "LIFE",
+    dot: "dot-daily",
   },
 ] as const;
 
@@ -39,7 +33,7 @@ export default function AboutPage() {
         {/* 左栏:sticky 头像简介 */}
         <FadeIn>
           <aside className="lg:sticky lg:top-24 lg:self-start">
-            <div className="page-head-label mb-8">[0x00] ABOUT</div>
+            <div className="page-head-label mb-8">关于</div>
             <div className="relative w-fit">
               <img
                 src="https://github.com/ZeniX-ally.png?size=256"
@@ -49,7 +43,7 @@ export default function AboutPage() {
                 className="h-28 w-28 rounded-full border border-line object-cover"
               />
               <span
-                className="led led-running absolute bottom-1 right-1 h-3.5 w-3.5 ring-2 ring-background"
+                className="dot dot-running absolute bottom-1 right-1 h-3.5 w-3.5 ring-2 ring-background"
                 aria-hidden="true"
               />
             </div>
@@ -58,12 +52,8 @@ export default function AboutPage() {
                 阿九
                 <span className="text-faint"> / ZeniX-ally</span>
               </div>
-              <div className="mt-2 font-mono text-xs text-muted">
-                test-engineer · 0xff enthusiast
-              </div>
-              <div className="mt-4 font-mono text-xs text-accent">
-                zenix@0xff:~$ whoami
-                <span className="cursor-blink ml-0.5">▍</span>
+              <div className="mt-2 text-xs text-muted">
+                Test Engineer · FCT / IGBT
               </div>
             </div>
           </aside>
@@ -79,15 +69,11 @@ export default function AboutPage() {
             </p>
           </FadeIn>
 
-          {/* [0x01] 这个网站 */}
+          {/* 这个网站 */}
           <section className="mb-20">
             <FadeIn>
-              <header className="mb-8 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                <span className="font-mono text-xs text-faint">[0x01]</span>
+              <header className="mb-8">
                 <h2 className="font-display text-2xl font-medium">这个网站</h2>
-                <span className="font-mono text-[10px] tracking-[0.25em] text-accent">
-                  THE SITE
-                </span>
               </header>
             </FadeIn>
             <FadeIn delay={60}>
@@ -97,7 +83,7 @@ export default function AboutPage() {
                   所有文章同时提供{" "}
                   <a
                     href="/feed.xml"
-                    className="font-mono text-[13px] text-accent underline decoration-accent/40 underline-offset-4 transition-colors hover:decoration-accent"
+                    className="text-[13px] text-accent underline decoration-accent/40 underline-offset-4 transition-colors hover:decoration-accent"
                   >
                     RSS 订阅
                   </a>
@@ -105,7 +91,7 @@ export default function AboutPage() {
                 </p>
                 <p>
                   域名{" "}
-                  <span className="font-mono text-[13px] text-accent">
+                  <span className="text-[13px] font-medium text-accent">
                     404-found.uk
                   </span>{" "}
                   是个双关：404 通常意味着「找不到」，但在这里，它找到了你。
@@ -114,33 +100,25 @@ export default function AboutPage() {
             </FadeIn>
           </section>
 
-          {/* [0x02] 我在做什么 */}
+          {/* 我在做什么 */}
           <section className="mb-20">
             <FadeIn>
-              <header className="mb-8 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                <span className="font-mono text-xs text-faint">[0x02]</span>
+              <header className="mb-8">
                 <h2 className="font-display text-2xl font-medium">我在做什么</h2>
-                <span className="font-mono text-[10px] tracking-[0.25em] text-accent">
-                  NOW
-                </span>
               </header>
             </FadeIn>
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
               {NOW_ITEMS.map((item, i) => (
-                <FadeIn key={item.id} delay={i * 60}>
+                <FadeIn key={item.title} delay={i * 60}>
                   <div className="light-card flex min-h-[8.5rem] flex-col justify-between gap-2 p-6">
                     <div>
                       <div className="flex items-center gap-2.5">
-                        <span className={`led ${item.led}`} aria-hidden="true" />
+                        <span className={`dot ${item.dot}`} aria-hidden="true" />
                         <span className="font-medium">{item.title}</span>
                       </div>
                       <p className="mt-2.5 text-sm leading-relaxed text-muted">
                         {item.desc}
                       </p>
-                    </div>
-                    <div className="flex items-center justify-between font-mono text-[11px] text-faint">
-                      <span>{item.id}</span>
-                      <span>{item.label}</span>
                     </div>
                   </div>
                 </FadeIn>
@@ -148,15 +126,11 @@ export default function AboutPage() {
             </div>
           </section>
 
-          {/* [0x03] 联系 */}
+          {/* 联系 */}
           <section>
             <FadeIn>
-              <header className="mb-8 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                <span className="font-mono text-xs text-faint">[0x03]</span>
+              <header className="mb-8">
                 <h2 className="font-display text-2xl font-medium">联系我</h2>
-                <span className="font-mono text-[10px] tracking-[0.25em] text-accent">
-                  CONTACT
-                </span>
               </header>
             </FadeIn>
             <FadeIn delay={60}>
@@ -167,15 +141,14 @@ export default function AboutPage() {
                 className="light-card group flex items-center justify-between gap-4 px-5 py-4"
               >
                 <div className="flex items-center gap-3">
-                  <span className="led led-local" aria-hidden="true" />
                   <div>
                     <div className="font-medium">GitHub</div>
-                    <div className="font-mono text-xs text-faint">
+                    <div className="text-xs text-faint">
                       github.com/ZeniX-ally
                     </div>
                   </div>
                 </div>
-                <span className="font-mono text-sm text-accent transition-transform duration-300 group-hover:translate-x-1">
+                <span className="text-sm text-accent transition-transform duration-300 group-hover:translate-x-1">
                   →
                 </span>
               </a>

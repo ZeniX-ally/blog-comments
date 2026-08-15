@@ -38,14 +38,14 @@ export function PostSearch({ posts }: { posts: SearchPost[] }) {
           onChange={(e) => setQuery(e.target.value)}
           placeholder="搜索文章标题、摘要或标签…"
           aria-label="搜索文章"
-          className="w-full border-b border-line bg-transparent py-2 pr-8 font-mono text-sm text-foreground placeholder:text-faint focus:border-accent focus:outline-none"
+          className="w-full rounded-xl border border-line bg-surface/60 px-4 py-2.5 text-sm text-foreground placeholder:text-faint transition-colors duration-200 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20"
         />
         {query && (
           <button
             type="button"
             onClick={() => setQuery("")}
             aria-label="清空搜索"
-            className="absolute right-0 top-1/2 -translate-y-1/2 font-mono text-xs text-faint transition-colors hover:text-accent"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-faint transition-colors hover:text-accent"
           >
             ✕
           </button>
@@ -69,7 +69,7 @@ export function PostSearch({ posts }: { posts: SearchPost[] }) {
                     <span className="text-base leading-snug transition-colors group-hover:text-accent">
                       {post.title}
                     </span>
-                    <time className="shrink-0 font-mono text-xs text-faint">
+                    <time className="shrink-0 text-xs text-faint">
                       {post.date.replaceAll("-", ".")}
                     </time>
                   </Link>

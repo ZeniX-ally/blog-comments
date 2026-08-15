@@ -32,20 +32,15 @@ export default function BlogPageEn() {
         {/* 左栏:sticky 介绍牌 */}
         <FadeIn>
           <aside className="lg:sticky lg:top-24 lg:self-start">
-            <div className="page-head-label mb-6">[0x00] POSTS</div>
+            <div className="page-head-label mb-6">Posts</div>
             <h1 className="font-display text-3xl font-medium tracking-tight sm:text-4xl">
               Posts
             </h1>
             <p className="mt-4 text-[15px] leading-relaxed text-muted">
               Notes on tech, design and life.
             </p>
-            <div className="mt-8 flex gap-6 font-mono text-xs text-faint">
-              <span>{allPosts.length} posts</span>
-              <span>{tagCount} tags</span>
-            </div>
-            <div className="mt-6 font-mono text-xs text-accent">
-              zenix@0xff:~/posts$ ls -lt
-              <span className="cursor-blink ml-0.5">▍</span>
+            <div className="mt-8 text-xs text-faint">
+              {allPosts.length} posts · {tagCount} tags
             </div>
           </aside>
         </FadeIn>
@@ -56,7 +51,7 @@ export default function BlogPageEn() {
 
           {groups.map(([year, posts]) => (
             <section key={year} className="mb-16">
-              <h2 className="mb-6 font-mono text-xs tracking-widest text-faint">
+              <h2 className="mb-6 text-xs font-semibold tracking-widest text-faint">
                 {year}
                 <span className="ml-2">
                   · {posts.length} {posts.length === 1 ? "post" : "posts"}

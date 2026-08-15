@@ -56,7 +56,7 @@ export function Comments() {
   if (!enabled) {
     return (
       <section className="mt-16 border-t border-line pt-8">
-        <p className="font-mono text-xs uppercase tracking-widest text-faint">Comments</p>
+        <p className="text-xs uppercase tracking-widest text-faint">Comments</p>
         <p className="mt-3 text-sm text-muted">
           评论区未启用 —— 在 src/lib/site.ts 中填写 site.giscus 配置后即开启。
         </p>
@@ -66,7 +66,7 @@ export function Comments() {
 
   return (
     <section className="mt-16 border-t border-line pt-8">
-      <p className="font-mono text-xs uppercase tracking-widest text-faint">Comments</p>
+      <p className="text-xs uppercase tracking-widest text-faint">Comments</p>
       <div ref={ref} className="mt-4" />
     </section>
   );

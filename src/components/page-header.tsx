@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
 
 /**
- * 页面大标题锚点(Antigravity 式):mono 标签 + 超大标题 + 简短副标题。
- * 每页只有一个;留白由调用方控制(外层 pt-16 pb-24 等)。
+ * 页面大标题锚点:克制小标签 + 超大标题 + 简短副标题。
+ * 每页只有一个;留白由调用方控制。
  */
 export function PageHeader({
   label,

@@ -53,7 +53,7 @@ export default async function PostPageEn({ params }: { params: Promise<Params> }
       <FadeIn>
         <header className="border-b border-line pb-12">
           <h1 className="page-title text-balance">{post.title}</h1>
-          <div className="mt-6 flex flex-wrap items-center gap-4 font-mono text-xs text-faint">
+          <div className="mt-6 flex flex-wrap items-center gap-4 text-xs text-faint">
             <time>{formatDate(post.date)}</time>
             <span>~{post.readingTime} min</span>
             {post.tags.map((tag) => (
@@ -82,7 +82,7 @@ export default async function PostPageEn({ params }: { params: Promise<Params> }
         <nav className="mt-24 grid gap-4 border-t border-line pt-8 sm:grid-cols-2 sm:gap-8">
           {adjacent.prev ? (
             <Link href={`/en/blog/${slugToHref(adjacent.prev.slug)}`} className="group block">
-              <span className="font-mono text-xs text-faint">← Previous</span>
+              <span className="text-xs text-faint">← Previous</span>
               <span className="mt-2 block leading-snug transition-colors group-hover:text-accent">
                 {adjacent.prev.title}
               </span>
@@ -92,7 +92,7 @@ export default async function PostPageEn({ params }: { params: Promise<Params> }
           )}
           {adjacent.next ? (
             <Link href={`/en/blog/${slugToHref(adjacent.next.slug)}`} className="group block sm:text-right">
-              <span className="font-mono text-xs text-faint">Next →</span>
+              <span className="text-xs text-faint">Next →</span>
               <span className="mt-2 block leading-snug transition-colors group-hover:text-accent">
                 {adjacent.next.title}
               </span>

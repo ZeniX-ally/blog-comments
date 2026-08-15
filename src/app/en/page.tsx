@@ -1,8 +1,8 @@
 import Link from "next/link";
+import { site } from "@/lib/site";
 import { getAllPosts, formatDate, slugToHref } from "@/lib/posts";
 import { projects } from "@/lib/projects";
 import { FadeIn } from "@/components/fade-in";
-import { TypewriterText } from "@/components/typewriter-text";
 import { InkParticles } from "@/components/ink-particles";
 import { BookTransition } from "@/components/book-transition";
 
@@ -19,13 +19,11 @@ export default function HomeEn() {
         {/* ============ HERO: vertically centered single column ============ */}
         <div className="hero-scroll flex flex-col items-center pt-8 text-center lg:pt-14">
             <FadeIn>
-            {/* title frame: wide glass material with ink particles */}
+            {/* title frame: glass material with ink particles, static title */}
             <div className="hero-frame relative mt-8 overflow-hidden px-8">
               <InkParticles />
               <div className="relative z-10">
-                <h1 className="page-title page-title--hero">
-                  <TypewriterText text="I'm Ajiu." speed={120} startDelay={300} />
-                </h1>
+                <h1 className="page-title page-title--hero">I&apos;m Ajiu.</h1>
               </div>
             </div>
 
@@ -47,7 +45,7 @@ export default function HomeEn() {
                 About
               </Link>
             </div>
-            {/* stats: no divider, whitespace only */}
+            {/* stats */}
             <div className="mt-8 flex flex-wrap items-baseline justify-center gap-x-10 gap-y-2">
               {[
                 { n: posts.length, label: "posts" },
@@ -55,12 +53,10 @@ export default function HomeEn() {
                 { n: tagCount, label: "tags" },
               ].map((s) => (
                 <div key={s.label}>
-                  <span className="font-display text-2xl font-medium text-accent-strong">
+                  <span className="font-display text-2xl font-medium tracking-tight">
                     {s.n}
                   </span>
-                  <span className="ml-2 font-mono text-[10px] tracking-widest text-faint">
-                    {s.label}
-                  </span>
+                  <span className="ml-2 text-xs text-faint">{s.label}</span>
                 </div>
               ))}
             </div>
@@ -73,16 +69,12 @@ export default function HomeEn() {
           <section>
             <FadeIn>
               <header className="mb-3 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                <span className="font-mono text-xs text-faint">[0x01]</span>
                 <h2 className="font-display text-xl font-medium">
                   Latest Posts
                 </h2>
-                <span className="font-mono text-[10px] tracking-[0.25em] text-accent">
-                  LATEST
-                </span>
                 <Link
                   href="/en/blog"
-                  className="group ml-auto font-mono text-xs text-muted transition-colors hover:text-accent"
+                  className="group ml-auto text-xs text-muted transition-colors hover:text-accent"
                 >
                   All{" "}
                   <span className="inline-block transition-transform group-hover:translate-x-0.5">
@@ -115,14 +107,10 @@ export default function HomeEn() {
             <section>
               <FadeIn>
                 <header className="mb-3 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                  <span className="font-mono text-xs text-faint">[0x02]</span>
                   <h2 className="font-display text-xl font-medium">Featured</h2>
-                  <span className="font-mono text-[10px] tracking-[0.25em] text-accent">
-                    FEATURED
-                  </span>
                   <Link
                     href="/en/projects"
-                    className="group ml-auto font-mono text-xs text-muted transition-colors hover:text-accent"
+                    className="group ml-auto text-xs text-muted transition-colors hover:text-accent"
                   >
                     All{" "}
                     <span className="inline-block transition-transform group-hover:translate-x-0.5">
@@ -144,7 +132,7 @@ export default function HomeEn() {
                               href={p.link}
                               target="_blank"
                               rel="noreferrer"
-                              className="font-mono text-xs text-accent transition-colors hover:underline"
+                              className="text-xs text-accent transition-colors hover:underline"
                             >
                               Visit ↗
                             </a>

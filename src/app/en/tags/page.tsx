@@ -16,7 +16,7 @@ export default function TagsPageEn() {
     <BookTransition>
       <>
         <article className="mx-auto w-full max-w-6xl pb-32 pt-20 sm:pt-24">
-        <PageHeader label="[0x00] TAGS" title="Tags" sub="Browse all posts by topic." />
+        <PageHeader label="Tags" title="Tags" sub="Browse all posts by topic." />
         <div className="pb-10">
           {tags.length === 0 ? (
             <p className="border-t border-line pt-10 text-muted">No tags yet — they'll show up once posts have tags.</p>
@@ -35,7 +35,7 @@ export default function TagsPageEn() {
                     >
                       #{tag}
                     </span>
-                    <span className="font-mono text-xs text-faint">{count}</span>
+                    <span className="text-xs text-faint">{count}</span>
                   </Link>
                 </li>
               ))}
