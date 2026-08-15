@@ -19,7 +19,19 @@ export function InkParticles() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    type P = { x: number; y: number; r: number; a: number; vx: number; vy: number; ph: number };
+    type P = {
+      x: number;
+      y: number;
+      r: number;
+      a: number;
+      // 基础漂移:恒定速度,不衰减(粒子一直移动)
+      bx: number;
+      by: number;
+      // 力场冲击:被鼠标推开后的附加速度,单独衰减
+      ix: number;
+      iy: number;
+      ph: number;
+    };
     let raf = 0;
     let parts: P[] = [];
     let w = 0;
@@ -38,14 +50,18 @@ export function InkParticles() {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       const count = Math.max(240, Math.min(780, Math.round((w * h) / 1500)));
       parts = Array.from({ length: count }, () => {
-        const speed = 0.3 + Math.random() * 0.8;
+        // 恒定漂移速度:0.5-1.6 px/帧,方向随机,永不停止
+        const speed = 0.5 + Math.random() * 1.1;
+        const angle = Math.random() * Math.PI * 2;
         return {
           x: Math.random() * w,
           y: Math.random() * h,
           r: 0.6 + Math.random() * 1.6,
           a: 0.14 + Math.random() * 0.28,
-          vx: speed * (Math.random() < 0.5 ? 1 : -1),
-          vy: (Math.random() - 0.5) * 0.8,
+          bx: Math.cos(angle) * speed,
+          by: Math.sin(angle) * speed,
+          ix: 0,
+          iy: 0,
           ph: Math.random() * Math.PI * 2,
         };
       });
@@ -58,31 +74,43 @@ export function InkParticles() {
       ctx.clearRect(0, 0, w, h);
       const t = performance.now();
       for (const p of parts) {
-        // 指针排斥
+        // 随机游走:每个粒子有独立的抖动方向,缓慢变化(走迷宫式游动)
+        const wander = Math.sin(t / 2600 + p.ph);
+        const wander2 = Math.cos(t / 3400 + p.ph * 1.7);
+
+        // 指针排斥(冲击力,加到 ix/iy)
         if (pointer) {
           const dx = p.x - pointer.x;
           const dy = p.y - pointer.y;
           const dist = Math.hypot(dx, dy);
           if (dist < FORCE_RADIUS && dist > 0.01) {
-            const falloff = 1 - dist / FORCE_RADIUS; // 近强远弱
-            const strength = falloff * falloff * 1.6; // 平方衰减
+            const falloff = 1 - dist / FORCE_RADIUS;
+            const strength = falloff * falloff * 1.6;
             const nx = dx / dist;
             const ny = dy / dist;
-            // 位置推开
-            p.x += nx * strength * 7;
-            p.y += ny * strength * 7;
-            // 带指针动量:速度被"吹动"
-            p.vx += nx * strength * 0.6 + pointer.vx * 0.02;
-            p.vy += ny * strength * 0.6 + pointer.vy * 0.02;
+            p.ix += nx * strength * 0.8 + pointer.vx * 0.02;
+            p.iy += ny * strength * 0.8 + pointer.vy * 0.02;
           }
         }
 
-        // 阻尼(平滑回稳,避免永动)
-        p.vx *= 0.94;
-        p.vy *= 0.94;
+        // 冲击力衰减(只衰减冲击,基础漂移保留)
+        p.ix *= 0.9;
+        p.iy *= 0.9;
 
-        p.x += p.vx;
-        p.y += p.vy + Math.sin(t / 3000 + p.ph) * 0.02;
+        // 总位移 = 基础漂移 + 随机游走抖动 + 冲击
+        p.x += p.bx + wander * 0.18;
+        p.y += p.by + wander2 * 0.18 + p.iy;
+        p.x += p.ix;
+
+        // 漂移方向缓慢偏转(不走直线,更有生命感)
+        p.bx += wander * 0.004;
+        p.by += wander2 * 0.004;
+        // 限速:基础速度保持 0.5-1.6 区间
+        const baseSpeed = Math.hypot(p.bx, p.by);
+        if (baseSpeed > 2.2) {
+          p.bx = (p.bx / baseSpeed) * 2.2;
+          p.by = (p.by / baseSpeed) * 2.2;
+        }
 
         // 边界回绕
         if (p.y < -4) {
