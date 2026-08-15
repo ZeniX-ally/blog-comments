@@ -221,9 +221,9 @@ body {
    ------------------------------------------------------------ */
 .liquid-glass {
   position: relative;
-  background: rgba(255, 255, 255, 0.04);
-  -webkit-backdrop-filter: blur(8px) saturate(180%);
-  backdrop-filter: blur(8px) saturate(180%);
+  background: rgba(255, 255, 255, 0.42);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  backdrop-filter: blur(16px) saturate(180%);
   border: 1px solid rgba(255, 255, 255, 0.65);
   border-radius: 9999px;
   box-shadow:
@@ -237,7 +237,7 @@ body {
 
 /* 滚动后玻璃略微更实,阴影加深 */
 .liquid-glass.is-scrolled {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.52);
   box-shadow:
     inset 0 1.5px 0 rgba(255, 255, 255, 1),
     inset 0 -1px 0 rgba(29, 29, 31, 0.08),
@@ -248,10 +248,11 @@ body {
 }
 
 /* ------------------------------------------------------------
-   顶栏极光:液态玻璃内的缓慢流动光斑(氛围装饰,非交互反馈)
-   - 三个大 blur 渐变光斑:品牌绿主光 + 蓝/紫副光,低饱和不干扰阅读
-   - 只动 transform(合成器友好),CSS 离屏动画
-   - reduced-motion / reduced-transparency 时静止
+   顶栏极光:液态玻璃内颜料入水般的交融流动
+   - 大光斑(覆盖整个胶囊)+ 强 blur(颜料扩散感)
+   - mix-blend-mode: screen:重叠处颜色相加变亮,互相交融
+   - 4 段蜿蜒关键帧 + 交叉穿越路径,错峰周期永不重复同步
+   - 只动 transform(合成器友好),reduced-motion / reduced-transparency 时静止
    ------------------------------------------------------------ */
 .aurora {
   position: absolute;
@@ -264,77 +265,110 @@ body {
 .aurora-blob {
   position: absolute;
   border-radius: 9999px;
-  filter: blur(20px);
-  opacity: 0.75;
+  mix-blend-mode: multiply;
+  filter: blur(44px);
   will-change: transform;
 }
 
+/* 绿:主光,从左上蜿蜒横穿 */
 .aurora-1 {
-  width: 300px;
-  height: 170px;
-  left: -70px;
-  top: -80px;
+  width: 420px;
+  height: 260px;
+  left: -140px;
+  top: -110px;
   background: radial-gradient(
     circle,
-    rgba(0, 168, 118, 0.95) 0%,
-    rgba(0, 168, 118, 0.45) 50%,
-    transparent 72%
+    rgba(0, 168, 118, 1) 0%,
+    rgba(0, 168, 118, 0.55) 40%,
+    rgba(0, 168, 118, 0.18) 60%,
+    transparent 75%
   );
-  animation: aurora-drift-1 13s ease-in-out infinite alternate;
+  animation: aurora-drift-1 16s ease-in-out infinite;
 }
 
+/* 蓝:从右侧迂回,穿过绿光路径 */
 .aurora-2 {
-  width: 250px;
-  height: 150px;
-  right: 10%;
-  top: -70px;
+  width: 360px;
+  height: 240px;
+  right: -120px;
+  top: -90px;
   background: radial-gradient(
     circle,
-    rgba(11, 102, 194, 0.7) 0%,
-    rgba(130, 80, 223, 0.42) 55%,
-    transparent 75%
+    rgba(30, 120, 210, 1) 0%,
+    rgba(30, 120, 210, 0.5) 40%,
+    rgba(130, 80, 223, 0.22) 62%,
+    transparent 78%
   );
-  animation: aurora-drift-2 17s ease-in-out infinite alternate;
+  animation: aurora-drift-2 22s ease-in-out infinite;
 }
 
+/* 紫:居中游走,负责与绿蓝混合出中间色 */
 .aurora-3 {
-  width: 210px;
-  height: 130px;
-  right: -50px;
-  top: 25%;
+  width: 300px;
+  height: 200px;
+  left: 32%;
+  top: -60px;
   background: radial-gradient(
     circle,
-    rgba(130, 80, 223, 0.6) 0%,
-    rgba(0, 168, 118, 0.3) 55%,
-    transparent 75%
+    rgba(150, 90, 230, 1) 0%,
+    rgba(150, 90, 230, 0.48) 42%,
+    rgba(0, 168, 118, 0.2) 62%,
+    transparent 78%
   );
-  animation: aurora-drift-3 21s ease-in-out infinite alternate;
+  animation: aurora-drift-3 28s ease-in-out infinite;
 }
 
 @keyframes aurora-drift-1 {
-  from {
+  0% {
     transform: translate(0, 0) scale(1);
   }
-  to {
-    transform: translate(70px, 26px) scale(1.18);
+  30% {
+    transform: translate(140px, 34px) scale(1.22);
+  }
+  55% {
+    transform: translate(220px, -6px) scale(1.1);
+  }
+  80% {
+    transform: translate(120px, 44px) scale(1.28);
+  }
+  100% {
+    transform: translate(0, 0) scale(1);
   }
 }
 
 @keyframes aurora-drift-2 {
-  from {
+  0% {
     transform: translate(0, 0) scale(1);
   }
-  to {
-    transform: translate(-52px, 30px) scale(0.86);
+  28% {
+    transform: translate(-150px, 26px) scale(1.18);
+  }
+  58% {
+    transform: translate(-260px, -14px) scale(0.92);
+  }
+  82% {
+    transform: translate(-140px, 40px) scale(1.24);
+  }
+  100% {
+    transform: translate(0, 0) scale(1);
   }
 }
 
 @keyframes aurora-drift-3 {
-  from {
+  0% {
     transform: translate(0, 0) scale(1);
   }
-  to {
-    transform: translate(-38px, -22px) scale(1.22);
+  32% {
+    transform: translate(90px, 30px) scale(1.3);
+  }
+  60% {
+    transform: translate(-70px, 46px) scale(1.08);
+  }
+  84% {
+    transform: translate(-120px, 12px) scale(1.26);
+  }
+  100% {
+    transform: translate(0, 0) scale(1);
   }
 }
 
