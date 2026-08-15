@@ -14,10 +14,10 @@ export default function Home() {
 
   return (
     <BookTransition>
-      <article className="mx-auto w-full max-w-6xl pb-24 pt-4 sm:pt-6">
+      <article className="mx-auto w-full max-w-6xl pb-24 pt-5 sm:pt-7">
       <section className="flex flex-col lg:min-h-[calc(100vh-5.75rem)]">
         {/* ============ HERO:垂直居中单栏,克制高级 ============ */}
-        <div className="hero-scroll flex flex-col items-center pt-4 text-center lg:pt-6">
+        <div className="hero-scroll flex flex-col items-center pt-5 text-center lg:pt-7">
             <FadeIn>
             {/* 大标题框:玻璃材质,粒子漂浮,静态标题 */}
             <div className="hero-frame relative mt-8 overflow-hidden px-8">
