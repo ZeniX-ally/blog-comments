@@ -27,7 +27,7 @@ export default function HomeEn() {
               </div>
             </div>
 
-            <p className="mt-8 max-w-lg text-center text-base leading-relaxed text-muted">
+            <p className="mx-auto mt-8 max-w-lg text-center text-base leading-relaxed text-muted">
               Test engineer in test R&amp;D. Minimal design. Clean text.
               Perfectionist.
             </p>

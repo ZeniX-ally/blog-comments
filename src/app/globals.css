@@ -264,9 +264,9 @@ body {
   /* 兜底底色:极淡三色横向渐变,保证任何时刻胶囊每部分都有色 */
   background: linear-gradient(
     90deg,
-    rgba(0, 168, 118, 0.07) 0%,
-    rgba(30, 120, 210, 0.06) 50%,
-    rgba(150, 90, 230, 0.07) 100%
+    rgba(0, 168, 118, 0.11) 0%,
+    rgba(30, 120, 210, 0.09) 50%,
+    rgba(150, 90, 230, 0.11) 100%
   );
 }
 
@@ -275,7 +275,7 @@ body {
   border-radius: 9999px;
   mix-blend-mode: multiply;
   filter: blur(34px);
-  opacity: 0.32;
+  opacity: 0.45;
   will-change: transform;
 }
 
@@ -287,8 +287,8 @@ body {
   left: -220px;
   background: radial-gradient(
     ellipse at center,
-    rgba(0, 168, 118, 0.55) 0%,
-    rgba(0, 168, 118, 0.28) 45%,
+    rgba(0, 168, 118, 0.7) 0%,
+    rgba(0, 168, 118, 0.38) 45%,
     rgba(0, 168, 118, 0.14) 70%,
     transparent 85%
   );
@@ -303,8 +303,8 @@ body {
   left: 240px;
   background: radial-gradient(
     ellipse at center,
-    rgba(30, 120, 210, 0.55) 0%,
-    rgba(30, 120, 210, 0.3) 45%,
+    rgba(30, 120, 210, 0.7) 0%,
+    rgba(30, 120, 210, 0.4) 45%,
     rgba(130, 80, 223, 0.18) 70%,
     transparent 85%
   );
@@ -319,8 +319,8 @@ body {
   left: 760px;
   background: radial-gradient(
     ellipse at center,
-    rgba(150, 90, 230, 0.52) 0%,
-    rgba(150, 90, 230, 0.26) 45%,
+    rgba(150, 90, 230, 0.68) 0%,
+    rgba(150, 90, 230, 0.36) 45%,
     rgba(0, 168, 118, 0.14) 70%,
     transparent 85%
   );
