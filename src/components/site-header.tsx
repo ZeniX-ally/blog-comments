@@ -9,7 +9,8 @@ import { LanguageToggle } from "./language-toggle";
 import { dict, getLangFromPath } from "@/lib/i18n";
 
 /**
- * 顶栏:苹果式毛玻璃细导航条。
+ * 顶栏:悬浮液态玻璃胶囊导航条(iOS 26 Liquid Glass 风)。
+ * 两端全圆角、高模糊高饱和、内高光光泽;距顶部留空,滚动后玻璃更实。
  * 左:圆点 + 站点字标;中:导航链接;右:语言切换 + GitHub 按钮。
  */
 export function SiteHeader() {
@@ -26,14 +27,10 @@ export function SiteHeader() {
   }, []);
 
   return (
-    <header
-      className={`sticky top-0 z-40 border-b border-line bg-white/70 backdrop-blur-xl backdrop-saturate-150 transition-shadow duration-300 ${
-        scrolled ? "shadow-[0_1px_0_rgba(255,255,255,0.6)]" : ""
-      }`}
-    >
+    <header className="sticky top-3 z-40 px-3 sm:top-4 sm:px-6">
       <div
-        className={`flex w-full items-center justify-between px-5 transition-all duration-300 sm:px-12 md:px-16 lg:px-20 xl:px-24 ${
-          scrolled ? "py-3" : "py-4"
+        className={`liquid-glass mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-2.5 transition-all duration-300 sm:px-5 ${
+          scrolled ? "is-scrolled" : ""
         }`}
       >
         {/* 品牌:圆点 + 字标 */}
