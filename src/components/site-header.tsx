@@ -40,16 +40,23 @@ export function SiteHeader() {
           <span className="aurora-blob aurora-3" />
         </div>
 
-        {/* 品牌:圆点 + 字标 */}
+        {/* 品牌:0xFF 徽章 + 字标 */}
         <Link
           href="/"
           aria-label="0xff.zone 首页"
-          className="group relative z-10 flex items-center gap-2.5 text-foreground"
+          className="group flex items-center gap-2.5 text-foreground"
         >
+          {/* 0xFF 图形徽章:近黑圆角方块,绿字,悬停微亮 */}
           <span
-            className="inline-block h-2 w-2 rounded-full bg-accent transition-transform duration-300 group-hover:scale-125"
+            className="relative flex h-7 w-10 items-center justify-center overflow-hidden rounded-[0.6rem] bg-[var(--fg)] shadow-[0_2px_8px_rgba(29,29,31,0.25)] transition-all duration-300 group-hover:shadow-[0_2px_12px_rgba(0,255,156,0.35)]"
             aria-hidden="true"
-          />
+          >
+            <span className="font-mono text-[10px] font-bold tracking-tight text-[#00ff9c]">
+              0xFF
+            </span>
+            {/* 底部极光微光 */}
+            <span className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-[rgba(0,255,156,0.35)] to-transparent" />
+          </span>
           <span className="text-[15px] font-semibold tracking-tight">
             0xff.zone
           </span>

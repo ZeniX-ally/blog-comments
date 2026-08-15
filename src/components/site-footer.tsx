@@ -8,7 +8,9 @@ export function SiteFooter() {
     <footer className="mt-auto border-t border-line">
       <div className="flex w-full flex-col gap-3 px-5 py-8 text-sm text-faint sm:flex-row sm:items-baseline sm:justify-between sm:px-12 md:px-16 lg:px-20 xl:px-24">
         <p className="flex items-center gap-2.5">
-          <span className="inline-block h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true" />
+          <span className="flex h-4 w-6 items-center justify-center rounded-[0.35rem] bg-[var(--fg)] font-mono text-[7px] font-bold text-[#00ff9c]" aria-hidden="true">
+            0xFF
+          </span>
           <span className="text-xs text-muted">0xff.zone</span>
           <span className="text-faint/80">· © {year} {site.name}</span>
         </p>
