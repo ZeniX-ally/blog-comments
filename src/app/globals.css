@@ -116,6 +116,8 @@ body {
    次级按钮:透明底 + 细描边
    ------------------------------------------------------------ */
 .btn-pill {
+  position: relative;
+  overflow: hidden;
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
@@ -129,12 +131,40 @@ body {
     background-color 180ms var(--ease-out),
     color 180ms var(--ease-out),
     border-color 180ms var(--ease-out),
+    box-shadow 300ms var(--ease-out),
     transform 180ms var(--ease-out);
+}
+
+/* 扫光:悬停时一道柔光从左到右滑过(动态按钮风格) */
+.btn-pill::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.45) 50%,
+    transparent 60%
+  );
+  transform: translateX(-130%);
+  transition: transform 650ms var(--ease-out);
+  pointer-events: none;
 }
 
 @media (hover: hover) and (pointer: fine) {
   .btn-pill:hover {
     transform: translateY(-1px);
+  }
+  .btn-pill:hover::after {
+    transform: translateX(130%);
+  }
+  /* 柔光:悬停时按钮泛起光晕 */
+  .btn-primary:hover {
+    box-shadow: 0 4px 24px rgba(29, 29, 31, 0.22);
+  }
+  .btn-ghost:hover {
+    box-shadow: 0 4px 20px rgba(0, 168, 118, 0.16);
   }
 }
 
@@ -333,6 +363,15 @@ body {
     opacity: 0.2;
     transform: translateY(-40px) scale(0.97);
   }
+}
+
+/* 背景层:粒子连线装饰(Constellation),固定全屏,内容之下 */
+.bg-fx {
+  position: fixed;
+  inset: 0;
+  z-index: -10;
+  overflow: hidden;
+  pointer-events: none;
 }
 
 /* 光标光晕:绿柔光跟随鼠标 */
