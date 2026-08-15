@@ -49,7 +49,7 @@ export default function Home() {
             </div>
 
             {/* 向下指引箭头:缓慢下沉-回弹,提示下方内容 */}
-            <div className="mt-10 flex justify-center" aria-hidden="true">
+            <div className="mt-[7px] flex justify-center" aria-hidden="true">
               <svg
                 className="scroll-hint h-5 w-5 text-faint"
                 viewBox="0 0 24 24"
