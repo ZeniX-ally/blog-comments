@@ -7,6 +7,7 @@ import { FadeIn } from "@/components/fade-in";
 import { Comments } from "@/components/comments";
 import { ScrollSpy } from "@/components/scroll-spy";
 import { ProseTilt } from "@/components/prose-tilt";
+import { SignIn } from "@/components/sign-in";
 import { BookTransition } from "@/components/book-transition";
 
 type Params = { slug: string };
@@ -108,6 +109,17 @@ export default async function PostPage({ params }: { params: Promise<Params> }) 
           )}
         </nav>
       )}
+
+      {/* GitHub 登录:文章下方 */}
+      <section className="mt-20 border-t border-line pt-12">
+        <h2 className="text-lg font-medium">欢迎留言讨论</h2>
+        <p className="mt-2 text-sm leading-relaxed text-muted">
+          登录 GitHub 后可以在文章下方留言交流。
+        </p>
+        <div className="mt-6">
+          <SignIn />
+        </div>
+      </section>
 
       {/* 返回 */}
       <footer className="mt-16 border-t border-line pt-8">
