@@ -47,6 +47,22 @@ export default function Home() {
                 </div>
               ))}
             </div>
+
+            {/* 向下指引箭头:缓慢下沉-回弹,提示下方内容 */}
+            <div className="mt-10 flex justify-center" aria-hidden="true">
+              <svg
+                className="scroll-hint h-5 w-5 text-faint"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M12 4v16" />
+                <path d="m6 14 6 6 6-6" />
+              </svg>
+            </div>
             </FadeIn>
         </div>
 

@@ -584,6 +584,33 @@ body {
 }
 
 /* ------------------------------------------------------------
+   首页向下指引箭头:缓慢下沉 + 淡入淡出循环(提示下方内容)
+   - 只动 transform/opacity,2s 周期,克制不抢眼
+   ------------------------------------------------------------ */
+.scroll-hint {
+  animation: scroll-hint 2s var(--ease-in-out) infinite;
+}
+
+@keyframes scroll-hint {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 0.85;
+    transform: translateY(6px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-hint {
+    animation: none;
+    opacity: 0.5;
+  }
+}
+
+/* ------------------------------------------------------------
    行式列表:分隔线行(日期 | 标题 + 摘要),hover 轻位移
    ------------------------------------------------------------ */
 .post-row {
