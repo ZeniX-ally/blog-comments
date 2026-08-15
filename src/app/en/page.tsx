@@ -23,7 +23,7 @@ export default function HomeEn() {
             <div className="hero-frame relative mt-[59px] overflow-hidden px-8">
               <InkParticles />
               <div className="relative z-10">
-                <h1 className="page-title page-title--hero">I&apos;m Ajiu.</h1>
+                <h1 className="page-title page-title--hero">I&apos;m Zenix.</h1>
               </div>
             </div>
 
