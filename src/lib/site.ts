@@ -14,7 +14,7 @@ export const site = {
 
   /** 首页 Hero */
   hero: {
-    greeting: "我是阿九",
+    greeting: "I'm Ajiu.",
     bio: [
       "Test engineer in test R&D.",
       "Minimal design. Clean text. Perfectionist.",
