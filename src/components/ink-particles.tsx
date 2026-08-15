@@ -48,16 +48,16 @@ export function InkParticles() {
       canvas.width = Math.round(w * dpr);
       canvas.height = Math.round(h * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      const count = Math.max(240, Math.min(780, Math.round((w * h) / 1500)));
+      const count = Math.max(120, Math.min(320, Math.round((w * h) / 4500)));
       parts = Array.from({ length: count }, () => {
-        // 恒定漂移速度:0.5-1.6 px/帧,方向随机,永不停止
-        const speed = 0.5 + Math.random() * 1.1;
+        // 慢速漂移:0.3-0.8 px/帧,方向随机,优雅不躁
+        const speed = 0.3 + Math.random() * 0.5;
         const angle = Math.random() * Math.PI * 2;
         return {
           x: Math.random() * w,
           y: Math.random() * h,
-          r: 0.6 + Math.random() * 1.6,
-          a: 0.14 + Math.random() * 0.28,
+          r: 0.5 + Math.random() * 0.9,
+          a: 0.08 + Math.random() * 0.1,
           bx: Math.cos(angle) * speed,
           by: Math.sin(angle) * speed,
           ix: 0,
@@ -98,18 +98,18 @@ export function InkParticles() {
         p.iy *= 0.9;
 
         // 总位移 = 基础漂移 + 随机游走抖动 + 冲击
-        p.x += p.bx + wander * 0.18;
-        p.y += p.by + wander2 * 0.18 + p.iy;
+        p.x += p.bx + wander * 0.1;
+        p.y += p.by + wander2 * 0.1 + p.iy;
         p.x += p.ix;
 
         // 漂移方向缓慢偏转(不走直线,更有生命感)
-        p.bx += wander * 0.004;
-        p.by += wander2 * 0.004;
-        // 限速:基础速度保持 0.5-1.6 区间
+        p.bx += wander * 0.002;
+        p.by += wander2 * 0.002;
+        // 限速:基础速度保持 0.3-0.8 区间
         const baseSpeed = Math.hypot(p.bx, p.by);
-        if (baseSpeed > 2.2) {
-          p.bx = (p.bx / baseSpeed) * 2.2;
-          p.by = (p.by / baseSpeed) * 2.2;
+        if (baseSpeed > 1.4) {
+          p.bx = (p.bx / baseSpeed) * 1.4;
+          p.by = (p.by / baseSpeed) * 1.4;
         }
 
         // 边界回绕
