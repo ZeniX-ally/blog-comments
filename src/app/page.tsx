@@ -18,10 +18,10 @@ export default function Home() {
       <article className="mx-auto w-full max-w-6xl pb-24 pt-8 sm:pt-12">
       <section className="flex flex-col lg:min-h-[calc(100vh-5.75rem)]">
         {/* ============ HERO:垂直居中单栏,克制高级 ============ */}
-        <div className="hero-scroll flex flex-col items-center pt-8 text-center lg:pt-14">
+        <div className="hero-scroll flex flex-col items-center pt-2 text-center lg:pt-4">
             <FadeIn>
             {/* 大标题框:玻璃材质,粒子漂浮,静态标题 */}
-            <div className="hero-frame relative mt-8 overflow-hidden px-8">
+            <div className="hero-frame relative mt-4 overflow-hidden px-8">
               <InkParticles />
               <div className="relative z-10">
                 <h1 className="page-title page-title--hero">{site.hero.greeting}</h1>
@@ -29,12 +29,12 @@ export default function Home() {
             </div>
 
             {/* 副标题 */}
-            <p className="mt-8 max-w-lg text-base leading-relaxed text-muted">
+            <p className="mt-6 max-w-lg text-base leading-relaxed text-muted">
               {site.hero.bio.join(" ")}
             </p>
 
             {/* 统计:克制数字排版 */}
-            <div className="mt-8 flex flex-wrap items-baseline justify-center gap-x-10 gap-y-2">
+            <div className="mt-6 flex flex-wrap items-baseline justify-center gap-x-10 gap-y-2">
               {[
                 { n: posts.length, label: "文章" },
                 { n: projects.length, label: "作品" },
@@ -50,14 +50,14 @@ export default function Home() {
             </div>
 
             {/* 操作行:GitHub 登录,居中 */}
-            <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
               <SignIn />
             </div>
             </FadeIn>
         </div>
 
         {/* ============ 最新文章:苹果式轻列表(无分隔线,间距分组) ============ */}
-        <section className="mt-24 sm:mt-28">
+        <section className="mt-16 sm:mt-20">
           <FadeIn>
             <header className="mb-9 flex flex-wrap items-end justify-between gap-x-6 gap-y-3">
               <div>
