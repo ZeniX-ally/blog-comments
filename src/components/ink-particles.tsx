@@ -112,13 +112,24 @@ export function InkParticles() {
           p.by = (p.by / baseSpeed) * 0.8;
         }
 
-        // 边界回绕
-        if (p.y < -4) {
-          p.y = h + 4;
-          p.x = Math.random() * w;
+        // 边界反弹:粒子永远限制在画布内,不会跑丢
+        const pad = p.r + 1;
+        if (p.x < pad) {
+          p.x = pad;
+          p.bx = Math.abs(p.bx);
+        } else if (p.x > w - pad) {
+          p.x = w - pad;
+          p.bx = -Math.abs(p.bx);
         }
-        if (p.x < -4) p.x = w + 4;
-        else if (p.x > w + 4) p.x = -4;
+        if (p.y < pad) {
+          p.y = pad;
+          p.by = Math.abs(p.by);
+        } else if (p.y > h - pad) {
+          p.y = h - pad;
+          p.by = -Math.abs(p.by);
+        }
+        p.x = Math.min(w - pad, Math.max(pad, p.x));
+        p.y = Math.min(h - pad, Math.max(pad, p.y));
 
         ctx.globalAlpha = p.a;
         ctx.fillStyle = "#111113";
