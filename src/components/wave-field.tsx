@@ -22,9 +22,9 @@ type Layer = {
 };
 
 const LAYERS: Layer[] = [
-  { base: 0.45, amp: 90, len: 1500, speed: 0.022, color: "0,168,118", alpha: 0.09, width: 2, fill: true, phase: 0 },
-  { base: 0.6, amp: 130, len: 2100, speed: 0.016, color: "29,29,31", alpha: 0.055, width: 1.5, fill: true, phase: 2.1 },
-  { base: 0.75, amp: 70, len: 1150, speed: 0.03, color: "29,29,31", alpha: 0.04, width: 1, fill: false, phase: 4.2 },
+  { base: 0.24, amp: 80, len: 1500, speed: 0.022, color: "0,168,118", alpha: 0.09, width: 2, fill: true, phase: 0 },
+  { base: 0.5, amp: 130, len: 2100, speed: 0.016, color: "29,29,31", alpha: 0.055, width: 1.5, fill: true, phase: 2.1 },
+  { base: 0.76, amp: 70, len: 1150, speed: 0.03, color: "29,29,31", alpha: 0.04, width: 1, fill: false, phase: 4.2 },
 ];
 
 export function WaveField() {
