@@ -366,15 +366,6 @@ body {
   }
 }
 
-/* 背景层:粒子连线装饰(Constellation),固定全屏,内容之下 */
-.bg-fx {
-  position: fixed;
-  inset: 0;
-  z-index: -10;
-  overflow: hidden;
-  pointer-events: none;
-}
-
 /* 光标光晕:绿柔光跟随鼠标 */
 .cursor-glow {
   position: fixed;

@@ -5,7 +5,6 @@ import { SiteFooter } from "@/components/site-footer";
 import { BackToTop } from "@/components/back-to-top";
 import { BackButton } from "@/components/back-button";
 import { EffectLayer } from "@/components/effect-layer";
-import { Constellation } from "@/components/constellation";
 import { RippleFx } from "@/components/ripple-fx";
 import "./globals.css";
 
@@ -51,10 +50,6 @@ export default function RootLayout({
         )}
       </head>
       <body className="flex min-h-screen flex-col">
-        {/* 背景层:粒子连线装饰 */}
-        <div aria-hidden="true" className="bg-fx">
-          <Constellation />
-        </div>
         {/* 点击水面涟漪 */}
         <RippleFx />
         <EffectLayer />
