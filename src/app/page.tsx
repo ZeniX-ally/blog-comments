@@ -4,6 +4,7 @@ import { getAllPosts, formatDate, slugToHref } from "@/lib/posts";
 import { projects } from "@/lib/projects";
 import { FadeIn } from "@/components/fade-in";
 import { InkParticles } from "@/components/ink-particles";
+import { HighlightChars } from "@/components/highlight-chars";
 import { BookTransition } from "@/components/book-transition";
 
 export default function Home() {
@@ -23,7 +24,9 @@ export default function Home() {
             <div className="hero-frame relative mt-[59px] overflow-hidden px-8">
               <InkParticles />
               <div className="relative z-10">
-                <h1 className="page-title page-title--hero">{site.hero.greeting}</h1>
+                <h1 className="page-title page-title--hero">
+                  <HighlightChars text={site.hero.greeting} />
+                </h1>
               </div>
             </div>
 
