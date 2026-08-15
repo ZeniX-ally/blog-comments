@@ -3,30 +3,11 @@
 import { useEffect, useRef } from "react";
 
 /**
- * 全屏背景大波浪:多层正弦波缓慢翻涌(装饰层)。
- * - 3 层波线横贯全屏,基位 45%/60%/75%,大振幅缓慢起伏(相位驱动)
- * - 极淡配色:品牌绿 + 深灰,不抢内容;下方极淡填充增加层次
+ * 全屏背景 3D 波浪:斜上方俯视的立体波浪网格(黑色)。
+ * - 地平线在屏幕顶部,波浪行从远(浅/密)到近(深/疏)辐射展开
+ * - 横向波浪线 + 纵向网格线组成波浪面,黑色线条明显
  * - 性能:DPR≤1.5、页面隐藏暂停 rAF、resize 重建;reduced-motion 不启动
- * - 与液态玻璃顶栏配合:滚动时波浪穿过玻璃,磨砂感清晰可见
  */
-type Layer = {
-  base: number;
-  amp: number;
-  len: number;
-  speed: number;
-  color: string;
-  alpha: number;
-  width: number;
-  fill: boolean;
-  phase: number;
-};
-
-const LAYERS: Layer[] = [
-  { base: 0.1, amp: 80, len: 1500, speed: 0.022, color: "0,168,118", alpha: 0.16, width: 3, fill: true, phase: 0 },
-  { base: 0.5, amp: 130, len: 2100, speed: 0.016, color: "29,29,31", alpha: 0.06, width: 1.5, fill: true, phase: 2.1 },
-  { base: 0.76, amp: 70, len: 1150, speed: 0.03, color: "29,29,31", alpha: 0.045, width: 1, fill: false, phase: 4.2 },
-];
-
 export function WaveField() {
   const ref = useRef<HTMLCanvasElement>(null);
 
@@ -37,6 +18,7 @@ export function WaveField() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
+    const ROWS = 16;
     let raf = 0;
     let w = 0;
     let h = 0;
@@ -54,34 +36,60 @@ export function WaveField() {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
 
+    /** 某深度(0远-1近)处波浪的 y 基线与振幅 */
+    const depthY = (depth: number) =>
+      horizon + (h - horizon) * Math.pow(depth, 1.9);
+    const depthAmp = (depth: number) => (16 + depth * 48) * (h / 900);
+    const depthPhase = (depth: number, x: number) =>
+      t * 0.018 + depth * 0.7 + (x / w) * Math.PI * 2 * 1.1;
+
+    let horizon = 0;
+
     const frame = () => {
       if (!running) return;
       ctx.clearRect(0, 0, w, h);
       t += 1;
-      for (const L of LAYERS) {
-        const baseY = L.base * h;
-        const phase = t * L.speed + L.phase;
+
+      // ---------- 横向波浪线(透视辐射) ----------
+      for (let i = 0; i < ROWS; i++) {
+        const depth = i / (ROWS - 1);
+        const yBase = depthY(depth);
+        const amp = depthAmp(depth);
+        const alpha = 0.2 + depth * 0.45;
+        ctx.strokeStyle = `rgba(17, 17, 19, ${alpha.toFixed(3)})`;
+        ctx.lineWidth = depth > 0.75 ? 2 : 1.2;
         ctx.beginPath();
-        ctx.moveTo(0, baseY + Math.sin(phase) * L.amp * 0.2);
-        for (let x = 0; x <= w; x += 20) {
+        for (let x = 0; x <= w; x += 8) {
+          const phase = depthPhase(depth, x);
           const y =
-            baseY +
-            Math.sin((x / L.len) * Math.PI * 2 + phase) * L.amp +
-            Math.sin((x / (L.len * 0.45)) * Math.PI * 2 + phase * 1.7) * L.amp * 0.35;
-          ctx.lineTo(x, y);
+            yBase +
+            Math.sin(phase) * amp +
+            Math.sin(phase * 0.5 + depth * 2.1) * amp * 0.4;
+          if (x === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
         }
-        ctx.lineTo(w, baseY + Math.sin(phase + 1) * L.amp * 0.2);
-        if (L.fill) {
-          ctx.lineTo(w, h);
-          ctx.lineTo(0, h);
-          ctx.closePath();
-          ctx.fillStyle = `rgba(${L.color}, ${(L.alpha * 0.5).toFixed(3)})`;
-          ctx.fill();
-        }
-        ctx.strokeStyle = `rgba(${L.color}, ${L.alpha.toFixed(3)})`;
-        ctx.lineWidth = L.width;
         ctx.stroke();
       }
+
+      // ---------- 纵向网格线(深度方向,随波浪摆动,增强立体感) ----------
+      const STEP = 56;
+      for (let gx = 0; gx <= w; gx += STEP) {
+        ctx.strokeStyle = `rgba(17, 17, 19, 0.1)`;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        const steps = ROWS * 2;
+        for (let i = 0; i <= steps; i++) {
+          const depth = i / steps;
+          const amp = depthAmp(depth);
+          const phase = t * 0.018 + depth * 0.7;
+          const y = depthY(depth);
+          const x = gx + Math.sin(phase) * amp * 0.55;
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+      }
+
       raf = requestAnimationFrame(frame);
     };
 
@@ -98,16 +106,21 @@ export function WaveField() {
       if (document.hidden) stop();
       else start();
     };
+    const onResize = () => {
+      build();
+      horizon = h * 0.06;
+    };
 
     build();
+    horizon = h * 0.06; // 地平线贴近顶部,波浪覆盖顶栏区域
     start();
     document.addEventListener("visibilitychange", onVisibility);
-    window.addEventListener("resize", build);
+    window.addEventListener("resize", onResize);
 
     return () => {
       stop();
       document.removeEventListener("visibilitychange", onVisibility);
-      window.removeEventListener("resize", build);
+      window.removeEventListener("resize", onResize);
     };
   }, []);
 

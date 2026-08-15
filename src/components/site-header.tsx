@@ -27,9 +27,9 @@ export function SiteHeader() {
   }, []);
 
   return (
-    <header className="sticky top-3 z-40 px-3 sm:top-4 sm:px-6">
+    <header className="px-3 sm:px-6">
       <div
-        className={`liquid-glass mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-2.5 transition-all duration-300 sm:px-5 ${
+        className={`liquid-glass sticky top-3 z-40 mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-2.5 transition-all duration-300 sm:top-4 sm:px-5 ${
           scrolled ? "is-scrolled" : ""
         }`}
       >
