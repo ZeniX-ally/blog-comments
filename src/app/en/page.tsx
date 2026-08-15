@@ -63,18 +63,52 @@ export default function HomeEn() {
             </FadeIn>
         </div>
 
-        {/* ============ Two-column compact lists ============ */}
-        <div className="mt-14 grid gap-10 lg:mt-16 lg:grid-cols-2 lg:gap-16">
-          {/* Latest Posts */}
-          <section>
-            <FadeIn>
-              <header className="mb-3 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                <h2 className="font-display text-xl font-medium">
-                  Latest Posts
-                </h2>
+        {/* ============ Latest writing: Apple-style light list ============ */}
+        <section className="mt-24 sm:mt-28">
+          <FadeIn>
+            <header className="mb-9 flex flex-wrap items-end justify-between gap-x-6 gap-y-3">
+              <div>
+                <div className="page-head-label mb-3">Latest Writing</div>
+                <h2 className="section-title">Latest Posts</h2>
+              </div>
+              <Link
+                href="/en/blog"
+                className="group text-sm text-muted transition-colors hover:text-accent"
+              >
+                All{" "}
+                <span className="inline-block transition-transform group-hover:translate-x-0.5">
+                  →
+                </span>
+              </Link>
+            </header>
+          </FadeIn>
+          <div className="flex flex-col">
+            {latestPosts.map((post, i) => (
+              <FadeIn key={post.slug} delay={i * 40}>
                 <Link
-                  href="/en/blog"
-                  className="group ml-auto text-xs text-muted transition-colors hover:text-accent"
+                  href={`/en/blog/${slugToHref(post.slug)}`}
+                  className="post-link grid gap-x-6 gap-y-0.5 sm:grid-cols-[8rem_1fr]"
+                >
+                  <time className="post-link-date">{formatDate(post.date)}</time>
+                  <span className="post-link-title">{post.title}</span>
+                </Link>
+              </FadeIn>
+            ))}
+          </div>
+        </section>
+
+        {/* ============ Selected work: light card wall ============ */}
+        {featuredProjects.length > 0 && (
+          <section className="mt-20 sm:mt-24">
+            <FadeIn>
+              <header className="mb-9 flex flex-wrap items-end justify-between gap-x-6 gap-y-3">
+                <div>
+                  <div className="page-head-label mb-3">Selected Work</div>
+                  <h2 className="section-title">Featured</h2>
+                </div>
+                <Link
+                  href="/en/projects"
+                  className="group text-sm text-muted transition-colors hover:text-accent"
                 >
                   All{" "}
                   <span className="inline-block transition-transform group-hover:translate-x-0.5">
@@ -83,72 +117,49 @@ export default function HomeEn() {
                 </Link>
               </header>
             </FadeIn>
-            <FadeIn delay={60}>
-              {latestPosts.map((post, i) => (
-                <FadeIn key={post.slug} delay={i * 40}>
-                  <Link
-                    href={`/en/blog/${slugToHref(post.slug)}`}
-                    className="post-row post-row--tight grid gap-x-5 gap-y-0.5 sm:grid-cols-[6rem_1fr]"
-                  >
-                    <time className="post-row-meta pt-[3px]">
-                      {formatDate(post.date)}
-                    </time>
-                    <div className="min-w-0">
-                      <div className="post-row-title">{post.title}</div>
+            <div className="grid gap-5 sm:grid-cols-2">
+              {featuredProjects.map((p, i) => {
+                const card = (
+                  <div className="light-card group flex h-full min-h-[11rem] flex-col gap-4 p-6">
+                    <div className="flex items-start justify-between gap-4">
+                      <h3 className="font-display text-xl font-medium tracking-tight">
+                        {p.name}
+                      </h3>
+                      <span className="shrink-0 text-xs text-faint">{p.year}</span>
                     </div>
-                  </Link>
-                </FadeIn>
-              ))}
-            </FadeIn>
+                    <p className="line-clamp-2 text-sm leading-relaxed text-muted">
+                      {p.description_en ?? p.description}
+                    </p>
+                    <div className="mt-auto flex flex-wrap items-center gap-2">
+                      {p.tech.slice(0, 3).map((t) => (
+                        <span
+                          key={t}
+                          className="rounded-full bg-[var(--surface-soft)] px-2.5 py-1 text-xs text-muted"
+                        >
+                          {t}
+                        </span>
+                      ))}
+                      {p.link && (
+                        <a
+                          href={p.link}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="ml-auto inline-flex items-center gap-1 text-sm font-medium text-accent transition-colors group-hover:text-accent-strong"
+                        >
+                          Visit{" "}
+                          <span className="transition-transform group-hover:translate-x-0.5">
+                            ↗
+                          </span>
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                );
+                return <FadeIn key={p.name} delay={i * 60}>{card}</FadeIn>;
+              })}
+            </div>
           </section>
-
-          {/* Featured */}
-          {featuredProjects.length > 0 && (
-            <section>
-              <FadeIn>
-                <header className="mb-3 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                  <h2 className="font-display text-xl font-medium">Featured</h2>
-                  <Link
-                    href="/en/projects"
-                    className="group ml-auto text-xs text-muted transition-colors hover:text-accent"
-                  >
-                    All{" "}
-                    <span className="inline-block transition-transform group-hover:translate-x-0.5">
-                      →
-                    </span>
-                  </Link>
-                </header>
-              </FadeIn>
-              <FadeIn delay={60}>
-                {featuredProjects.map((p, i) => (
-                  <FadeIn key={p.name} delay={i * 40}>
-                    <div className="post-row post-row--tight grid gap-x-5 gap-y-0.5 sm:grid-cols-[6rem_1fr]">
-                      <div className="post-row-meta pt-[3px]">{p.year}</div>
-                      <div className="min-w-0">
-                        <div className="post-row-title flex flex-wrap items-center gap-x-2">
-                          <span>{p.name}</span>
-                          {p.link && (
-                            <a
-                              href={p.link}
-                              target="_blank"
-                              rel="noreferrer"
-                              className="text-xs text-accent transition-colors hover:underline"
-                            >
-                              Visit ↗
-                            </a>
-                          )}
-                        </div>
-                        <p className="mt-0.5 line-clamp-1 text-[13px] leading-relaxed text-muted">
-                          {p.description_en ?? p.description}
-                        </p>
-                      </div>
-                    </div>
-                  </FadeIn>
-                ))}
-              </FadeIn>
-            </section>
-          )}
-        </div>
+        )}
       </section>
       </article>
     </BookTransition>
