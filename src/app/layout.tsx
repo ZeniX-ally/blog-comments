@@ -5,6 +5,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { BackToTop } from "@/components/back-to-top";
 import { BackButton } from "@/components/back-button";
 import { EffectLayer } from "@/components/effect-layer";
+import { StarDust } from "@/components/star-dust";
 import "./globals.css";
 
 const umamiEnabled = Boolean(site.umami.scriptSrc && site.umami.websiteId);
@@ -49,11 +50,12 @@ export default function RootLayout({
         )}
       </head>
       <body className="flex min-h-screen flex-col">
-        {/* 背景装饰层:星云光斑 + 极淡光晕,pointer-events: none */}
+        {/* 背景装饰层:星云光斑 + 光尘粒子 + 极淡光晕,pointer-events: none */}
         <div aria-hidden="true" className="bg-fx">
           <div className="nebula nebula-1" />
           <div className="nebula nebula-2" />
           <div className="nebula nebula-3" />
+          <StarDust />
         </div>
         <EffectLayer />
         <SiteHeader />
