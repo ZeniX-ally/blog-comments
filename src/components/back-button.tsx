@@ -26,7 +26,7 @@ export function BackButton() {
       type="button"
       onClick={goBack}
       aria-label="返回上一页"
-      className="group fixed right-5 top-20 z-30 flex items-center gap-1.5 rounded-full border border-line bg-white/80 px-4 py-1.5 text-xs text-muted backdrop-blur-md transition-colors duration-200 hover:border-accent/50 hover:text-accent sm:right-8"
+      className="group fixed right-5 top-20 z-30 flex items-center gap-1.5 rounded-full border border-line bg-background/80 px-4 py-1.5 text-xs text-muted backdrop-blur-md transition-colors duration-200 hover:border-accent/50 hover:text-accent sm:right-8"
     >
       <span
         aria-hidden="true"

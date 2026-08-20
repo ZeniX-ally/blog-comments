@@ -16,8 +16,8 @@ export function Comments() {
     if (!enabled || !ref.current || ref.current.dataset.loaded) return;
     ref.current.dataset.loaded = "1";
 
-    // 全站浅色主题,giscus 固定 light
-    const theme = () => "light";
+    // 依据 html.dark 判断 giscus 主题
+    const getTheme = () => (document.documentElement.classList.contains("dark") ? "dark" : "light");
 
     const script = document.createElement("script");
     script.src = "https://giscus.app/client.js";
@@ -31,7 +31,7 @@ export function Comments() {
     script.setAttribute("data-reactions-enabled", "1");
     script.setAttribute("data-emit-metadata", "0");
     script.setAttribute("data-input-position", "top");
-    script.setAttribute("data-theme", theme());
+    script.setAttribute("data-theme", getTheme());
     script.setAttribute("data-lang", lang || "zh-CN");
     script.setAttribute("crossorigin", "anonymous");
     ref.current.appendChild(script);
@@ -41,14 +41,14 @@ export function Comments() {
         "iframe.giscus-frame"
       );
       frame?.contentWindow?.postMessage(
-        { giscus: { setConfig: { theme: theme() } } },
+        { giscus: { setConfig: { theme: getTheme() } } },
         "https://giscus.app"
       );
     };
     const mo = new MutationObserver(applyTheme);
     mo.observe(document.documentElement, {
       attributes: true,
-      attributeFilter: ["data-theme"],
+      attributeFilter: ["class", "data-theme"],
     });
     return () => mo.disconnect();
   }, [enabled, repo, repoId, category, categoryId, lang]);

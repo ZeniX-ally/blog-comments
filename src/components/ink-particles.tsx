@@ -3,177 +3,179 @@
 import { useEffect, useRef } from "react";
 
 /**
- * 框内黑色粒子 + 力场排斥交互。
- * - 粒子缓慢漂移,密度按容器面积(40-140 个)
- * - 鼠标(pointer)所在处形成排斥力场:半径内的粒子被推开,
- *   离开时带一点动量,形成流体般的退让感
- * - ResizeObserver 自适应;prefers-reduced-motion 不启动;rAF 清理
+ * Apple 风格全屏 100% 铺满斜上方 3D 流体网格波浪 (Full-bleed 100% Coverage 3D Wave Mesh)
+ * - 彻底消除顶部、底部、左侧、右侧所有白色留白空间
+ * - 摄像机视点 cy 置于 0.28 (偏上)，极远景 Z 从 -550 一路覆盖穿透顶部上方
+ * - 纯 GPU 矢量渲染，60fps 丝滑轻盈
  */
 export function InkParticles() {
-  const ref = useRef<HTMLCanvasElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    const canvas = ref.current;
+    const canvas = canvasRef.current;
     if (!canvas) return;
-    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    type P = {
-      x: number;
-      y: number;
-      r: number;
-      a: number;
-      // 基础漂移:恒定速度,不衰减(粒子一直移动)
-      bx: number;
-      by: number;
-      // 力场冲击:被鼠标推开后的附加速度,单独衰减
-      ix: number;
-      iy: number;
-      ph: number;
-    };
-    let raf = 0;
-    let parts: P[] = [];
-    let w = 0;
-    let h = 0;
-    // 指针位置:null = 不在框内
-    let pointer: { x: number; y: number; vx: number; vy: number } | null = null;
-    let lastPointer = { x: 0, y: 0, t: 0 };
+    let animId = 0;
+    let width = 0;
+    let height = 0;
 
-    const build = () => {
+    const resize = () => {
+      const parent = canvas.parentElement;
+      if (!parent) return;
+      const rect = parent.getBoundingClientRect();
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      const rect = canvas.getBoundingClientRect();
-      w = rect.width;
-      h = rect.height;
-      canvas.width = Math.round(w * dpr);
-      canvas.height = Math.round(h * dpr);
+      width = rect.width;
+      height = rect.height;
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      const count = Math.max(120, Math.min(320, Math.round((w * h) / 4500)));
-      parts = Array.from({ length: count }, () => {
-        // 慢速漂移:0.3-0.8 px/帧,方向随机,优雅不躁
-        const speed = 0.15 + Math.random() * 0.25;
-        const angle = Math.random() * Math.PI * 2;
-        return {
-          x: Math.random() * w,
-          y: Math.random() * h,
-          r: 1.2 + Math.random() * 1.8,
-          a: 0.15 + Math.random() * 0.15,
-          bx: Math.cos(angle) * speed,
-          by: Math.sin(angle) * speed,
-          ix: 0,
-          iy: 0,
-          ph: Math.random() * Math.PI * 2,
-        };
-      });
     };
 
-    // 排斥力场:指针速度越大,斥力越强(带惯性)
-    const FORCE_RADIUS = 130;
+    resize();
+    const ro = new ResizeObserver(resize);
+    ro.observe(canvas.parentElement || canvas);
 
-    const frame = () => {
-      ctx.clearRect(0, 0, w, h);
-      const t = performance.now();
-      for (const p of parts) {
-        // 随机游走:每个粒子有独立的抖动方向,缓慢变化(走迷宫式游动)
-        const wander = Math.sin(t / 2600 + p.ph);
-        const wander2 = Math.cos(t / 3400 + p.ph * 1.7);
+    const ROWS = 42; // 深度行数
+    const COLS = 48; // 横向列数
 
-        // 指针排斥(冲击力,加到 ix/iy)
-        if (pointer) {
-          const dx = p.x - pointer.x;
-          const dy = p.y - pointer.y;
-          const dist = Math.hypot(dx, dy);
-          if (dist < FORCE_RADIUS && dist > 0.01) {
-            const falloff = 1 - dist / FORCE_RADIUS;
-            const strength = falloff * falloff * 1.6;
-            const nx = dx / dist;
-            const ny = dy / dist;
-            p.ix += nx * strength * 0.8 + pointer.vx * 0.02;
-            p.iy += ny * strength * 0.8 + pointer.vy * 0.02;
-          }
+    const render = (time: number) => {
+      ctx.clearRect(0, 0, width, height);
+
+      const t = time * 0.0008;
+      const isDark = document.documentElement.classList.contains("dark");
+
+      // 摄像机视点向上提，使远景完全溢出并覆盖顶部边界
+      const cx = width * 0.5;
+      const cy = height * 0.22;
+
+      // 俯瞰倾角
+      const pitch = 0.52;
+      const cosPitch = Math.cos(pitch);
+      const sinPitch = Math.sin(pitch);
+      const fov = 480;
+
+      const grid: { sx: number; sy: number; alpha: number; depth: number }[][] = [];
+
+      for (let r = 0; r < ROWS; r++) {
+        grid[r] = [];
+        const zNorm = r / (ROWS - 1); // 0 (近景下方) ~ 1 (远景上方)
+        // 纵深向远端大幅推进至 -580 (远端穿透顶部)，近端拉至 +620 (近端穿透底部)
+        const rawZ = -580 + zNorm * 1200;
+
+        for (let c = 0; c < COLS; c++) {
+          const xNorm = (c / (COLS - 1)) * 2 - 1; // -1 ~ 1
+          // 横向大幅延展至 1.45 倍宽度，消除两侧任何留白
+          const rawX = xNorm * (width * 1.45);
+
+          // 3D 空间流体复合波高
+          const w1 = Math.sin(rawX * 0.005 + t * 1.5 + rawZ * 0.004) * 35;
+          const w2 = Math.cos(rawX * 0.0028 - t * 1.0 + rawZ * 0.006) * 25;
+          const w3 = Math.sin((rawX + rawZ) * 0.0022 + t * 0.75) * 18;
+          const rawY = 30 + (w1 + w2 + w3); // 3D 高度
+
+          // 摄像机旋转变换 (绕 X 轴俯仰)
+          const rotY = rawY * cosPitch - rawZ * sinPitch;
+          const rotZ = rawY * sinPitch + rawZ * cosPitch + 500;
+
+          // 3D 透视投影到 2D 屏幕
+          const scale = fov / rotZ;
+          const sx = cx + rawX * scale;
+          const sy = cy + rotY * scale;
+
+          // 全局饱满不透明度，无任何两端褪色
+          const edgeFade = 1 - Math.pow(Math.abs(xNorm), 4) * 0.25;
+          const depthFade = (0.4 + 0.6 * Math.sin(zNorm * Math.PI)) * edgeFade * (isDark ? 0.75 : 0.55);
+
+          grid[r][c] = {
+            sx,
+            sy,
+            alpha: depthFade,
+            depth: zNorm,
+          };
         }
-
-        // 冲击力衰减(只衰减冲击,基础漂移保留)
-        p.ix *= 0.9;
-        p.iy *= 0.9;
-
-        // 总位移 = 基础漂移 + 随机游走抖动 + 冲击
-        p.x += p.bx + wander * 0.05;
-        p.y += p.by + wander2 * 0.05 + p.iy;
-        p.x += p.ix;
-
-        // 漂移方向缓慢偏转(不走直线,更有生命感)
-        p.bx += wander * 0.001;
-        p.by += wander2 * 0.001;
-        // 限速:基础速度保持 0.3-0.8 区间
-        const baseSpeed = Math.hypot(p.bx, p.by);
-        if (baseSpeed > 0.8) {
-          p.bx = (p.bx / baseSpeed) * 0.8;
-          p.by = (p.by / baseSpeed) * 0.8;
-        }
-
-        // 边界反弹:粒子永远限制在画布内,不会跑丢
-        const pad = p.r + 1;
-        if (p.x < pad) {
-          p.x = pad;
-          p.bx = Math.abs(p.bx);
-        } else if (p.x > w - pad) {
-          p.x = w - pad;
-          p.bx = -Math.abs(p.bx);
-        }
-        if (p.y < pad) {
-          p.y = pad;
-          p.by = Math.abs(p.by);
-        } else if (p.y > h - pad) {
-          p.y = h - pad;
-          p.by = -Math.abs(p.by);
-        }
-        p.x = Math.min(w - pad, Math.max(pad, p.x));
-        p.y = Math.min(h - pad, Math.max(pad, p.y));
-
-        ctx.globalAlpha = p.a;
-        ctx.fillStyle = "#111113";
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fill();
       }
-      ctx.globalAlpha = 1;
-      raf = requestAnimationFrame(frame);
+
+      // 1. 绘制横向 3D 俯瞰网格线 (从远向近渲染)
+      for (let r = ROWS - 1; r >= 0; r--) {
+        const rowAlpha = grid[r][0].alpha;
+        if (rowAlpha <= 0.01) continue;
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(grid[r][0].sx, grid[r][0].sy);
+
+        for (let c = 1; c < COLS; c++) {
+          const prev = grid[r][c - 1];
+          const curr = grid[r][c];
+          const mx = (prev.sx + curr.sx) * 0.5;
+          const my = (prev.sy + curr.sy) * 0.5;
+          ctx.quadraticCurveTo(prev.sx, prev.sy, mx, my);
+        }
+        ctx.lineTo(grid[r][COLS - 1].sx, grid[r][COLS - 1].sy);
+
+        // Apple 鲜明发光多色温渐变
+        const lineGrad = ctx.createLinearGradient(0, 0, width, 0);
+
+        if (isDark) {
+          lineGrad.addColorStop(0, `rgba(0, 205, 145, ${rowAlpha * 0.45})`);
+          lineGrad.addColorStop(0.35, `rgba(30, 165, 255, ${rowAlpha * 1.35})`);
+          lineGrad.addColorStop(0.7, `rgba(150, 95, 255, ${rowAlpha * 1.15})`);
+          lineGrad.addColorStop(1, `rgba(230, 85, 205, ${rowAlpha * 0.45})`);
+        } else {
+          lineGrad.addColorStop(0, `rgba(0, 155, 115, ${rowAlpha * 0.38})`);
+          lineGrad.addColorStop(0.35, `rgba(0, 140, 235, ${rowAlpha * 1.15})`);
+          lineGrad.addColorStop(0.7, `rgba(125, 65, 215, ${rowAlpha * 0.95})`);
+          lineGrad.addColorStop(1, `rgba(195, 55, 155, ${rowAlpha * 0.35})`);
+        }
+
+        ctx.strokeStyle = lineGrad;
+        ctx.lineWidth = Math.max(1.15, (1.85 - grid[r][0].depth * 0.8));
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      // 2. 绘制纵向 3D 经线 (隔列透视线，上下彻底拉满)
+      for (let c = 0; c < COLS; c += 2) {
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(grid[0][c].sx, grid[0][c].sy);
+
+        for (let r = 1; r < ROWS; r++) {
+          const prev = grid[r - 1][c];
+          const curr = grid[r][c];
+          const mx = (prev.sx + curr.sx) * 0.5;
+          const my = (prev.sy + curr.sy) * 0.5;
+          ctx.quadraticCurveTo(prev.sx, prev.sy, mx, my);
+        }
+        ctx.lineTo(grid[ROWS - 1][c].sx, grid[ROWS - 1][c].sy);
+
+        const colAlpha = isDark ? 0.15 : 0.1;
+        ctx.strokeStyle = isDark
+          ? `rgba(30, 165, 255, ${colAlpha})`
+          : `rgba(0, 140, 235, ${colAlpha})`;
+        ctx.lineWidth = 1.0;
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      animId = requestAnimationFrame(render);
     };
 
-    const onPointerMove = (e: PointerEvent) => {
-      const rect = canvas.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      // 指针速度(用于动量)
-      const dt = Math.max(16, performance.now() - lastPointer.t);
-      const vx = ((x - lastPointer.x) / dt) * 60;
-      const vy = ((y - lastPointer.y) / dt) * 60;
-      lastPointer = { x, y, t: performance.now() };
-      pointer = { x, y, vx, vy };
-    };
-
-    const onPointerLeave = () => {
-      pointer = null;
-    };
-
-    canvas.addEventListener("pointermove", onPointerMove, { passive: true });
-    canvas.addEventListener("pointerleave", onPointerLeave, { passive: true });
-
-    build();
-    raf = requestAnimationFrame(frame);
-    const ro = new ResizeObserver(build);
-    ro.observe(canvas);
+    animId = requestAnimationFrame(render);
 
     return () => {
-      cancelAnimationFrame(raf);
+      cancelAnimationFrame(animId);
       ro.disconnect();
-      canvas.removeEventListener("pointermove", onPointerMove);
-      canvas.removeEventListener("pointerleave", onPointerLeave);
     };
   }, []);
 
   return (
-    <canvas ref={ref} aria-hidden="true" className="absolute inset-0 h-full w-full" />
+    <canvas
+      ref={canvasRef}
+      className="pointer-events-none absolute inset-0 h-full w-full"
+      aria-hidden="true"
+    />
   );
 }

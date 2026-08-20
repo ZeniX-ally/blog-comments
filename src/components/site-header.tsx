@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { site } from "@/lib/site";
 import { NavLink } from "./nav-link";
 import { LanguageToggle } from "./language-toggle";
+import { ThemeToggle } from "./theme-toggle";
 import { dict, getLangFromPath } from "@/lib/i18n";
 
 /**
@@ -79,13 +80,14 @@ export function SiteHeader() {
             ))}
           </nav>
           <div className="hidden h-4 w-px bg-line sm:block" />
+          <ThemeToggle />
           <LanguageToggle />
           {site.links.github && (
             <a
               href={site.links.github}
               target="_blank"
               rel="noreferrer"
-              className="btn-pill btn-primary btn-pill-sm hidden text-xs sm:inline-flex"
+              className="btn-pill btn-primary btn-pill-sm hidden text-xs sm:inline-flex dark:bg-white dark:text-black dark:hover:bg-zinc-200"
             >
               GitHub
             </a>
