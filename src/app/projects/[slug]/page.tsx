@@ -61,7 +61,9 @@ export default async function ProjectDetailPage({
           "@type": "CreativeWork",
           name: project.name,
           description: project.description || undefined,
-          dateCreated: String(project.year),
+          dateCreated: /^\d{4}$/.test(String(project.year))
+            ? `${project.year}-01-01`
+            : String(project.year),
           url: canonicalUrl(`/projects/${slugToHref(project.slug)}`),
           author: {
             "@type": "Person",

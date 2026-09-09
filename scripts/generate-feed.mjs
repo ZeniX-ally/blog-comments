@@ -20,6 +20,7 @@ const SITE_CORE = path.join(ROOT, "src", "lib", "site-core.json");
 const site = JSON.parse(fs.readFileSync(SITE_CORE, "utf8"));
 const SITE_URL = String(site.url).replace(/\/$/, "");
 const SITE_NAME = String(site.name);
+const SITE_TITLE = String(site.title || site.name);
 const SITE_DESC = String(site.description);
 
 /**
@@ -101,7 +102,7 @@ ${cats}  </item>`;
 const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>${xmlEscape(SITE_NAME)}</title>
+    <title>${xmlEscape(SITE_TITLE)}</title>
     <link>${SITE_URL}</link>
     <description>${xmlEscape(SITE_DESC)}</description>
     <language>zh-CN</language>
@@ -113,4 +114,4 @@ ${items}
 
 fs.mkdirSync(OUT_DIR, { recursive: true });
 fs.writeFileSync(path.join(OUT_DIR, "feed.xml"), xml);
-console.log(`✓ feed.xml 生成: ${posts.length} 篇文章 (newest-first, site=${SITE_NAME})`);
+console.log(`✓ feed.xml 生成: ${posts.length} 篇文章 (newest-first, site=${SITE_TITLE})`);

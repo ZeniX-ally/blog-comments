@@ -67,7 +67,7 @@ function wrap(text, perLine = 22, maxLines = 2) {
 }
 
 async function renderCard({ title, date, tags, isDefault }) {
-  const titleLines = wrap(title || "沧海", 24, 2);
+  const titleLines = wrap(title || SITE_NAME, 24, 2);
   const tagText = (tags && tags.length ? tags.map((t) => `#${t}`).join(" ") : "404-found.uk").slice(
     0,
     40
@@ -190,7 +190,7 @@ for (const p of posts) {
   console.log(`✅ og/${encodeURIComponent(p.slug)}.png`);
 }
 
-const defPng = await renderCard({ title: "沧海", date: "", tags: [], isDefault: true });
+const defPng = await renderCard({ title: SITE_NAME, date: "", tags: [], isDefault: true });
 fs.writeFileSync(path.join(OUT_OG_DIR, "default.png"), defPng);
 console.log("✅ og/default.png");
 

@@ -22,6 +22,7 @@ export type AboutContent = {
 const aboutPath = path.join(process.cwd(), "content", "about.md");
 
 const DEFAULT_DOTS = ["dot-running", "dot-local", "dot-daily"] as const;
+const ALLOWED_DOTS = new Set(["dot-running", "dot-local", "dot-lab", "dot-daily"]);
 
 function splitMarkdownSections(markdown: string): Map<string, string> {
   const map = new Map<string, string>();
@@ -56,10 +57,13 @@ function parseNow(value: unknown): AboutNowItem[] {
       const title = row.title != null ? String(row.title).trim() : "";
       const desc = row.desc != null ? String(row.desc).trim() : "";
       if (!title || !desc) return null;
-      const dot =
+      const rawDot =
         row.dot != null && String(row.dot).trim()
           ? String(row.dot).trim()
-          : DEFAULT_DOTS[i] ?? "dot-daily";
+          : "";
+      const dot = ALLOWED_DOTS.has(rawDot)
+        ? rawDot
+        : DEFAULT_DOTS[i] ?? "dot-daily";
       return { title, desc, dot };
     })
     .filter((x): x is AboutNowItem => x !== null);
