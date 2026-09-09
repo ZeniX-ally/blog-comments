@@ -40,7 +40,7 @@ export default function AboutPage() {
                   alt="GitHub 头像"
                   width={88}
                   height={88}
-                  className="h-22 w-22 rounded-full border border-line object-cover"
+                  className="rounded-full border border-line object-cover"
                   style={{ width: 88, height: 88 }}
                 />
                 <span
