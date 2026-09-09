@@ -53,12 +53,12 @@
 
   --bg: #ffffff;
   --fg: #1d1d1f;
-  --muted: #3f3f46;
-  --faint: #52525b;
-  --line: rgba(29, 29, 31, 0.28);
+  --muted: #6e6e73;
+  --faint: #86868b;
+  --line: rgba(29, 29, 31, 0.12);
   --accent: #00a876;
   --accent-strong: #00845c;
-  --surface: #f0f0f2;
+  --surface: #f5f5f7;
   --surface-soft: rgba(29, 29, 31, 0.05);
   --code-bg: #ececee;
   --card-border: rgba(29, 29, 31, 0.24);
@@ -83,6 +83,37 @@
   --tok-title: #0e7a8a;
   --tok-attr: #8250df;
 }
+
+/* ---------- 设计 token(暗色 / OLED，与浅色对称映射) ---------- */
+.dark {
+  color-scheme: dark;
+  accent-color: var(--accent);
+
+  --bg: #000000;
+  --fg: #f5f5f7;
+  --muted: #a1a1a6;
+  --faint: #86868b;
+  --line: rgba(245, 245, 247, 0.12);
+  --accent: #00a876;
+  --accent-strong: #34d399;
+  --surface: #1c1c1e;
+  --surface-soft: rgba(245, 245, 247, 0.06);
+  --code-bg: #161618;
+  --card-border: rgba(245, 245, 247, 0.24);
+
+  --glow: rgba(0, 168, 118, 0.08);
+  --glow-2: rgba(52, 211, 153, 0.05);
+  --tilt-spot: rgba(0, 168, 118, 0.08);
+  --spotlight-glow: rgba(0, 168, 118, 0.06);
+
+  --tok-keyword: #34d399;
+  --tok-string: #6ee7b7;
+  --tok-number: #60a5fa;
+  --tok-comment: #8e8e93;
+  --tok-title: #5eead4;
+  --tok-attr: #c4b5fd;
+}
+
 
 html {
   /* 不用 scroll-behavior: smooth —— Next SPA 导航滚顶会变成动画,fixed 按钮感知跳位 */
@@ -433,17 +464,18 @@ body {
 
 .page-title {
   font-family: var(--font-display);
-  font-size: clamp(2.5rem, 6vw, 3.5rem); /* 40-56px */
-  font-weight: 500;
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: 600;
   letter-spacing: -0.02em;
   line-height: 1.12;
 }
 
-/* 首页首屏全览:标题略收敛,给下方内容留位 */
+/* Hero Display:与 page-title 同阶，略加重 */
 .page-title--hero {
-  font-size: clamp(3rem, 8vw, 5.5rem);
-  letter-spacing: -0.045em;
-  line-height: 1.05;
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.08;
 }
 
 /* 首页 hero 大标题框:横向宽框玻璃材质,高度 6× 标题字号,文字垂直居中 */
@@ -453,7 +485,7 @@ body {
   justify-content: center;
   width: min(80rem, calc(100vw - 2rem));
   margin-inline: auto;
-  min-height: calc(clamp(3rem, 8vw, 5.5rem) * 6);
+  min-height: calc(clamp(2.5rem, 5vw, 3.5rem) * 3.25);
   text-align: center;
   background: linear-gradient(180deg, #ffffff 0%, #f6f6f8 100%);
   -webkit-backdrop-filter: blur(24px) saturate(180%);
@@ -659,19 +691,67 @@ body {
    ------------------------------------------------------------ */
 .section-title {
   font-family: var(--font-display);
-  font-size: clamp(1.5rem, 3vw, 2.125rem);
-  font-weight: 500;
+  font-size: clamp(1.75rem, 2.5vw, 2rem);
+  font-weight: 600;
   letter-spacing: -0.02em;
   line-height: 1.15;
+}
+
+/* 项目名：介于 section 与 body 之间 */
+.project-name {
+  font-family: var(--font-display);
+  font-size: clamp(1.375rem, 2vw, 1.75rem);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+}
+
+.text-meta {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+@media (min-width: 640px) {
+  .text-meta {
+    font-size: 0.875rem;
+  }
+}
+
+.text-body {
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.7;
+}
+
+@media (min-width: 640px) {
+  .text-body {
+    font-size: 1.125rem;
+  }
+}
+
+/* 内容栏宽度：1120–1200 */
+.content-shell {
+  width: 100%;
+  max-width: 72.5rem; /* 1160px */
+  margin-inline: auto;
+}
+
+/* 文章阅读栏：print-like 680–720 */
+.article-measure {
+  width: 100%;
+  max-width: 44rem; /* 704px */
+  margin-inline: auto;
 }
 
 /* ------------------------------------------------------------
    苹果式轻列表:细边框分组,hover 淡灰底
    ------------------------------------------------------------ */
 .post-link {
-  padding: 1rem 0.75rem;
-  border: 1px solid var(--card-border);
-  border-radius: 0.875rem;
+  padding: 0.875rem 0.5rem;
+  border: 1px solid transparent;
+  border-radius: 0.75rem;
+  background: transparent;
   transition:
     background-color 200ms var(--ease-out),
     border-color 200ms var(--ease-out);
@@ -711,7 +791,7 @@ body {
 .light-card {
   border: 1px solid var(--card-border);
   background: var(--surface);
-  border-radius: 1.25rem;
+  border-radius: 0.875rem; /* 14px */
   transition:
     transform 200ms var(--ease-out),
     border-color 200ms var(--ease-out),
@@ -719,8 +799,36 @@ body {
     box-shadow 200ms var(--ease-out);
 }
 
+/* 首页精选墙：更大、更重，与列表卡拉开层级 */
+.featured-card {
+  border: 1px solid var(--card-border);
+  background: var(--surface);
+  border-radius: 1rem; /* 16px */
+  transition:
+    transform 200ms var(--ease-out),
+    border-color 200ms var(--ease-out),
+    background-color 200ms var(--ease-out),
+    box-shadow 200ms var(--ease-out);
+}
+
+.featured-card-media {
+  aspect-ratio: 16 / 10;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  background: var(--surface-soft);
+  border: 1px solid var(--line);
+}
+
+.featured-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 @media (hover: hover) and (pointer: fine) {
-  .light-card:hover {
+  .light-card:hover,
+  .featured-card:hover {
     transform: translateY(-2px);
     border-color: rgba(0, 168, 118, 0.35);
     box-shadow: 0 8px 24px -12px rgba(29, 29, 31, 0.1);
@@ -744,7 +852,7 @@ body {
 .tool-card {
   border: 1px solid var(--card-border);
   background: var(--surface);
-  border-radius: 1.25rem;
+  border-radius: 0.875rem;
   transition:
     transform 200ms var(--ease-out),
     border-color 200ms var(--ease-out),
@@ -823,10 +931,24 @@ body {
   --tw-prose-th-borders: var(--line);
   --tw-prose-td-borders: var(--line);
 
-  max-width: 48rem;
+  max-width: 44rem; /* ~704px print-like */
   font-family: var(--font-sans);
-  font-size: 1rem;
-  line-height: 1.9;
+  font-size: 1.0625rem;
+  line-height: 1.75;
+}
+
+.prose p {
+  margin-top: 0.875rem;
+  margin-bottom: 0.875rem;
+}
+
+.prose h2 {
+  margin-top: 2.75rem;
+  margin-bottom: 1rem;
+}
+
+.prose > * + * {
+  margin-top: 0.9rem;
 }
 
 .prose h1,
@@ -1158,3 +1280,51 @@ body {
     opacity: 0 !important;
   }
 }
+
+
+/* 暗色：玻璃顶栏 / Hero 框 */
+.dark .liquid-glass {
+  background: rgba(28, 28, 30, 0.55);
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow:
+    0 6px 20px rgba(0, 0, 0, 0.45),
+    0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.dark .liquid-glass.is-scrolled {
+  background: rgba(28, 28, 30, 0.72);
+}
+
+.dark .hero-frame {
+  background: linear-gradient(180deg, #0a0a0a 0%, #141416 100%);
+  border-color: rgba(245, 245, 247, 0.1);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 20px 60px -12px rgba(0, 0, 0, 0.55);
+}
+
+.dark .btn-primary {
+  background: var(--fg);
+  color: #000000;
+}
+
+.dark .btn-primary:hover {
+  background: #ffffff;
+}
+
+.site-nav {
+  font-size: 0.9375rem;
+}
+
+.site-nav .nav-underline[aria-current="page"] {
+  font-weight: 600;
+}
+
+.project-detail-block {
+  margin-top: 2.75rem; /* ~44px */
+}
+
+.project-detail-block + .project-detail-block {
+  margin-top: 2.75rem;
+}
+

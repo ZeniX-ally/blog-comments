@@ -8,14 +8,16 @@ import type { ReactNode } from "react";
 export function NavLink({ href, children }: { href: string; children: ReactNode }) {
   const pathname = usePathname();
   const active = pathname === href || pathname.startsWith(`${href}/`);
+  const label = typeof children === "string" ? children : "";
+  const emphasize = label === "作品" || label === "Projects";
 
   return (
     <Link
       href={href}
       aria-current={active ? "page" : undefined}
       className={`nav-underline transition-colors duration-200 ${
-        active ? "text-accent-strong" : "text-muted hover:text-foreground"
-      }`}
+        emphasize ? "font-semibold" : "font-normal"
+      } ${active ? "text-accent-strong" : "text-muted hover:text-foreground"}`}
     >
       {children}
     </Link>

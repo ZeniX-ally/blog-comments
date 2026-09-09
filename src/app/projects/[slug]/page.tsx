@@ -43,69 +43,90 @@ export default async function ProjectDetailPage({
   const project = await getProjectBySlug(slug);
   if (!project) notFound();
 
-  const others = getAllProjects().filter((p) => p.slug !== project.slug).slice(0, 2);
+  const others = getAllProjects()
+    .filter((p) => p.slug !== project.slug)
+    .slice(0, 2);
 
   return (
     <BookTransition>
-      <article className="mx-auto w-full max-w-6xl pb-32 pt-20 sm:pt-24">
+      <article className="content-shell pb-32 pt-20 sm:pt-24">
+        {/* 1. back */}
         <FadeIn>
-          <header className="border-b border-line pb-12">
-            <div className="page-head-label mb-6">作品</div>
+          <Link
+            href="/projects"
+            className="inline-flex text-sm text-muted transition-colors hover:text-accent"
+          >
+            ← 返回作品
+          </Link>
+        </FadeIn>
+
+        {/* 2. title: name / year / one-liner */}
+        <FadeIn delay={40}>
+          <header className="project-detail-block max-w-3xl">
+            <div className="page-head-label mb-5">作品</div>
             <h1 className="page-title text-balance">{project.name}</h1>
-            <p className="mt-5 max-w-2xl text-[15px] leading-relaxed text-muted">
-              {project.description}
-            </p>
-            <div className="mt-6 flex flex-wrap items-center gap-4 text-xs text-faint">
+            <div className="mt-4 flex flex-wrap items-center gap-3 text-meta text-faint">
               <span>{project.year}</span>
-              {project.tech.map((t) => (
-                <span
-                  key={t}
-                  className="rounded-full bg-[var(--surface-soft)] px-2.5 py-1 text-xs text-muted"
-                >
-                  {t}
-                </span>
-              ))}
             </div>
-            {(project.link || project.repo) && (
-              <div className="mt-8 flex flex-wrap gap-3">
-                {project.link && (
-                  <a
-                    href={project.link}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="btn-pill btn-primary btn-pill-sm text-xs"
-                  >
-                    访问站点 ↗
-                  </a>
-                )}
-                {project.repo && (
-                  <a
-                    href={project.repo}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="btn-pill btn-ghost btn-pill-sm text-xs"
-                  >
-                    查看源码 ↗
-                  </a>
-                )}
-              </div>
-            )}
+            <p className="mt-4 max-w-2xl text-body text-muted">{project.description}</p>
           </header>
         </FadeIn>
 
+        {/* 3. CTA pills */}
+        {(project.link || project.repo) && (
+          <FadeIn delay={60}>
+            <div className="mt-8 flex flex-wrap gap-3">
+              {project.link && (
+                <a
+                  href={project.link}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="btn-pill btn-primary"
+                >
+                  访问站点 ↗
+                </a>
+              )}
+              {project.repo && (
+                <a
+                  href={project.repo}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="btn-pill btn-ghost"
+                >
+                  查看源码 ↗
+                </a>
+              )}
+            </div>
+          </FadeIn>
+        )}
+
+        {/* 4. optional cover */}
+        {project.cover && (
+          <FadeIn delay={80}>
+            <div className="project-detail-block overflow-hidden rounded-2xl border border-line">
+              <div className="featured-card-media rounded-none border-0">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={project.cover} alt={`${project.name} 封面`} />
+              </div>
+            </div>
+          </FadeIn>
+        )}
+
+        {/* 5–8. narrative body: 背景 → 我做了什么 → 技术栈 → 结果/现状 */}
         <FadeIn delay={100}>
           <ProseTilt>
             <div
-              className="prose mt-14"
+              className="prose project-detail-block"
               dangerouslySetInnerHTML={{ __html: project.html }}
             />
           </ProseTilt>
         </FadeIn>
 
+        {/* 9. 相关作品 1–2 */}
         {others.length > 0 && (
-          <section className="mt-24 border-t border-line pt-10">
-            <h2 className="mb-6 text-sm text-faint">其他作品</h2>
-            <div className="grid gap-4 sm:grid-cols-2">
+          <section className="project-detail-block border-t border-line pt-10">
+            <h2 className="mb-6 section-title text-[1.375rem]">相关作品</h2>
+            <div className="grid gap-5 sm:grid-cols-2 sm:gap-6">
               {others.map((p) => (
                 <Link
                   key={p.slug}
@@ -113,10 +134,10 @@ export default async function ProjectDetailPage({
                   className="light-card group block p-5"
                 >
                   <div className="flex items-start justify-between gap-3">
-                    <span className="font-medium transition-colors group-hover:text-accent">
+                    <span className="project-name text-[1.25rem] transition-colors group-hover:text-accent">
                       {p.name}
                     </span>
-                    <span className="text-xs text-faint">{p.year}</span>
+                    <span className="text-meta text-faint">{p.year}</span>
                   </div>
                   <p className="mt-2 line-clamp-2 text-sm text-muted">
                     {p.description}
@@ -126,15 +147,6 @@ export default async function ProjectDetailPage({
             </div>
           </section>
         )}
-
-        <footer className="mt-16 border-t border-line pt-8">
-          <Link
-            href="/projects"
-            className="text-sm text-muted transition-colors hover:text-accent"
-          >
-            ← 返回作品列表
-          </Link>
-        </footer>
       </article>
     </BookTransition>
   );

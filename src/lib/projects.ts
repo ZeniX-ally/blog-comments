@@ -157,7 +157,6 @@ export async function getProjectBySlug(slug: string): Promise<ProjectDetail | nu
 
 /** generateStaticParams 友好列表 */
 export function getProjectStaticParams(): { slug: string }[] {
-  const list = getAllProjects().map((p) => ({ slug: p.slug }));
-  return list.length > 0 ? list : [{ slug: "placeholder" }];
+  return getAllProjects().map((p) => ({ slug: p.slug }));
 }
 

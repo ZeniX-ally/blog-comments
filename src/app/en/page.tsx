@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { site } from "@/lib/site";
 import { getAllPosts, formatDate, slugToHref } from "@/lib/posts";
-import { getAllProjects, getFeaturedProjects } from "@/lib/projects";
+import { getFeaturedProjects } from "@/lib/projects";
 import { FadeIn } from "@/components/fade-in";
 import { InkParticles } from "@/components/ink-particles";
 import { HighlightChars } from "@/components/highlight-chars";
@@ -10,7 +10,6 @@ import { BookTransition } from "@/components/book-transition";
 export default function HomeEn() {
   const posts = getAllPosts("en");
   const latestPosts = posts.slice(0, 4);
-  const projects = getAllProjects();
   const featuredProjects = getFeaturedProjects(3);
   const tagCount = new Set(posts.flatMap((p) => p.tags ?? [])).size;
 
@@ -51,7 +50,7 @@ export default function HomeEn() {
             <div className="mt-8 flex flex-wrap items-baseline justify-center gap-x-10 gap-y-2">
               {[
                 { n: posts.length, label: "posts" },
-                { n: projects.length, label: "projects" },
+                { n: featuredProjects.length, label: "featured" },
                 { n: tagCount, label: "tags" },
               ].map((s) => (
                 <div key={s.label}>

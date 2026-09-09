@@ -30,7 +30,7 @@ export function SiteHeader() {
   return (
     <header className="fixed inset-x-0 top-0 z-40 px-3 sm:px-6">
       <div
-        className={`liquid-glass mx-auto mt-3 flex w-full max-w-6xl items-center justify-between px-4 py-2.5 transition-all duration-300 sm:mt-4 sm:px-5 ${
+        className={`liquid-glass mx-auto mt-3 flex h-14 w-full max-w-[72.5rem] items-center justify-between px-4 transition-all duration-300 sm:mt-4 sm:h-16 sm:px-5 ${
           scrolled ? "is-scrolled" : ""
         }`}
       >
@@ -72,7 +72,7 @@ export function SiteHeader() {
         </Link>
 
         <div className="relative z-10 flex items-center gap-4 sm:gap-6">
-          <nav className="hidden items-center gap-6 text-sm sm:flex">
+          <nav className="site-nav hidden items-center gap-6 sm:flex">
             {nav.map((item) => (
               <NavLink key={item.href} href={item.href}>
                 {item.label}

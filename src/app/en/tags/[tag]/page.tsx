@@ -9,7 +9,7 @@ type Params = { tag: string };
 
 export function generateStaticParams(): Params[] {
   const tags = getAllTags("en").map(({ tag }) => ({ tag }));
-  return tags.length > 0 ? tags : [{ tag: "placeholder" }];
+  return tags;
 }
 
 export const dynamicParams = false;

@@ -12,9 +12,7 @@ import { BookTransition } from "@/components/book-transition";
 type Params = { slug: string };
 
 export function generateStaticParams(): Params[] {
-  const posts = getAllPosts().map((post) => ({ slug: post.slug }));
-  // 静态导出要求至少生成一个路由；暂无文章时用占位 slug(页面会 404)
-  return posts.length > 0 ? posts : [{ slug: "placeholder" }];
+  return getAllPosts().map((post) => ({ slug: post.slug }));
 }
 
 export const dynamicParams = false;
@@ -48,7 +46,7 @@ export default async function PostPage({ params }: { params: Promise<Params> }) 
 
   return (
     <BookTransition>
-      <article className="mx-auto w-full max-w-6xl pb-32 pt-20 sm:pt-24">
+      <article className="article-measure pb-32 pt-20 sm:pt-24">
       {/* 阅读进度条:Tan 细线 */}
       <ReadingProgress />
       {/* 章节联动:正文滚动高亮当前标题 */}
@@ -77,7 +75,7 @@ export default async function PostPage({ params }: { params: Promise<Params> }) 
       <FadeIn delay={100}>
       <ProseTilt>
       <div
-        className="prose mt-14"
+        className="prose mt-12"
         dangerouslySetInnerHTML={{ __html: post.html }}
       />
       </ProseTilt>

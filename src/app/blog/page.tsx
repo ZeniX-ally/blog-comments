@@ -27,7 +27,7 @@ export default function BlogPage() {
 
   return (
     <BookTransition>
-      <article className="mx-auto w-full max-w-6xl pb-32 pt-20 sm:pt-24">
+      <article className="content-shell pb-32 pt-20 sm:pt-24">
       <div className="grid gap-14 lg:grid-cols-[300px_1fr] lg:gap-20">
         {/* 左栏:sticky 介绍牌 */}
         <FadeIn>

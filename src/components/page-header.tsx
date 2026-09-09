@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
 
 /**
- * 页面大标题锚点:克制小标签 + 超大标题 + 简短副标题。
- * 每页只有一个;留白由调用方控制。
+ * 页面标题锚点:克制小标签 + 大标题 + 闲谈副标题。
+ * 每页只用一次;子节点可追加操作区。
  */
 export function PageHeader({
   label,
@@ -16,7 +16,7 @@ export function PageHeader({
   children?: ReactNode;
 }) {
   return (
-    <header className="mb-20 sm:mb-24">
+    <header className="mb-16 sm:mb-20">
       {label && <div className="page-head-label mb-6">{label}</div>}
       <h1 className="page-title">{title}</h1>
       {sub && <p className="page-sub mt-5 max-w-2xl">{sub}</p>}

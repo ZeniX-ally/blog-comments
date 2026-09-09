@@ -13,7 +13,7 @@ type Params = { slug: string };
 
 export function generateStaticParams(): Params[] {
   const posts = getAllPosts("en").map((post) => ({ slug: post.slug }));
-  return posts.length > 0 ? posts : [{ slug: "placeholder" }];
+  return posts;
 }
 
 export const dynamicParams = false;
