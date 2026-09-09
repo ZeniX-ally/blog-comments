@@ -14,8 +14,9 @@ import { Resvg } from "@resvg/resvg-js";
 const ROOT = process.cwd();
 const POSTS_DIR = path.join(ROOT, "content", "posts");
 const OUT_OG_DIR = path.join(ROOT, "out", "og");
-const SITE_URL = "https://404-found.uk";
-const SITE_NAME = "沧海";
+const SITE_CORE = JSON.parse(fs.readFileSync(path.join(ROOT, "src", "lib", "site-core.json"), "utf8"));
+const SITE_URL = String(SITE_CORE.url).replace(/\/$/, "");
+const SITE_NAME = String(SITE_CORE.name);
 
 const FONT_DIR = path.join(ROOT, "scripts", "fonts");
 const fonts = [
@@ -36,7 +37,7 @@ const fonts = [
   },
 ];
 
-const ACCENT = "#D4A27F"; // Tan 强调色（与站点一致）
+const ACCENT = "#00a876"; // 品牌绿（与 globals.css --accent 一致）
 const FG = "#F5F2EA";
 const FAINT = "#8A857C";
 const BG = "#191919";
@@ -192,3 +193,4 @@ for (const p of posts) {
 const defPng = await renderCard({ title: "沧海", date: "", tags: [], isDefault: true });
 fs.writeFileSync(path.join(OUT_OG_DIR, "default.png"), defPng);
 console.log("✅ og/default.png");
+

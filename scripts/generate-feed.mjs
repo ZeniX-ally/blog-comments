@@ -1,10 +1,12 @@
 #!/usr/bin/env node
 /**
- * 生成 RSS 2.0 feed → out/feed.xml
- * 在 next build 之后运行（依赖 out/ 目录）。
+ * 生成 RSS 2.0 feed 到 out/feed.xml
+ * 在 next build 之后运行，写入 out/ 目录。
  *
- * 这是静态导出(output: export)下 feed.xml 的唯一生成路径。
+ * 由于静态导出(output: export)，feed.xml 是唯一分发路径；
  * App Router 的 route handler 在 export 下不可靠/会双写，已移除。
+ *
+ * 站点 name/description/url 来自 src/lib/site-core.json（与 site.ts 共用）。
  */
 import fs from "node:fs";
 import path from "node:path";
@@ -13,13 +15,16 @@ import matter from "gray-matter";
 const ROOT = process.cwd();
 const POSTS_DIR = path.join(ROOT, "content", "posts");
 const OUT_DIR = path.join(ROOT, "out");
-const SITE_URL = "https://404-found.uk";
-const SITE_NAME = "阿九";
-const SITE_DESC = "测试工程师，记录生活与学习中的所思所想。";
+const SITE_CORE = path.join(ROOT, "src", "lib", "site-core.json");
+
+const site = JSON.parse(fs.readFileSync(SITE_CORE, "utf8"));
+const SITE_URL = String(site.url).replace(/\/$/, "");
+const SITE_NAME = String(site.name);
+const SITE_DESC = String(site.description);
 
 /**
- * frontmatter 的 date 会被 YAML 解析成 Date 对象(UTC 零点)，
- * 统一归一化为 YYYY-MM-DD。切勿对 Date 直接 String().slice(0,10)。
+ * frontmatter 的 date 会被 YAML 解析成 Date 对象(UTC 零点)。
+ * 成功则返回 YYYY-MM-DD；无法解析则返回 null（调用方跳过并 warn）。
  */
 function toISODate(value) {
   if (value instanceof Date && !Number.isNaN(value.getTime())) {
@@ -28,10 +33,10 @@ function toISODate(value) {
     const d = String(value.getUTCDate()).padStart(2, "0");
     return `${y}-${m}-${d}`;
   }
-  const s = value ? String(value) : "1970-01-01";
-  // 已是 ISO 或可 slice 的字符串
+  if (value == null || value === "") return null;
+  const s = String(value);
   const m = s.match(/^(\d{4}-\d{2}-\d{2})/);
-  return m ? m[1] : "1970-01-01";
+  return m ? m[1] : null;
 }
 
 function toRFC2822(isoDate) {
@@ -51,20 +56,28 @@ function xmlEscape(s) {
     .replaceAll("'", "&apos;");
 }
 
-const posts = fs
-  .readdirSync(POSTS_DIR)
-  .filter((f) => f.endsWith(".md"))
-  .map((file) => {
-    const { data, content } = matter(fs.readFileSync(path.join(POSTS_DIR, file), "utf8"));
-    return {
-      ...data,
-      slug: file.replace(/\.md$/, ""),
-      content,
-      date: toISODate(data.date),
-    };
-  })
-  .filter((p) => p.draft !== true)
-  .sort((a, b) => String(a.date).localeCompare(String(b.date)));
+const posts = [];
+for (const file of fs.readdirSync(POSTS_DIR).filter((f) => f.endsWith(".md"))) {
+  const { data, content } = matter(fs.readFileSync(path.join(POSTS_DIR, file), "utf8"));
+  if (data.draft === true) continue;
+
+  const slug = file.replace(/\.md$/, "");
+  const date = toISODate(data.date);
+  if (!date) {
+    console.warn(`[feed] skip ${slug}: missing or invalid date (${JSON.stringify(data.date)})`);
+    continue;
+  }
+
+  posts.push({
+    ...data,
+    slug,
+    content,
+    date,
+  });
+}
+
+// newest-first
+posts.sort((a, b) => String(b.date).localeCompare(String(a.date)));
 
 const items = posts
   .map((p) => {
@@ -88,7 +101,7 @@ ${cats}  </item>`;
 const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>${xmlEscape(SITE_NAME)} · 个人站</title>
+    <title>${xmlEscape(SITE_NAME)}</title>
     <link>${SITE_URL}</link>
     <description>${xmlEscape(SITE_DESC)}</description>
     <language>zh-CN</language>
@@ -100,4 +113,4 @@ ${items}
 
 fs.mkdirSync(OUT_DIR, { recursive: true });
 fs.writeFileSync(path.join(OUT_DIR, "feed.xml"), xml);
-console.log(`✅ feed.xml 生成: ${posts.length} 篇文章`);
+console.log(`✓ feed.xml 生成: ${posts.length} 篇文章 (newest-first, site=${SITE_NAME})`);

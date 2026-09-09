@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import { FadeIn } from "@/components/fade-in";
 import { BookTransition } from "@/components/book-transition";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: "工具清单",
   description: "自建服务与常用工具清单。",
-};
+  path: "/tools",
+});
 
 type ToolStatus = "RUNNING" | "LOCAL" | "LAB" | "DAILY";
 

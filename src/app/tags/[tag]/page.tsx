@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { decodeSlug, getAllTags, getPostsByTag } from "@/lib/posts";
+import { decodeSlug, getAllTags, getPostsByTag, slugToHref } from "@/lib/posts";
+import { pageMeta } from "@/lib/seo";
 import { PostList } from "@/components/post-list";
 import { PageHeader } from "@/components/page-header";
 import { BookTransition } from "@/components/book-transition";
@@ -23,10 +24,11 @@ export async function generateMetadata({
   const { tag } = await params;
   if (getPostsByTag(tag).length === 0) return {};
   const label = decodeSlug(tag);
-  return {
+  return pageMeta({
     title: `#${label}`,
     description: `标签「${label}」下的文章。`,
-  };
+    path: `/tags/${slugToHref(label)}`,
+  });
 }
 
 /** 单个标签下的文章列表，复用 PostList 保持与首页/文章列表一致的极简风格 */

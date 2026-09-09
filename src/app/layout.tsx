@@ -23,7 +23,16 @@ export const metadata: Metadata = {
   openGraph: {
     title: site.title,
     description: site.description,
+    url: site.url,
     siteName: site.name,
+    locale: "zh_CN",
+    type: "website",
+    images: ["/og/default.png"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: site.title,
+    description: site.description,
     images: ["/og/default.png"],
   },
 };

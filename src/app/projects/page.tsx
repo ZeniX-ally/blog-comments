@@ -1,14 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getAllProjects } from "@/lib/projects";
+import { pageMeta } from "@/lib/seo";
 import { slugToHref } from "@/lib/posts";
 import { FadeIn } from "@/components/fade-in";
 import { BookTransition } from "@/components/book-transition";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: "作品",
   description: "做过的一些项目。",
-};
+  path: "/projects",
+});
 
 export default function ProjectsPage() {
   const projects = getAllProjects();

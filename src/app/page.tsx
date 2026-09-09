@@ -1,11 +1,20 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { site } from "@/lib/site";
+import { pageMeta } from "@/lib/seo";
+import { JsonLd } from "@/components/json-ld";
 import { getAllPosts, formatDate, slugToHref } from "@/lib/posts";
 import { getFeaturedProjects } from "@/lib/projects";
 import { FadeIn } from "@/components/fade-in";
 import { InkParticles } from "@/components/ink-particles";
 import { HighlightChars } from "@/components/highlight-chars";
 import { BookTransition } from "@/components/book-transition";
+
+export const metadata: Metadata = pageMeta({
+  title: { absolute: site.title },
+  description: site.description,
+  path: "/",
+});
 
 export default function Home() {
   const posts = getAllPosts();
@@ -15,6 +24,25 @@ export default function Home() {
 
   return (
     <BookTransition>
+      <JsonLd
+        data={[
+          {
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            name: site.name,
+            url: site.url,
+            description: site.description,
+            inLanguage: "zh-CN",
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "Person",
+            name: site.name,
+            url: site.url,
+            sameAs: site.links.github ? [site.links.github] : [],
+          },
+        ]}
+      />
       <article className="content-shell pb-24 pt-5 sm:pt-8">
       <section className="flex flex-col lg:min-h-[calc(100vh-5.75rem)]">
         {/* ============ HERO ============ */}

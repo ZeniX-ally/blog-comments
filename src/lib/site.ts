@@ -1,16 +1,12 @@
 /**
  * 全站配置 —— 把这里改成你自己的信息即可。
  * 这是唯一需要修改的"配置文件"，页面文案大多从这里读取。
+ * name/title/description/url 与 scripts 共用 site-core.json。
  */
+import siteCore from "./site-core.json";
+
 export const site = {
-  /** 站点名，显示在左上角导航与标题里 */
-  name: "阿九",
-  /** 浏览器标签页标题 */
-  title: "阿九 · 个人站",
-  /** 站点描述，用于 SEO 与 RSS */
-  description: "测试工程师，记录生活与学习中的所思所想。",
-  /** 线上域名(部署后替换，用于 sitemap / RSS / 分享链接) */
-  url: "https://404-found.uk",
+  ...siteCore,
 
   /** 首页 Hero */
   hero: {

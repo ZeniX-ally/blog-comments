@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getAllTags, slugToHref } from "@/lib/posts";
+import { pageMeta } from "@/lib/seo";
 import { PageHeader } from "@/components/page-header";
 import { BookTransition } from "@/components/book-transition";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: "标签",
   description: "按标签浏览全部文章。",
-};
+  path: "/tags",
+});
 
 /** 标签总览页：以标签云形式列出所有标签及文章数 */
 export default function TagsPage() {

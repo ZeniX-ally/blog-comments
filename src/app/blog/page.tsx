@@ -1,14 +1,16 @@
 import type { Metadata } from "next";
 import { getAllPosts, type PostMeta } from "@/lib/posts";
+import { pageMeta } from "@/lib/seo";
 import { PostList } from "@/components/post-list";
 import { PostSearch } from "@/components/post-search";
 import { FadeIn } from "@/components/fade-in";
 import { BookTransition } from "@/components/book-transition";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: "文章",
   description: "全部文章列表。",
-};
+  path: "/blog",
+});
 
 /** 按年份分组,年份新的在前 */
 function groupByYear(posts: PostMeta[]): [string, PostMeta[]][] {

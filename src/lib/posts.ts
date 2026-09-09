@@ -108,10 +108,16 @@ function parsePost(filename: string, lang: Lang = "zh"): PostMeta | null {
   // 阅读时长:中文约 400 字/分钟,英文约 200 词/分钟
   const perMinute = lang === "en" ? 200 : 400;
 
+  const date = toISODate(data.date);
+  if (!date) {
+    console.warn(`[posts] skip ${slug}: missing or invalid date (${JSON.stringify(data.date)})`);
+    return null;
+  }
+
   return {
     slug,
     title: data.title ?? slug,
-    date: toISODate(data.date),
+    date,
     excerpt: data.excerpt ?? "",
     tags: Array.isArray(data.tags) ? data.tags.map(String) : [],
     readingTime: Math.max(1, Math.round(plainText.length / perMinute)),
@@ -184,12 +190,15 @@ export function getAdjacentPosts(slug: string, lang: Lang = "zh"): {
  * frontmatter 里的 date 会被 YAML 解析成 Date 对象(UTC 零点),
  * 这里统一归一化为 YYYY-MM-DD 字符串。
  */
-function toISODate(value: unknown): string {
+function toISODate(value: unknown): string | null {
   if (value instanceof Date && !Number.isNaN(value.getTime())) {
     const y = value.getUTCFullYear();
     const m = String(value.getUTCMonth() + 1).padStart(2, "0");
     const d = String(value.getUTCDate()).padStart(2, "0");
     return `${y}-${m}-${d}`;
   }
-  return value ? String(value) : "1970-01-01";
+  if (value == null || value === "") return null;
+  const s = String(value);
+  const m = s.match(/^(\d{4}-\d{2}-\d{2})/);
+  return m ? m[1] : null;
 }

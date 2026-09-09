@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { formatDate, getAllPosts, getAdjacentPosts, getPost, decodeSlug, slugToHref } from "@/lib/posts";
+import { pageMeta, canonicalUrl } from "@/lib/seo";
+import { JsonLd } from "@/components/json-ld";
+import { site } from "@/lib/site";
 import { ReadingProgress } from "@/components/reading-progress";
 import { FadeIn } from "@/components/fade-in";
 import { Comments } from "@/components/comments";
@@ -25,16 +28,15 @@ export async function generateMetadata({
   const { slug } = await params;
   const post = await getPost(slug);
   if (!post) return {};
-  return {
+  const path = `/blog/${slugToHref(post.slug)}`;
+  const ogImage = `/og/${slugToHref(post.slug)}.png`;
+  return pageMeta({
     title: post.title,
-    description: post.excerpt,
-    openGraph: {
-      title: post.title,
-      description: post.excerpt,
-      type: "article",
-      images: [`/og/${slugToHref(post.slug)}.png`],
-    },
-  };
+    description: post.excerpt || site.description,
+    path,
+    type: "article",
+    images: [ogImage],
+  });
 }
 
 export default async function PostPage({ params }: { params: Promise<Params> }) {
@@ -46,6 +48,29 @@ export default async function PostPage({ params }: { params: Promise<Params> }) 
 
   return (
     <BookTransition>
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "BlogPosting",
+          headline: post.title,
+          description: post.excerpt || undefined,
+          datePublished: post.date,
+          dateModified: post.date,
+          mainEntityOfPage: canonicalUrl(`/blog/${slugToHref(post.slug)}`),
+          author: {
+            "@type": "Person",
+            name: site.name,
+            url: site.url,
+          },
+          publisher: {
+            "@type": "Person",
+            name: site.name,
+            url: site.url,
+          },
+          image: canonicalUrl(`/og/${slugToHref(post.slug)}.png`),
+          inLanguage: "zh-CN",
+        }}
+      />
       <article className="article-measure pb-32 pt-20 sm:pt-24">
       {/* 阅读进度条:Tan 细线 */}
       <ReadingProgress />

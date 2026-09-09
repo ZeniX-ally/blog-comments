@@ -1,11 +1,15 @@
 import type { Metadata } from "next";
 import { FadeIn } from "@/components/fade-in";
 import { BookTransition } from "@/components/book-transition";
+import { pageMeta } from "@/lib/seo";
+import { JsonLd } from "@/components/json-ld";
+import { site } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: "关于",
   description: "关于我和这个网站。",
-};
+  path: "/about",
+});
 
 const NOW_ITEMS = [
   {
@@ -28,6 +32,16 @@ const NOW_ITEMS = [
 export default function AboutPage() {
   return (
     <BookTransition>
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "Person",
+          name: site.name,
+          url: site.url,
+          sameAs: site.links.github ? [site.links.github] : [],
+          jobTitle: "Test Engineer",
+        }}
+      />
       <article className="mx-auto w-full max-w-[50rem] pb-32 pt-20 sm:pt-24">
         <FadeIn>
           <header className="mb-12 sm:mb-16">
