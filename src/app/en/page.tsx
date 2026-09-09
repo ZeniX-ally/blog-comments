@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { site } from "@/lib/site";
 import { getAllPosts, formatDate, slugToHref } from "@/lib/posts";
-import { projects } from "@/lib/projects";
+import { getAllProjects, getFeaturedProjects } from "@/lib/projects";
 import { FadeIn } from "@/components/fade-in";
 import { InkParticles } from "@/components/ink-particles";
 import { HighlightChars } from "@/components/highlight-chars";
@@ -10,7 +10,8 @@ import { BookTransition } from "@/components/book-transition";
 export default function HomeEn() {
   const posts = getAllPosts("en");
   const latestPosts = posts.slice(0, 4);
-  const featuredProjects = projects.filter((p) => p.featured).slice(0, 3);
+  const projects = getAllProjects();
+  const featuredProjects = getFeaturedProjects(3);
   const tagCount = new Set(posts.flatMap((p) => p.tags ?? [])).size;
 
   return (
@@ -135,45 +136,42 @@ export default function HomeEn() {
               </header>
             </FadeIn>
             <div className="grid gap-5 sm:grid-cols-2">
-              {featuredProjects.map((p, i) => {
-                const card = (
-                  <div className="light-card group flex h-full min-h-[11rem] flex-col gap-4 p-6">
-                    <div className="flex items-start justify-between gap-4">
-                      <h3 className="font-display text-xl font-medium tracking-tight">
-                        {p.name}
-                      </h3>
-                      <span className="shrink-0 text-xs text-faint">{p.year}</span>
-                    </div>
-                    <p className="line-clamp-2 text-sm leading-relaxed text-muted">
-                      {p.description_en ?? p.description}
-                    </p>
-                    <div className="mt-auto flex flex-wrap items-center gap-2">
-                      {p.tech.slice(0, 3).map((t) => (
-                        <span
-                          key={t}
-                          className="rounded-full bg-[var(--surface-soft)] px-2.5 py-1 text-xs text-muted"
-                        >
-                          {t}
-                        </span>
-                      ))}
-                      {p.link && (
-                        <a
-                          href={p.link}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="ml-auto inline-flex items-center gap-1 text-sm font-medium text-accent transition-colors group-hover:text-accent-strong"
-                        >
-                          Visit{" "}
-                          <span className="transition-transform group-hover:translate-x-0.5">
-                            ↗
+              {featuredProjects.map((p, i) => (
+                <FadeIn key={p.slug} delay={i * 60}>
+                  <Link
+                    href={`/projects/${slugToHref(p.slug)}`}
+                    className="block h-full"
+                  >
+                    <div className="light-card group flex h-full min-h-[11rem] flex-col gap-4 p-6">
+                      <div className="flex items-start justify-between gap-4">
+                        <h3 className="font-display text-xl font-medium tracking-tight transition-colors group-hover:text-accent">
+                          {p.name}
+                        </h3>
+                        <span className="shrink-0 text-xs text-faint">{p.year}</span>
+                      </div>
+                      <p className="line-clamp-2 text-sm leading-relaxed text-muted">
+                        {p.description_en ?? p.description}
+                      </p>
+                      <div className="mt-auto flex flex-wrap items-center gap-2">
+                        {p.tech.slice(0, 3).map((t) => (
+                          <span
+                            key={t}
+                            className="rounded-full bg-[var(--surface-soft)] px-2.5 py-1 text-xs text-muted"
+                          >
+                            {t}
                           </span>
-                        </a>
-                      )}
+                        ))}
+                        <span className="ml-auto inline-flex items-center gap-1 text-sm font-medium text-accent transition-colors group-hover:text-accent-strong">
+                          Details{" "}
+                          <span className="transition-transform group-hover:translate-x-0.5">
+                            →
+                          </span>
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                );
-                return <FadeIn key={p.name} delay={i * 60}>{card}</FadeIn>;
-              })}
+                  </Link>
+                </FadeIn>
+              ))}
             </div>
           </section>
         )}

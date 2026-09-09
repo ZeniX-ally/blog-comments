@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
-import { projects } from "@/lib/projects";
+import Link from "next/link";
+import { getAllProjects } from "@/lib/projects";
+import { slugToHref } from "@/lib/posts";
 import { FadeIn } from "@/components/fade-in";
 import { BookTransition } from "@/components/book-transition";
 
@@ -9,6 +11,8 @@ export const metadata: Metadata = {
 };
 
 export default function ProjectsPage() {
+  const projects = getAllProjects();
+
   return (
     <BookTransition>
       <article className="mx-auto w-full max-w-6xl pb-32 pt-20 sm:pt-24">
@@ -38,11 +42,16 @@ export default function ProjectsPage() {
           ) : (
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
               {projects.map((p, i) => (
-                <FadeIn key={p.name} delay={i * 60}>
-                  <div className="light-card group p-6">
+                <FadeIn key={p.slug} delay={i * 60}>
+                  <Link
+                    href={`/projects/${slugToHref(p.slug)}`}
+                    className="light-card group block h-full p-6"
+                  >
                     <div className="flex items-start justify-between gap-3">
                       <div>
-                        <div className="font-medium">{p.name}</div>
+                        <div className="font-medium transition-colors group-hover:text-accent">
+                          {p.name}
+                        </div>
                         <span className="mt-0.5 block text-xs text-faint">
                           {p.year}
                         </span>
@@ -55,30 +64,11 @@ export default function ProjectsPage() {
                       <span className="min-w-0 truncate text-[11px] text-faint">
                         {p.tech.join(" · ")}
                       </span>
-                      <span className="flex shrink-0 gap-4 text-xs">
-                        {p.link && (
-                          <a
-                            href={p.link}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="text-accent transition-colors hover:underline"
-                          >
-                            访问 ↗
-                          </a>
-                        )}
-                        {p.repo && (
-                          <a
-                            href={p.repo}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="text-muted transition-colors hover:text-foreground"
-                          >
-                            源码 ↗
-                          </a>
-                        )}
+                      <span className="shrink-0 text-xs text-accent opacity-0 transition-opacity group-hover:opacity-100">
+                        详情 →
                       </span>
                     </div>
-                  </div>
+                  </Link>
                 </FadeIn>
               ))}
             </div>

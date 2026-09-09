@@ -23,10 +23,10 @@ export const dict = {
   zh: {
     switchLabel: "EN",
     nav: [
-      { href: "/blog", label: "文章" },
-      { href: "/tools", label: "工具" },
       { href: "/projects", label: "作品" },
       { href: "/about", label: "关于" },
+      { href: "/blog", label: "文章" },
+      { href: "/tools", label: "工具" },
     ],
   },
   en: {
