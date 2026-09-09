@@ -7,7 +7,6 @@ import { FadeIn } from "@/components/fade-in";
 import { Comments } from "@/components/comments";
 import { ScrollSpy } from "@/components/scroll-spy";
 import { ProseTilt } from "@/components/prose-tilt";
-import { SignIn } from "@/components/sign-in";
 import { BookTransition } from "@/components/book-transition";
 
 type Params = { slug: string };
@@ -103,17 +102,6 @@ export default async function PostPageEn({ params }: { params: Promise<Params> }
           )}
         </nav>
       )}
-
-      {/* GitHub sign-in below the post */}
-      <section className="mt-20 border-t border-line pt-12">
-        <h2 className="text-lg font-medium">Join the discussion</h2>
-        <p className="mt-2 text-sm leading-relaxed text-muted">
-          Sign in with GitHub to leave a comment below.
-        </p>
-        <div className="mt-6">
-          <SignIn />
-        </div>
-      </section>
 
       <footer className="mt-16 border-t border-line pt-8">
         <Link href="/en/blog" className="text-sm text-muted transition-colors hover:text-accent">
