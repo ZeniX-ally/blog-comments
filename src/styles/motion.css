@@ -1,9 +1,10 @@
 @keyframes rise { from { transform: translateY(112%) } to { transform: translateY(0) } }
 @keyframes fade-up { from { opacity: 0; transform: translateY(12px) } to { opacity: 1; transform: translateY(0) } }
+@keyframes fade-up-exit { from { opacity: 1; transform: translateY(0) } to { opacity: 0; transform: translateY(-12px) } }
 @keyframes draw { from { transform: scaleX(0) } to { transform: scaleX(1) } }
 @keyframes view-rise { from { opacity: 0; transform: translateY(22px) } to { opacity: 1; transform: translateY(0) } }
 
-.mask { overflow: hidden; }
+.mask { overflow: hidden; display: block; }
 .mask > * { display: block; animation: rise 900ms var(--ease-out) both; animation-delay: calc(var(--i, 0) * 120ms); }
 .reveal { animation: fade-up 900ms var(--ease-out) both; animation-delay: calc(var(--i, 0) * 120ms); }
 .underline-draw { position: relative; display: inline-block; }
@@ -25,7 +26,7 @@
 
 /* View Transitions */
 ::view-transition { pointer-events: none; }
-::view-transition-old(.page-out) { animation: 150ms ease-in both fade-up reverse; }
+::view-transition-old(.page-out) { animation: 150ms ease-in both fade-up-exit; }
 ::view-transition-new(.page-in) { animation: 260ms var(--ease-out) 150ms both fade-up; }
 ::view-transition-group(.morph) { animation-duration: 400ms; }
 ::view-transition-group(site-header) { animation: none; z-index: 100; }

@@ -9,9 +9,10 @@ import { site } from "@/lib/site";
  * - 主题跟随 <html>.dark:light / dark_dimmed;用 MutationObserver 监听 class 变化,
  *   通过 postMessage({ giscus: { setConfig: { theme } } }) 通知 iframe 切换。
  */
-export function Comments({ label }: { label: string }) {
+export function Comments({ label, lang = "zh" }: { label: string; lang?: "zh" | "en" }) {
   const ref = useRef<HTMLDivElement>(null);
-  const { repo, repoId, category, categoryId, lang } = site.giscus;
+  const { repo, repoId, category, categoryId } = site.giscus;
+  const giscusLang = lang === "en" ? "en" : "zh-CN";
   const enabled = Boolean(repo && repoId && categoryId);
 
   useEffect(() => {
@@ -36,7 +37,7 @@ export function Comments({ label }: { label: string }) {
       script.setAttribute("data-emit-metadata", "0");
       script.setAttribute("data-input-position", "top");
       script.setAttribute("data-theme", getTheme());
-      script.setAttribute("data-lang", lang || "zh-CN");
+      script.setAttribute("data-lang", giscusLang);
       script.setAttribute("crossorigin", "anonymous");
       host.appendChild(script);
     }
@@ -48,7 +49,7 @@ export function Comments({ label }: { label: string }) {
     const mo = new MutationObserver(applyTheme);
     mo.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
     return () => mo.disconnect();
-  }, [enabled, repo, repoId, category, categoryId, lang]);
+  }, [enabled, repo, repoId, category, categoryId, giscusLang]);
 
   if (!enabled) return null;
 

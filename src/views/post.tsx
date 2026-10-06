@@ -115,7 +115,7 @@ export function PostView({ lang, post, adjacent, fallbackProjects }: PostViewPro
           </section>
         )}
 
-        <Comments label={d.blog.comments} />
+        <Comments label={d.blog.comments} lang={lang} />
       </div>
       <ScrollSpy ids={toc.map((item) => item.id)} />
     </div>

@@ -65,7 +65,7 @@ export const TOOL_SECTIONS: Record<Lang, ToolSection[]> = {
   ],
   en: [
     {
-      title: "自建服务",
+      title: "Self-hosted",
       en: "Self-hosted",
       tools: [
         { name: "Jellyfin", desc: "Home media center", status: "RUNNING", tag: "iStoreOS" },
@@ -78,7 +78,7 @@ export const TOOL_SECTIONS: Record<Lang, ToolSection[]> = {
       ],
     },
     {
-      title: "开发与工具",
+      title: "Dev tools",
       en: "Dev tools",
       tools: [
         { name: "VS Code", desc: "Main editor · dark theme", status: "LOCAL", tag: "editor" },
@@ -88,7 +88,7 @@ export const TOOL_SECTIONS: Record<Lang, ToolSection[]> = {
       ],
     },
     {
-      title: "测试相关",
+      title: "Test lab",
       en: "Test lab",
       tools: [
         { name: "FCT / IGBT Testing", desc: "Main battlefield · line testing", status: "LAB", tag: "flex" },
@@ -97,7 +97,7 @@ export const TOOL_SECTIONS: Record<Lang, ToolSection[]> = {
       ],
     },
     {
-      title: "生活向",
+      title: "Daily",
       en: "Daily",
       tools: [
         { name: "foobar2000", desc: "Local music player", status: "DAILY", tag: "audio" },

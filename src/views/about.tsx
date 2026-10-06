@@ -94,7 +94,7 @@ export function AboutView({ lang, about, featured }: AboutViewProps) {
             <div className="label">{d.about.now}</div>
             <div className="about-now">
               {about.now.map((item) => (
-                <SandCard key={item.title} title={item.title} description={item.desc} href={`${p}/about/`} />
+                <SandCard key={item.title} title={item.title} description={item.desc} />
               ))}
             </div>
           </section>

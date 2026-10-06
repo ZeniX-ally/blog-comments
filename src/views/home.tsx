@@ -95,9 +95,9 @@ export function HomeView({ lang, posts, projects, projectCount, tagCount, toolCo
       <section className="home-hero">
         <h1>
           {copy.headline.map((line, i) => (
-            <div key={i} className="mask">
+            <span key={i} className="mask">
               <span style={{ ["--i" as string]: i } as CSSProperties}>{renderHeadline(line)}</span>
-            </div>
+            </span>
           ))}
         </h1>
         <Stagger start={3} className="home-lede">

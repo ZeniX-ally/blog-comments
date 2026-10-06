@@ -65,7 +65,7 @@
 
 /* 回到顶部 */
 .back-to-top { position: fixed; right: 24px; bottom: 24px; width: 36px; height: 36px; border: 1px solid var(--hair); background: var(--bg); color: var(--fg); font-family: var(--font-mono); font-size: 13px; display: grid; place-items: center; z-index: 30; cursor: pointer; transition: opacity 200ms ease, transform 200ms var(--ease-out); }
-.back-to-top[data-hidden="true"] { opacity: 0; transform: translateY(8px); pointer-events: none; }
+.back-to-top[data-hidden="true"] { opacity: 0; transform: translateY(8px); pointer-events: none; visibility: hidden; }
 
 /* 移动菜单 */
 .mobile-menu { position: absolute; top: 100%; left: 0; right: 0; border-top: 1px solid var(--hair); background: var(--bg); }
@@ -169,7 +169,7 @@
   .nav-link:hover { color: var(--muted); }
   .lang-toggle:hover b { color: var(--fg); }
   .pill:hover .arrow { transform: translateX(3px); }
-  .sand-card:hover { background: var(--card-hover); transform: translateY(-2px); }
+  a.sand-card:hover { background: var(--card-hover); transform: translateY(-2px); }
   .project-card:hover .cover img { transform: scale(1.02); }
   .hair-row:hover .hair-row-title { background-size: 100% 1px; }
   .toc a:hover { color: var(--fg); }
