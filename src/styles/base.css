@@ -1,0 +1,63 @@
+/* 字体:三族皆为可变字重的 roman 文件;中文回退系统字体 */
+@font-face { font-family: "Anthropic Sans"; src: url("/fonts/anthropic-sans-roman.woff2") format("woff2"); font-weight: 100 900; font-style: normal; font-display: swap; }
+@font-face { font-family: "Anthropic Serif"; src: url("/fonts/anthropic-serif-roman.woff2") format("woff2"); font-weight: 100 900; font-style: normal; font-display: swap; }
+@font-face { font-family: "Anthropic Mono"; src: url("/fonts/anthropic-mono-roman.woff2") format("woff2"); font-weight: 100 900; font-style: normal; font-display: swap; }
+
+/* 基础 */
+html { background: var(--bg); color: var(--fg); scroll-padding-top: 80px; }
+body { font-family: var(--font-serif); font-size: 19px; line-height: 1.7; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+h1, h2, h3 { font-family: var(--font-sans); letter-spacing: -0.015em; text-wrap: balance; }
+h1 { font-size: 44px; line-height: 1.1; font-weight: 700; }
+h2 { font-size: 30px; line-height: 1.2; font-weight: 700; }
+h3 { font-size: 22px; line-height: 1.25; font-weight: 600; }
+.display { font-size: 58px; line-height: 1.06; font-weight: 700; }
+a { color: inherit; text-decoration: none; }
+::selection { background: var(--accent); color: var(--bg); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+@media (max-width: 760px) {
+  body { font-size: 17px; }
+  h1 { font-size: 32px; } h2 { font-size: 24px; } h3 { font-size: 20px; } .display { font-size: 40px; }
+}
+
+/* 布局与通用文字 */
+.content { max-width: var(--content-max); margin-inline: auto; padding-inline: var(--pad-x); }
+.label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); line-height: 1.4; }
+.lede { font-size: 22px; line-height: 1.5; }
+@media (max-width: 760px) { .lede { font-size: 18px; } }
+
+/* 正文 */
+.prose { max-width: 680px; font-family: var(--font-serif); font-size: 19px; line-height: 1.7; }
+.prose > * + * { margin-top: 1em; }
+.prose h2, .prose h3 { font-family: var(--font-sans); font-weight: 600; letter-spacing: -0.01em; line-height: 1.25; scroll-margin-top: 80px; }
+.prose h2 { font-size: 28px; margin-top: 2.2em; margin-bottom: 0.6em; }
+.prose h3 { font-size: 22px; margin-top: 1.8em; margin-bottom: 0.5em; }
+.prose h2:first-child, .prose h3:first-child { margin-top: 0; }
+.prose a { color: var(--fg); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; transition: color 150ms ease; }
+.prose a:hover { color: var(--accent); }
+.prose strong { font-weight: 600; }
+.prose ul, .prose ol { padding-left: 1.4em; }
+.prose ul { list-style: disc; } .prose ol { list-style: decimal; }
+.prose li + li { margin-top: 0.35em; }
+.prose blockquote { margin: 1.4em 0; padding: 0.1em 0 0.1em 1em; border-left: 2px solid var(--accent); color: var(--muted); font-style: italic; }
+.prose pre { background: var(--code-bg); color: var(--code-fg); font-family: var(--font-mono); font-size: 14px; line-height: 1.6; padding: 18px 20px; border-radius: 8px; overflow-x: auto; margin: 1.4em 0; }
+.prose code { font-family: var(--font-mono); font-size: 0.85em; }
+.prose :not(pre) > code { background: var(--card); color: var(--card-fg); padding: 0.15em 0.4em; border-radius: 4px; }
+.prose pre code { font-size: inherit; background: none; padding: 0; color: inherit; }
+.prose img { border-radius: 8px; max-width: 100%; height: auto; margin: 1.4em 0; }
+.prose hr { border: 0; border-top: 1px solid var(--hair); margin: 2.4em 0; }
+.prose table { width: 100%; border-collapse: collapse; font-size: 16px; margin: 1.4em 0; }
+.prose th, .prose td { padding: 8px 10px; border-bottom: 1px solid var(--hair); text-align: left; vertical-align: top; }
+.prose th { font-family: var(--font-sans); font-weight: 600; border-bottom-color: var(--fg); }
+@media (max-width: 760px) {
+  .prose { font-size: 17px; }
+  .prose h2 { font-size: 24px; } .prose h3 { font-size: 20px; }
+  .prose pre { font-size: 13px; padding: 14px 16px; }
+}
+
+/* 代码高亮:两种主题都是深底,配色固定 */
+.hljs { background: transparent; color: var(--code-fg); }
+.hljs-keyword, .hljs-built_in { color: #e07e5c; }
+.hljs-string { color: #c9b89a; }
+.hljs-comment { color: #8a8780; font-style: italic; }
+.hljs-number, .hljs-literal { color: #d9c7a3; }
+.hljs-title, .hljs-attr { color: #f0eee6; }

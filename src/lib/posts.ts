@@ -5,6 +5,7 @@ import { unified } from "unified";
 import remarkParse from "remark-parse";
 import remarkGfm from "remark-gfm";
 import remarkRehype from "remark-rehype";
+import rehypeSlug from "rehype-slug";
 import rehypeHighlight from "rehype-highlight";
 import rehypeSanitize from "rehype-sanitize";
 import rehypeStringify from "rehype-stringify";
@@ -89,6 +90,8 @@ export async function renderMarkdown(markdown: string): Promise<string> {
     .use(remarkParse)
     .use(remarkGfm)
     .use(remarkRehype)
+    // 给 h2/h3 加 id 供目录锚点;sanitize 默认 schema 会加 user-content- 前缀并保留
+    .use(rehypeSlug)
     .use(rehypeHighlight)
     // 2026-08-08 安全审计修复：默认 schema 阻止 javascript: 等危险 URI 与 on* 事件属性
     .use(rehypeSanitize)

@@ -1,0 +1,47 @@
+@keyframes rise { from { transform: translateY(112%) } to { transform: translateY(0) } }
+@keyframes fade-up { from { opacity: 0; transform: translateY(12px) } to { opacity: 1; transform: translateY(0) } }
+@keyframes draw { from { transform: scaleX(0) } to { transform: scaleX(1) } }
+@keyframes view-rise { from { opacity: 0; transform: translateY(22px) } to { opacity: 1; transform: translateY(0) } }
+
+.mask { overflow: hidden; }
+.mask > * { animation: rise 900ms var(--ease-out) both; animation-delay: calc(var(--i, 0) * 120ms); }
+.reveal { animation: fade-up 900ms var(--ease-out) both; animation-delay: calc(var(--i, 0) * 120ms); }
+.underline-draw { position: relative; display: inline-block; }
+.underline-draw::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0.04em; height: 3px; background: currentColor; transform-origin: left; animation: draw 700ms var(--ease-out) 500ms both; }
+
+@supports (animation-timeline: scroll()) {
+  .site-header-bar { animation: header-solid linear both; animation-timeline: scroll(root); animation-range: 0 24px; }
+  .wordmark span { animation: wordmark-collapse linear both; animation-timeline: scroll(root); animation-range: 0 24px; }
+  .site-header-progress { animation: draw linear both; animation-timeline: scroll(root); }
+  .rise { animation: view-rise 700ms var(--ease-out) both; animation-timeline: view(); animation-range: entry 0% entry 40%; }
+}
+@supports not (animation-timeline: scroll()) {
+  .site-header-bar { background: var(--header-bg); backdrop-filter: blur(8px); border-bottom: 1px solid var(--hair); }
+  .site-header-progress { display: none; }
+}
+@keyframes header-solid { to { background: var(--header-bg); backdrop-filter: blur(8px); border-bottom-color: var(--hair); } }
+@keyframes wordmark-collapse { to { max-width: 0; } }
+.site-header-bar { border-bottom: 1px solid transparent; }
+
+/* View Transitions */
+::view-transition { pointer-events: none; }
+::view-transition-old(.page-out) { animation: 150ms ease-in both fade-up reverse; }
+::view-transition-new(.page-in) { animation: 260ms var(--ease-out) 150ms both fade-up; }
+::view-transition-group(.morph) { animation-duration: 400ms; }
+::view-transition-group(site-header) { animation: none; z-index: 100; }
+::view-transition-old(site-header) { display: none; }
+::view-transition-new(site-header) { animation: none; }
+
+/* 主题切换 */
+.theme-switching, .theme-switching * { transition: color 400ms ease, background-color 400ms ease, border-color 400ms ease, fill 400ms ease, stroke 400ms ease !important; }
+.theme-icon { display: grid; }
+.theme-icon > svg { grid-area: 1 / 1; transition: opacity 300ms ease, transform 300ms ease; }
+.theme-icon > svg[data-hidden="true"] { opacity: 0; transform: rotate(-30deg) scale(0.8); }
+
+@media (prefers-reduced-motion: reduce) {
+  .mask > *, .reveal, .rise { animation: fade-up 200ms ease both; transform: none !important; }
+  .underline-draw::after { animation: none; transform: none; }
+  ::view-transition-old(*), ::view-transition-new(*), ::view-transition-group(*) { animation-duration: 0s !important; animation-delay: 0s !important; }
+  .theme-switching, .theme-switching * { transition-duration: 0s !important; }
+  .pill .arrow, .sand-card, .hair-row-title, .wordmark b { transition: none !important; }
+}

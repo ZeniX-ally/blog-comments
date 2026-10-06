@@ -1,0 +1,32 @@
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --bg: #faf9f5; --fg: #141413; --muted: #5f5e5a;
+  --card: #e3dacc; --card-fg: #141413; --card-hover: #d9cfbf; --cover: #d6cbb8;
+  --hair: rgba(20, 20, 19, 0.18); --accent: #c6613f;
+  --pill-bg: #141413; --pill-fg: #faf9f5;
+  --code-bg: #141413; --code-fg: #faf9f5;
+  --header-bg: rgba(250, 249, 245, 0.85);
+  --font-sans: "Anthropic Sans", "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+  --font-serif: "Anthropic Serif", "Noto Serif SC", "Songti SC", "SimSun", Georgia, serif;
+  --font-mono: "Anthropic Mono", ui-monospace, Consolas, monospace;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --content-max: 1120px; --pad-x: 48px;
+  color-scheme: light;
+}
+.dark {
+  --bg: #000000; --fg: #f5f4f0; --muted: #9b9892;
+  --card: #161614; --card-fg: #ecebe6; --card-hover: #1f1f1c; --cover: #1f1f1c;
+  --hair: rgba(245, 244, 240, 0.16); --accent: #e07e5c;
+  --pill-bg: #f5f4f0; --pill-fg: #000000;
+  --code-bg: #161614; --code-fg: #f5f4f0;
+  --header-bg: rgba(0, 0, 0, 0.8);
+  color-scheme: dark;
+}
+@media (max-width: 760px) { :root { --pad-x: 22px; } }
+
+@theme inline {
+  --color-bg: var(--bg); --color-fg: var(--fg); --color-muted: var(--muted);
+  --color-card: var(--card); --color-card-fg: var(--card-fg); --color-hair: var(--hair); --color-accent: var(--accent);
+  --font-sans: var(--font-sans); --font-serif: var(--font-serif); --font-mono: var(--font-mono);
+}

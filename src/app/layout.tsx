@@ -43,13 +43,15 @@ export default function RootLayout({
   return (
     <html lang="zh-CN" suppressHydrationWarning>
       <head>
-        {/* 性能:预载标题字体(Styrene A),正文用系统栈不预载 */}
-        <link rel="preload" href="/fonts/styrene-a-regular.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        {/* 性能:预载标题(Sans)与正文(Serif)字体;Mono 只用于小标签,按需加载 */}
+        <link rel="preload" href="/fonts/anthropic-sans-roman.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href="/fonts/anthropic-serif-roman.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
         {/* favicon:手动引用 public/ 文件,避免 Next 约定注入带 hash query 的 URL
             (Cloudflare Pages 对带 query 的静态文件请求返回 404) */}
         <link rel="icon" href="/favicon.png" type="image/png" />
         <link rel="apple-touch-icon" href="/apple-icon.png" />
-        <meta name="theme-color" content="#000000" />
+        <meta name="theme-color" media="(prefers-color-scheme: light)" content="#faf9f5" />
+        <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000000" />
         <script
           dangerouslySetInnerHTML={{
             __html: `(function(){try{var t=localStorage.getItem("theme");if(t==="dark"||(!t&&window.matchMedia("(prefers-color-scheme: dark)").matches)){document.documentElement.classList.add("dark");}else{document.documentElement.classList.remove("dark");}}catch(e){}})();`,
