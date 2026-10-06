@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
 import { renderMarkdown } from "@/lib/posts";
+import type { Lang } from "@/lib/i18n";
 
 export type AboutNowItem = {
   title: string;
@@ -19,7 +20,11 @@ export type AboutContent = {
   sectionsHtml: Record<string, string>;
 };
 
-const aboutPath = path.join(process.cwd(), "content", "about.md");
+/** 中文在 content/about.md,英文在 content/en/about.md(与 posts 的目录约定一致) */
+const aboutPaths: Record<Lang, string> = {
+  zh: path.join(process.cwd(), "content", "about.md"),
+  en: path.join(process.cwd(), "content", "en", "about.md"),
+};
 
 const DEFAULT_DOTS = ["dot-running", "dot-local", "dot-daily"] as const;
 const ALLOWED_DOTS = new Set(["dot-running", "dot-local", "dot-lab", "dot-daily"]);
@@ -69,8 +74,9 @@ function parseNow(value: unknown): AboutNowItem[] {
     .filter((x): x is AboutNowItem => x !== null);
 }
 
-/** 从 content/about.md 加载关于页文案（gray-matter + 按 ## 分节） */
-export async function getAboutContent(): Promise<AboutContent> {
+/** 从 content/about.md(或 content/en/about.md)加载关于页文案（gray-matter + 按 ## 分节） */
+export async function getAboutContent(lang: Lang = "zh"): Promise<AboutContent> {
+  const aboutPath = aboutPaths[lang];
   const raw = fs.existsSync(aboutPath)
     ? fs.readFileSync(aboutPath, "utf8")
     : [

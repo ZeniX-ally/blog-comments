@@ -1,4 +1,17 @@
-# About
+---
+title: About
+subtitle: Test Engineer · FCT / IGBT
+description: About me and this site.
+now:
+  - title: Work
+    desc: Test R&D, FCT/IGBT testing, host-PC automation
+  - title: Learning
+    desc: C, C#, Rust, Go — host-PC dev, automated testing
+  - title: Life
+    desc: Tinkering with gadgets, anime, music
+---
+
+## Who I am
 
 Hi, I'm Ajiu (阿九).
 
@@ -10,14 +23,6 @@ A place to record life and share what I learn. No chasing update frequency, no w
 
 The domain 404-found.uk is a pun: 404 usually means "not found" — but here, it found you.
 
-## What I'm Doing
-
-- **Work**: test R&D, FCT/IGBT testing, host-PC automation
-- **Learning**: Python, host-PC development, automated testing
-- **Life**: tinkering with gadgets, anime, music
-
 ## Contact
-
-Find me on [GitHub](https://github.com/ZeniX-ally).
 
 Corrections, ideas, or just a hello — all welcome.
