@@ -1,18 +1,12 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import { formatDate, getAllPosts, getAdjacentPosts, getPost, decodeSlug, slugToHref } from "@/lib/posts";
+import { getAllPosts, getAdjacentPosts, getPost, decodeSlug, slugToHref } from "@/lib/posts";
+import { getFeaturedProjects } from "@/lib/projects";
 import { pageMeta, canonicalUrl } from "@/lib/seo";
 import { JsonLd } from "@/components/json-ld";
 import { site } from "@/lib/site";
-import { dict } from "@/lib/i18n";
-import { extractToc } from "@/lib/toc";
-import { ReadingProgress } from "@/components/reading-progress";
-import { FadeIn } from "@/components/fade-in";
-import { Comments } from "@/components/comments";
-import { ScrollSpy } from "@/components/scroll-spy";
-import { ProseTilt } from "@/components/prose-tilt";
-import { BookTransition } from "@/components/book-transition";
+import { PageTransition } from "@/components/page-transition";
+import { PostView } from "@/views/post";
 
 type Params = { slug: string };
 
@@ -49,7 +43,7 @@ export default async function PostPage({ params }: { params: Promise<Params> }) 
   const adjacent = getAdjacentPosts(slug);
 
   return (
-    <BookTransition>
+    <PageTransition>
       <JsonLd
         data={{
           "@context": "https://schema.org",
@@ -73,77 +67,7 @@ export default async function PostPage({ params }: { params: Promise<Params> }) 
           inLanguage: "zh-CN",
         }}
       />
-      <article className="article-measure pb-32 pt-20 sm:pt-24">
-      {/* 阅读进度条:Tan 细线 */}
-      <ReadingProgress />
-      {/* 章节联动:正文滚动高亮当前标题 */}
-      <ScrollSpy ids={extractToc(post.html).map((item) => item.id)} />
-      {/* 文章头部 */}
-      <FadeIn>
-      <header className="border-b border-line pb-12">
-        <h1 className="page-title text-balance">{post.title}</h1>
-        <div className="mt-6 flex flex-wrap items-center gap-4 text-xs text-faint">
-          <time>{formatDate(post.date)}</time>
-          <span>约 {post.readingTime} 分钟</span>
-          {post.tags.map((tag) => (
-            <Link
-              key={tag}
-              href={`/tags/${slugToHref(tag)}`}
-              className="transition-colors hover:text-accent"
-            >
-              #{tag}
-            </Link>
-          ))}
-        </div>
-      </header>
-      </FadeIn>
-
-      {/* 正文 */}
-      <FadeIn delay={100}>
-      <ProseTilt>
-      <div
-        className="prose mt-12"
-        dangerouslySetInnerHTML={{ __html: post.html }}
-      />
-      </ProseTilt>
-      </FadeIn>
-
-      {/* 上一篇 / 下一篇 */}
-      {(adjacent.prev || adjacent.next) && (
-        <nav className="mt-24 grid gap-4 border-t border-line pt-8 sm:grid-cols-2 sm:gap-8">
-          {adjacent.prev ? (
-            <Link href={`/blog/${slugToHref(adjacent.prev.slug)}`} className="group block">
-              <span className="text-xs text-faint">← 上一篇</span>
-              <span className="mt-2 block leading-snug transition-colors group-hover:text-accent">
-                {adjacent.prev.title}
-              </span>
-            </Link>
-          ) : (
-            <span />
-          )}
-          {adjacent.next ? (
-            <Link href={`/blog/${slugToHref(adjacent.next.slug)}`} className="group block sm:text-right">
-              <span className="text-xs text-faint">下一篇 →</span>
-              <span className="mt-2 block leading-snug transition-colors group-hover:text-accent">
-                {adjacent.next.title}
-              </span>
-            </Link>
-          ) : (
-            <span />
-          )}
-        </nav>
-      )}
-
-      {/* 返回 */}
-      <footer className="mt-16 border-t border-line pt-8">
-        <Link href="/blog" className="text-sm text-muted transition-colors hover:text-accent">
-          ← 返回文章列表
-        </Link>
-      </footer>
-
-      {/* 评论区 */}
-      <Comments label={dict.zh.blog.comments} />
-      </article>
-    </BookTransition>
+      <PostView lang="zh" post={post} adjacent={adjacent} fallbackProjects={getFeaturedProjects(2)} />
+    </PageTransition>
   );
 }

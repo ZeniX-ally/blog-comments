@@ -1,7 +1,8 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import Link from "next/link";
+import { useMemo, useState, type ReactNode } from "react";
+import { HairRow } from "@/components/hair-row";
+import { dict, type Lang } from "@/lib/i18n";
 
 type SearchPost = {
   slug: string;
@@ -13,72 +14,62 @@ type SearchPost = {
 
 /**
  * 文章本地搜索:按标题 / 摘要 / 标签 过滤,纯前端无请求。
- * 输入为空时折叠,只显示一个搜索框。
+ * 输入为空时渲染 children(列表页的年份分组);有输入时只显示结果行(细线行,无共享元素名)。
+ * 这里不能 import lib/posts(含 node:fs),日期与链接自行格式化。
  */
-export function PostSearch({ posts }: { posts: SearchPost[] }) {
+export function PostSearch({ posts, lang, children }: { posts: SearchPost[]; lang: Lang; children?: ReactNode }) {
+  const d = dict[lang];
+  const p = lang === "en" ? "/en" : "";
   const [query, setQuery] = useState("");
+  const q = query.trim();
 
   const results = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    if (!q) return [];
+    const needle = q.toLowerCase();
+    if (!needle) return [];
     return posts.filter((post) => {
       const title = post.title.toLowerCase();
       const excerpt = post.excerpt.toLowerCase();
       const tags = post.tags.join(" ").toLowerCase();
-      return title.includes(q) || excerpt.includes(q) || tags.includes(q);
+      return title.includes(needle) || excerpt.includes(needle) || tags.includes(needle);
     });
-  }, [query, posts]);
+  }, [q, posts]);
 
   return (
-    <div className="mb-10">
-      <div className="relative max-w-md">
+    <>
+      <div className="search-wrap">
         <input
           type="search"
+          className="search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="搜索文章标题、摘要或标签…"
-          aria-label="搜索文章"
-          className="w-full rounded-xl border border-line bg-surface/60 px-4 py-2.5 text-sm text-foreground placeholder:text-faint transition-colors duration-200 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20"
+          placeholder={d.blog.search}
+          aria-label={d.blog.search}
         />
-        {query && (
-          <button
-            type="button"
-            onClick={() => setQuery("")}
-            aria-label="清空搜索"
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-faint transition-colors hover:text-accent"
-          >
-            ✕
-          </button>
+        {!query && (
+          <span className="label search-hint" aria-hidden="true">
+            ⌘K
+          </span>
         )}
       </div>
 
-      {query.trim() && (
-        <div className="mt-6">
-          {results.length === 0 ? (
-            <p className="py-4 text-sm text-muted">
-              没有找到与「{query.trim()}」相关的文章。
-            </p>
-          ) : (
-            <ul>
-              {results.map((post) => (
-                <li key={post.slug} className="border-b border-line last:border-b-0">
-                  <Link
-                    href={`/blog/${encodeURIComponent(post.slug)}`}
-                    className="group flex items-baseline justify-between gap-6 py-4"
-                  >
-                    <span className="text-base leading-snug transition-colors group-hover:text-accent">
-                      {post.title}
-                    </span>
-                    <time className="shrink-0 text-xs text-faint">
-                      {post.date.replaceAll("-", ".")}
-                    </time>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          )}
+      {!q ? (
+        children
+      ) : results.length === 0 ? (
+        <p className="lede search-results">{d.blog.noResult(q)}</p>
+      ) : (
+        <div className="hair-list search-results">
+          {results.map((post) => (
+            <HairRow
+              key={post.slug}
+              href={`${p}/blog/${encodeURIComponent(post.slug)}/`}
+              meta={post.date.replaceAll("-", ".")}
+              title={post.title}
+              sub={post.excerpt}
+              trailing={post.tags.join(" · ")}
+            />
+          ))}
         </div>
       )}
-    </div>
+    </>
   );
 }

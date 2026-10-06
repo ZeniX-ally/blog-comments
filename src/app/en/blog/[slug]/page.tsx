@@ -1,15 +1,9 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import { formatDate, getAllPosts, getAdjacentPosts, getPost, decodeSlug, slugToHref } from "@/lib/posts";
-import { dict } from "@/lib/i18n";
-import { extractToc } from "@/lib/toc";
-import { ReadingProgress } from "@/components/reading-progress";
-import { FadeIn } from "@/components/fade-in";
-import { Comments } from "@/components/comments";
-import { ScrollSpy } from "@/components/scroll-spy";
-import { ProseTilt } from "@/components/prose-tilt";
-import { BookTransition } from "@/components/book-transition";
+import { getAllPosts, getAdjacentPosts, getPost, decodeSlug, slugToHref } from "@/lib/posts";
+import { getFeaturedProjects } from "@/lib/projects";
+import { PageTransition } from "@/components/page-transition";
+import { PostView } from "@/views/post";
 
 type Params = { slug: string };
 
@@ -48,71 +42,8 @@ export default async function PostPageEn({ params }: { params: Promise<Params> }
   const adjacent = getAdjacentPosts(slug, "en");
 
   return (
-    <BookTransition>
-      <article className="mx-auto w-full max-w-6xl pb-32 pt-20 sm:pt-24">
-      <ReadingProgress />
-      <ScrollSpy ids={extractToc(post.html).map((item) => item.id)} />
-      <FadeIn>
-        <header className="border-b border-line pb-12">
-          <h1 className="page-title text-balance">{post.title}</h1>
-          <div className="mt-6 flex flex-wrap items-center gap-4 text-xs text-faint">
-            <time>{formatDate(post.date)}</time>
-            <span>~{post.readingTime} min</span>
-            {post.tags.map((tag) => (
-              <Link
-                key={tag}
-                href={`/en/tags/${slugToHref(tag)}`}
-                className="transition-colors hover:text-accent"
-              >
-                #{tag}
-              </Link>
-            ))}
-          </div>
-        </header>
-      </FadeIn>
-
-      <FadeIn delay={100}>
-        <ProseTilt>
-          <div
-            className="prose mt-14"
-            dangerouslySetInnerHTML={{ __html: post.html }}
-          />
-        </ProseTilt>
-      </FadeIn>
-
-      {(adjacent.prev || adjacent.next) && (
-        <nav className="mt-24 grid gap-4 border-t border-line pt-8 sm:grid-cols-2 sm:gap-8">
-          {adjacent.prev ? (
-            <Link href={`/en/blog/${slugToHref(adjacent.prev.slug)}`} className="group block">
-              <span className="text-xs text-faint">← Previous</span>
-              <span className="mt-2 block leading-snug transition-colors group-hover:text-accent">
-                {adjacent.prev.title}
-              </span>
-            </Link>
-          ) : (
-            <span />
-          )}
-          {adjacent.next ? (
-            <Link href={`/en/blog/${slugToHref(adjacent.next.slug)}`} className="group block sm:text-right">
-              <span className="text-xs text-faint">Next →</span>
-              <span className="mt-2 block leading-snug transition-colors group-hover:text-accent">
-                {adjacent.next.title}
-              </span>
-            </Link>
-          ) : (
-            <span />
-          )}
-        </nav>
-      )}
-
-      <footer className="mt-16 border-t border-line pt-8">
-        <Link href="/en/blog" className="text-sm text-muted transition-colors hover:text-accent">
-          ← Back to posts
-        </Link>
-      </footer>
-
-      <Comments label={dict.en.blog.comments} />
-      </article>
-    </BookTransition>
+    <PageTransition>
+      <PostView lang="en" post={post} adjacent={adjacent} fallbackProjects={getFeaturedProjects(2)} />
+    </PageTransition>
   );
 }
