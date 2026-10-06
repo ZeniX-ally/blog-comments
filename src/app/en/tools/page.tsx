@@ -1,69 +1,14 @@
 import type { Metadata } from "next";
 import { FadeIn } from "@/components/fade-in";
 import { BookTransition } from "@/components/book-transition";
+import { TOOL_SECTIONS, type ToolStatus } from "@/lib/tools";
 
 export const metadata: Metadata = {
   title: "Tools",
   description: "Self-hosted services and everyday tools.",
 };
 
-type ToolStatus = "RUNNING" | "LOCAL" | "LAB" | "DAILY";
-
-interface Tool {
-  name: string;
-  desc: string;
-  status: ToolStatus;
-  tag: string;
-}
-
-interface ToolSection {
-  title: string;
-  en: string;
-  tools: Tool[];
-}
-
-const SECTIONS: ToolSection[] = [
-  {
-    title: "自建服务",
-    en: "Self-hosted",
-    tools: [
-      { name: "Jellyfin", desc: "Home media center", status: "RUNNING", tag: "iStoreOS" },
-      { name: "Qdrant", desc: "Vector store for knowledge base", status: "RUNNING", tag: "Docker" },
-      { name: "OpenClash", desc: "Proxy · home network exit", status: "RUNNING", tag: "iStoreOS" },
-      { name: "Vaultwarden", desc: "Password manager", status: "RUNNING", tag: "Docker" },
-      { name: "Radarr · Sonarr · Bazarr", desc: "Media automation downloads", status: "RUNNING", tag: "ARR-Stack" },
-      { name: "Prowlarr · qBittorrent", desc: "Indexer + download engine", status: "RUNNING", tag: "ARR-Stack" },
-      { name: "Speedtest-tracker", desc: "Speed history records", status: "RUNNING", tag: "Docker" },
-    ],
-  },
-  {
-    title: "开发与工具",
-    en: "Dev tools",
-    tools: [
-      { name: "VS Code", desc: "Main editor · dark theme", status: "LOCAL", tag: "editor" },
-      { name: "OpenCode", desc: "Vibe coding · AI-assisted", status: "LOCAL", tag: "agent" },
-      { name: "git", desc: "Version control", status: "LOCAL", tag: "vcs" },
-      { name: "Python 3.x", desc: "Scripting and automation", status: "LOCAL", tag: "lang" },
-    ],
-  },
-  {
-    title: "测试相关",
-    en: "Test lab",
-    tools: [
-      { name: "FCT / IGBT Testing", desc: "Main battlefield · line testing", status: "LAB", tag: "flex" },
-      { name: "XCP Protocol", desc: "ECU calibration & measurement", status: "LAB", tag: "protocol" },
-      { name: "Host-PC Apps", desc: "Interacting with line equipment", status: "LAB", tag: "host-app" },
-    ],
-  },
-  {
-    title: "生活向",
-    en: "Daily",
-    tools: [
-      { name: "foobar2000", desc: "Local music player", status: "DAILY", tag: "audio" },
-      { name: "Xiaomi TV + ADB", desc: "Tinkering with TV apps", status: "DAILY", tag: "tv" },
-    ],
-  },
-];
+const SECTIONS = TOOL_SECTIONS.en;
 
 const STATUS_META: Record<ToolStatus, { label: string; dot: string }> = {
   RUNNING: { label: "运行中", dot: "dot-running" },
