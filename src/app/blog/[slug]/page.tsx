@@ -5,6 +5,8 @@ import { formatDate, getAllPosts, getAdjacentPosts, getPost, decodeSlug, slugToH
 import { pageMeta, canonicalUrl } from "@/lib/seo";
 import { JsonLd } from "@/components/json-ld";
 import { site } from "@/lib/site";
+import { dict } from "@/lib/i18n";
+import { extractToc } from "@/lib/toc";
 import { ReadingProgress } from "@/components/reading-progress";
 import { FadeIn } from "@/components/fade-in";
 import { Comments } from "@/components/comments";
@@ -75,7 +77,7 @@ export default async function PostPage({ params }: { params: Promise<Params> }) 
       {/* 阅读进度条:Tan 细线 */}
       <ReadingProgress />
       {/* 章节联动:正文滚动高亮当前标题 */}
-      <ScrollSpy />
+      <ScrollSpy ids={extractToc(post.html).map((item) => item.id)} />
       {/* 文章头部 */}
       <FadeIn>
       <header className="border-b border-line pb-12">
@@ -140,7 +142,7 @@ export default async function PostPage({ params }: { params: Promise<Params> }) 
       </footer>
 
       {/* 评论区 */}
-      <Comments />
+      <Comments label={dict.zh.blog.comments} />
       </article>
     </BookTransition>
   );

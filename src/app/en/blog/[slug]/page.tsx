@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { formatDate, getAllPosts, getAdjacentPosts, getPost, decodeSlug, slugToHref } from "@/lib/posts";
+import { dict } from "@/lib/i18n";
+import { extractToc } from "@/lib/toc";
 import { ReadingProgress } from "@/components/reading-progress";
 import { FadeIn } from "@/components/fade-in";
 import { Comments } from "@/components/comments";
@@ -49,7 +51,7 @@ export default async function PostPageEn({ params }: { params: Promise<Params> }
     <BookTransition>
       <article className="mx-auto w-full max-w-6xl pb-32 pt-20 sm:pt-24">
       <ReadingProgress />
-      <ScrollSpy />
+      <ScrollSpy ids={extractToc(post.html).map((item) => item.id)} />
       <FadeIn>
         <header className="border-b border-line pb-12">
           <h1 className="page-title text-balance">{post.title}</h1>
@@ -109,7 +111,7 @@ export default async function PostPageEn({ params }: { params: Promise<Params> }
         </Link>
       </footer>
 
-      <Comments />
+      <Comments label={dict.en.blog.comments} />
       </article>
     </BookTransition>
   );

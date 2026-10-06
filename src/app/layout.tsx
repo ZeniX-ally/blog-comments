@@ -3,8 +3,6 @@ import { site } from "@/lib/site";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { BackToTop } from "@/components/back-to-top";
-import { BackButton } from "@/components/back-button";
-import { EffectLayer } from "@/components/effect-layer";
 import { RippleFx } from "@/components/ripple-fx";
 import "./globals.css";
 
@@ -68,15 +66,9 @@ export default function RootLayout({
       <body className="flex min-h-screen flex-col">
         {/* 点击水面涟漪 */}
         <RippleFx />
-        <EffectLayer />
         <SiteHeader />
-        {/* 顶栏 fixed 悬浮:内容区顶部留出悬浮胶囊高度(mt-4 + 胶囊高度 ≈ 4.5rem) */}
-        <main className="w-full grow px-6 pt-16 sm:px-8 md:px-10 lg:px-12">
-          {children}
-        </main>
-        {/* 返回按钮放在 body 层:避免被页面模板的入场动画 transform 影响
-            (fixed 元素的祖先一旦有 transform,定位基准会从视口变成该祖先) */}
-        <BackButton />
+        {/* 顶栏为 sticky、占文档流,main 不再需要顶部留白;各页用 .content 控制栏宽与左右内边距 */}
+        <main className="grow">{children}</main>
         <SiteFooter />
         <BackToTop />
       </body>

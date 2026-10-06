@@ -22,15 +22,13 @@ export function switchPath(pathname: string, to: Lang): string {
 /** 全站 UI 文案字典 */
 export const dict = {
   zh: {
-    /** 旧 language-toggle 仍在读;Task 2 改为 ZH / EN 双字样式后删除 */
-    switchLabel: "EN",
     nav: [
       { href: "/projects", label: "作品" },
       { href: "/about", label: "关于" },
       { href: "/blog", label: "文章" },
       { href: "/tools", label: "工具" },
     ],
-    header: { github: "GitHub", menu: "菜单", close: "关闭", home: "返回首页", themeToDark: "切换为暗色模式", themeToLight: "切换为浅色模式", lang: "Switch to English" },
+    header: { github: "GitHub", menu: "菜单", close: "关闭", home: "返回首页", nav: "主导航", top: "回到顶部", themeToDark: "切换为暗色模式", themeToLight: "切换为浅色模式", lang: "Switch to English" },
     footer: { rss: "RSS", github: "GitHub" },
     home: { work: "作品与文章", all: "全部", stats: (posts: number, projects: number, tags: number) => `${posts} 文章 · ${projects} 精选 · ${tags} 标签`,
             entries: { posts: "文章", projects: "作品", tools: "工具", about: "关于", rss: "RSS" },
@@ -45,14 +43,13 @@ export const dict = {
     notFound: { title: "404", text: "这一页没找到，但你找到了这个站。", home: "回到首页" },
   },
   en: {
-    switchLabel: "中文",
     nav: [
       { href: "/en/blog", label: "Posts" },
       { href: "/en/tools", label: "Tools" },
       { href: "/en/projects", label: "Projects" },
       { href: "/en/about", label: "About" },
     ],
-    header: { github: "GitHub", menu: "Menu", close: "Close", home: "Back to home", themeToDark: "Switch to dark mode", themeToLight: "Switch to light mode", lang: "切换为中文" },
+    header: { github: "GitHub", menu: "Menu", close: "Close", home: "Back to home", nav: "Main navigation", top: "Back to top", themeToDark: "Switch to dark mode", themeToLight: "Switch to light mode", lang: "切换为中文" },
     footer: { rss: "RSS", github: "GitHub" },
     home: { work: "Work & Writing", all: "All", stats: (posts: number, projects: number, tags: number) => `${posts} posts · ${projects} featured · ${tags} tags`,
             entries: { posts: "Posts", projects: "Projects", tools: "Tools", about: "About", rss: "RSS" },
