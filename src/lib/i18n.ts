@@ -19,6 +19,9 @@ export function switchPath(pathname: string, to: Lang): string {
   return pathname.replace(/^\/en/, "") || "/";
 }
 
+/** 英文单复数:1 post / 2 posts(只处理规则复数) */
+const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? "" : "s"}`;
+
 /** 全站 UI 文案字典 */
 export const dict = {
   zh: {
@@ -35,9 +38,9 @@ export const dict = {
             counts: { posts: (n: number) => `${n} 篇`, projects: (n: number) => `${n} 个`, tools: (n: number) => `${n} 项` } },
     card: { date: "Date", category: "Category", details: "Details", year: "Year", stack: "Stack", reading: "Reading", tags: "Tags",
             view: "查看项目", read: "阅读", open: "打开", post: "文章", project: "作品" },
-    blog: { label: (n: number) => `Writing · ${n} 篇`, title: "文章", search: "搜索标题、摘要或标签…", noResult: (q: string) => `没有找到与「${q}」相关的文章。`, empty: "还没有文章。", year: (y: string, n: number) => `${y} · ${n} 篇`, back: "文章", minutes: (n: number) => `约 ${n} 分钟`, more: "继续阅读", comments: "Comments · Giscus" },
+    blog: { label: (n: number) => `Writing · ${n} 篇`, title: "文章", search: "搜索标题、摘要或标签…", noResult: (q: string) => `没有找到与「${q}」相关的文章。`, empty: "还没有文章。", year: (y: string, n: number) => `${y} · ${n} 篇`, back: "文章", minutes: (n: number) => `约 ${n} 分钟`, toc: "目录", more: "继续阅读", comments: "Comments · Giscus" },
     projects: { label: (n: number) => `Selected Work · ${n}`, title: "作品", empty: "还没有作品。", back: "作品", visit: "访问站点", source: "查看源码", related: "相关作品" },
-    tags: { label: "Tags", title: "标签", count: (n: number) => `${n} 篇`, tagLabel: (n: number) => `共 ${n} 篇文章` },
+    tags: { label: "Tags", title: "标签", count: (n: number) => `${n} 篇`, tagLabel: (n: number) => `共 ${n} 篇文章`, empty: "还没有标签。" },
     tools: { label: "Tools", title: "工具清单", sub: "自建服务与常用工具。", total: (n: number) => `${n} 项` },
     about: { who: "我是谁", works: "代表作", allProjects: "全部项目", now: "我在做什么", site: "这个站", contact: "联系" },
     notFound: { title: "404", text: "这一页没找到，但你找到了这个站。", home: "回到首页" },
@@ -51,15 +54,15 @@ export const dict = {
     ],
     header: { github: "GitHub", menu: "Menu", close: "Close", home: "Back to home", nav: "Main navigation", top: "Back to top", themeToDark: "Switch to dark mode", themeToLight: "Switch to light mode", lang: "切换为中文" },
     footer: { rss: "RSS", github: "GitHub" },
-    home: { work: "Work & Writing", all: "All", stats: (posts: number, projects: number, tags: number) => `${posts} posts · ${projects} featured · ${tags} tags`,
+    home: { work: "Work & Writing", all: "All", stats: (posts: number, projects: number, tags: number) => `${plural(posts, "post")} · ${projects} featured · ${plural(tags, "tag")}`,
             entries: { posts: "Posts", projects: "Projects", tools: "Tools", about: "About", rss: "RSS" },
-            counts: { posts: (n: number) => `${n} posts`, projects: (n: number) => `${n} projects`, tools: (n: number) => `${n} items` } },
+            counts: { posts: (n: number) => plural(n, "post"), projects: (n: number) => plural(n, "project"), tools: (n: number) => plural(n, "tool") } },
     card: { date: "Date", category: "Category", details: "Details", year: "Year", stack: "Stack", reading: "Reading", tags: "Tags",
             view: "View project", read: "Read", open: "Open", post: "Post", project: "Project" },
-    blog: { label: (n: number) => `Writing · ${n}`, title: "Posts", search: "Search titles, excerpts or tags…", noResult: (q: string) => `No posts matching “${q}”.`, empty: "No posts yet.", year: (y: string, n: number) => `${y} · ${n}`, back: "Posts", minutes: (n: number) => `${n} min read`, more: "Keep reading", comments: "Comments · Giscus" },
+    blog: { label: (n: number) => `Writing · ${n}`, title: "Posts", search: "Search titles, excerpts or tags…", noResult: (q: string) => `No posts matching “${q}”.`, empty: "No posts yet.", year: (y: string, n: number) => `${y} · ${n}`, back: "Posts", minutes: (n: number) => `${n} min read`, toc: "Contents", more: "Keep reading", comments: "Comments · Giscus" },
     projects: { label: (n: number) => `Selected Work · ${n}`, title: "Projects", empty: "No projects yet.", back: "Projects", visit: "Visit site", source: "View source", related: "Related work" },
-    tags: { label: "Tags", title: "Tags", count: (n: number) => `${n}`, tagLabel: (n: number) => `${n} posts` },
-    tools: { label: "Tools", title: "Tools", sub: "Self-hosted services and everyday tools.", total: (n: number) => `${n} items` },
+    tags: { label: "Tags", title: "Tags", count: (n: number) => `${n}`, tagLabel: (n: number) => plural(n, "post"), empty: "No tags yet." },
+    tools: { label: "Tools", title: "Tools", sub: "Self-hosted services and everyday tools.", total: (n: number) => plural(n, "item") },
     about: { who: "Who I am", works: "Selected work", allProjects: "All projects", now: "What I'm doing", site: "This site", contact: "Contact" },
     notFound: { title: "404", text: "This page isn't here, but you found the site.", home: "Back to home" },
   },

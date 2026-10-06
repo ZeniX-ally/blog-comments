@@ -129,7 +129,7 @@ export function HomeView({ lang, posts, projects, projectCount, tagCount, toolCo
           <HairRow href={`${p}/projects/`} title={d.home.entries.projects} trailing={d.home.counts.projects(projectCount)} />
           <HairRow href={`${p}/tools/`} title={d.home.entries.tools} trailing={d.home.counts.tools(toolCount)} />
           <HairRow href={`${p}/about/`} title={d.home.entries.about} trailing="→" />
-          <HairRow href="/feed.xml" title={d.home.entries.rss} trailing="feed.xml" external />
+          <HairRow href="/feed.xml" title={d.home.entries.rss} trailing={<span className="label--raw">feed.xml</span>} external />
         </div>
       </section>
     </div>

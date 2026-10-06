@@ -4,7 +4,7 @@
 @keyframes view-rise { from { opacity: 0; transform: translateY(22px) } to { opacity: 1; transform: translateY(0) } }
 
 .mask { overflow: hidden; }
-.mask > * { animation: rise 900ms var(--ease-out) both; animation-delay: calc(var(--i, 0) * 120ms); }
+.mask > * { display: block; animation: rise 900ms var(--ease-out) both; animation-delay: calc(var(--i, 0) * 120ms); }
 .reveal { animation: fade-up 900ms var(--ease-out) both; animation-delay: calc(var(--i, 0) * 120ms); }
 .underline-draw { position: relative; display: inline-block; }
 .underline-draw::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0.04em; height: 3px; background: currentColor; transform-origin: left; animation: draw 700ms var(--ease-out) 500ms both; }
