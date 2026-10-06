@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * 生成文章 OG 分享卡片 PNG → out/og/<slug>.png + out/og/default.png
- * 0xff 极客风格：深底 #191919 + 右上 0xFF 水印 + mono 信息行。
+ * 浅底 + 右上 0xFF 水印 + mono 信息行。
  * 在 next build 之后运行。
  */
 import fs from "node:fs";
@@ -37,10 +37,10 @@ const fonts = [
   },
 ];
 
-const ACCENT = "#00a876"; // 品牌绿（与 globals.css --accent 一致）
-const FG = "#F5F2EA";
-const FAINT = "#8A857C";
-const BG = "#191919";
+const ACCENT = "#c6613f";
+const FG = "#141413";
+const FAINT = "#5f5e5a";
+const BG = "#faf9f5";
 
 const div = (props, ...children) => h("div", props, ...children);
 const span = (props, ...children) => h("span", props, ...children);

@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { formatDate, slugToHref, type PostMeta } from "@/lib/posts";
-import { FadeIn } from "./fade-in";
 
 /**
  * 文章列表 —— 苹果式轻列表(无分隔线,间距分组,hover 淡灰底)。
@@ -13,29 +12,28 @@ export function PostList({ posts, basePath = "" }: { posts: PostMeta[]; basePath
 
   return (
     <div className="post-list-grid grid gap-x-8 sm:grid-cols-2">
-      {posts.map((post, i) => (
-        <FadeIn key={post.slug} delay={Math.min(i, 6) * 50}>
-          <Link
-            href={`${basePath}/blog/${slugToHref(post.slug)}`}
-            className="post-link grid gap-x-6 gap-y-1.5 sm:grid-cols-[7.5rem_1fr]"
-          >
-            <time className="post-link-date pt-[3px]">{formatDate(post.date)}</time>
-            <div className="min-w-0">
-              <div className="post-link-title">{post.title}</div>
-              {post.excerpt && (
-                <p className="mt-1 line-clamp-1 text-sm leading-relaxed text-muted">
-                  {post.excerpt}
-                </p>
+      {posts.map((post) => (
+        <Link
+          key={post.slug}
+          href={`${basePath}/blog/${slugToHref(post.slug)}`}
+          className="post-link grid gap-x-6 gap-y-1.5 sm:grid-cols-[7.5rem_1fr]"
+        >
+          <time className="post-link-date pt-[3px]">{formatDate(post.date)}</time>
+          <div className="min-w-0">
+            <div className="post-link-title">{post.title}</div>
+            {post.excerpt && (
+              <p className="mt-1 line-clamp-1 text-sm leading-relaxed text-muted">
+                {post.excerpt}
+              </p>
+            )}
+            <div className="post-link-date mt-1.5 opacity-80">
+              {post.readingTime} min
+              {post.tags.length > 0 && (
+                <span className="ml-2">{post.tags.map((t) => `#${t}`).join(" ")}</span>
               )}
-              <div className="post-link-date mt-1.5 opacity-80">
-                {post.readingTime} min
-                {post.tags.length > 0 && (
-                  <span className="ml-2">{post.tags.map((t) => `#${t}`).join(" ")}</span>
-                )}
-              </div>
             </div>
-          </Link>
-        </FadeIn>
+          </div>
+        </Link>
       ))}
     </div>
   );

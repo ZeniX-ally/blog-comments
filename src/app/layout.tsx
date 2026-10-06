@@ -3,7 +3,6 @@ import { site } from "@/lib/site";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { BackToTop } from "@/components/back-to-top";
-import { RippleFx } from "@/components/ripple-fx";
 import "./globals.css";
 
 const umamiEnabled = Boolean(site.umami.scriptSrc && site.umami.websiteId);
@@ -64,8 +63,6 @@ export default function RootLayout({
         )}
       </head>
       <body className="flex min-h-screen flex-col">
-        {/* 点击水面涟漪 */}
-        <RippleFx />
         <SiteHeader />
         {/* 顶栏为 sticky、占文档流,main 不再需要顶部留白;各页用 .content 控制栏宽与左右内边距 */}
         <main className="grow">{children}</main>
