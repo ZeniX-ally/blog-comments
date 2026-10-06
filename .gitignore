@@ -33,3 +33,6 @@ next-env.d.ts
 .mimosa/
 .playwright-mcp/
 .cf-env
+
+# brainstorm companion sessions
+.superpowers/

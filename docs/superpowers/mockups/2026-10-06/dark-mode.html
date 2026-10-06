@@ -1,0 +1,151 @@
+<style>
+  @font-face { font-family: "ASans"; src: url("/files/anthropic-sans-roman.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+  @font-face { font-family: "ASerif"; src: url("/files/anthropic-serif-roman.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+  @font-face { font-family: "AMono"; src: url("/files/anthropic-mono-roman.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+
+  .wrap { max-width: 1180px; }
+  .dm-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; }
+  .dm-cards > .card { min-width: 0; }
+  @media (max-width: 900px) { .dm-cards { grid-template-columns: minmax(0, 1fr); } }
+  .dm-cards .card-image { aspect-ratio: auto; height: 640px; display: block; overflow: hidden; position: relative; }
+
+  .pg { --sans: "ASans", "Styrene A", "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+        --serif: "ASerif", Georgia, "Noto Serif SC", "Songti SC", "SimSun", serif;
+        --mono: "AMono", ui-monospace, Consolas, monospace;
+        background: var(--bg); color: var(--fg); font-family: var(--serif); font-size: 12px; line-height: 1.5; height: 100%; overflow: hidden; position: relative; }
+  .pg * { box-sizing: border-box; }
+
+  /* 暖墨黑 */
+  .warm { --bg: #141413; --fg: #faf9f5; --card: #262522; --card-fg: #f0eee6; --mute: #a8a49c; --hair: rgba(250,249,245,0.18); --clay: #d97757; --pill-bg: #faf9f5; --pill-fg: #141413; }
+  /* OLED 纯黑 */
+  .oled { --bg: #000000; --fg: #f5f4f0; --card: #161614; --card-fg: #ecebe6; --mute: #9b9892; --hair: rgba(245,244,240,0.16); --clay: #e07e5c; --pill-bg: #f5f4f0; --pill-fg: #000000; }
+
+  .hd { display: flex; justify-content: space-between; align-items: center; padding: 16px 26px; font-family: var(--sans); }
+  .hd .wm { font-weight: 700; font-size: 13px; }
+  .hd .wm b { color: var(--clay); }
+  .hd nav { display: flex; gap: 16px; align-items: center; font-size: 11px; font-family: var(--serif); }
+  .hd .ctl { display: flex; align-items: center; gap: 10px; margin-left: 6px; padding-left: 14px; border-left: 1px solid var(--hair); }
+  .hd .ctl .lang { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; }
+  .hd .ctl .lang b { font-weight: 400; color: var(--mute); }
+  .hd .ctl svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 1.6; }
+  .pill { display: inline-flex; align-items: center; gap: 6px; background: var(--pill-bg); color: var(--pill-fg); font-size: 10.5px; padding: 5px 10px; border-radius: 6px; }
+
+  .hero { display: grid; grid-template-columns: 1.15fr 1fr; gap: 26px; padding: 40px 26px 48px; }
+  .hero h1 { font-family: var(--sans); font-weight: 700; font-size: 32px; line-height: 1.06; letter-spacing: -0.015em; margin: 0; }
+  .hero h1 u { text-decoration: none; border-bottom: 2px solid var(--fg); }
+  .hero .lede { font-size: 13px; line-height: 1.5; color: var(--fg); padding-top: 4px; }
+  .hero .lede p { margin: 0 0 8px; }
+  .hero .meta { font-family: var(--mono); font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mute); margin-top: 10px; }
+
+  .pcards { padding: 10px 26px; }
+  .pcards .sec-h { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; }
+  .pcards .sec-h h2 { font-family: var(--sans); font-weight: 700; font-size: 17px; margin: 0; }
+  .pcards .sec-h a { font-size: 11px; color: var(--mute); }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .pcard { background: var(--card); color: var(--card-fg); border-radius: 8px; padding: 14px 13px 13px; display: flex; flex-direction: column; min-height: 196px; }
+  .pcard h3 { font-family: var(--sans); font-weight: 600; font-size: 13px; margin: 0 0 6px; }
+  .pcard p { font-size: 10.5px; margin: 0 0 auto; line-height: 1.45; color: var(--mute); }
+  .pcard .rows { margin-top: 12px; font-family: var(--mono); font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mute); }
+  .pcard .rows div { display: flex; justify-content: space-between; padding: 5px 0; border-top: 1px solid var(--hair); }
+  .pcard .rows div span:last-child { font-family: var(--serif); text-transform: none; letter-spacing: 0; font-size: 10px; color: var(--card-fg); }
+  .pcard .pill { align-self: flex-start; margin-top: 10px; }
+
+  .ft { position: absolute; left: 0; right: 0; bottom: 0; border-top: 1px solid var(--hair); padding: 12px 26px; display: flex; justify-content: space-between; font-family: var(--mono); font-size: 8.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mute); }
+
+  /* 右上角两个开关的放大示意 */
+  .ctl-demo { display: flex; gap: 1.25rem; flex-wrap: wrap; margin-top: 0.75rem; }
+  .ctl-demo .chip { display: inline-flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 10px; background: var(--bg-secondary); border: 1px solid var(--border); font-size: 0.85rem; }
+  .ctl-demo code { font-family: ui-monospace, Consolas, monospace; font-size: 0.8rem; }
+</style>
+
+<div class="wrap">
+<h2>暗色模式：两种黑</h2>
+<p class="subtitle">明暗切换和中英切换都保留，放在顶栏右侧（见每张图顶栏：导航 · 分隔线 · <code>ZH / EN</code> · 月亮）。浅色就是刚才那版象牙白。暗色有两种做法，沙色卡片在暗色下都换成「暖灰黑」卡，不发蓝。点一个。</p>
+
+<div class="cards dm-cards">
+
+  <div class="card" data-choice="warm" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="pg warm">
+        <div class="hd">
+          <div class="wm">阿九<b>\</b>404-found.uk</div>
+          <nav><span>作品</span><span>关于</span><span>文章</span><span>工具</span>
+            <span class="ctl"><span class="lang">ZH <b>/ EN</b></span>
+              <svg viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></span>
+            <span class="pill">GitHub →</span></nav>
+        </div>
+        <section class="hero">
+          <h1>I'm <u>Zenix</u>.<br>Test engineer who<br>cares about <u>clean text</u>.</h1>
+          <div class="lede">
+            <p>你好，我是阿九，一名测试工程师。在产线测试这条路上摸爬滚打，目前的方向是测试研发——FCT / IGBT 测试、上位机自动化。</p>
+            <div class="meta">1 文章 · 2 精选 · 2 标签</div>
+          </div>
+        </section>
+        <section class="pcards">
+          <div class="sec-h"><h2>作品与文章</h2><a>全部 →</a></div>
+          <div class="grid">
+            <div class="pcard"><h3>404-found.uk</h3><p>Next.js 16 静态站点，部署在 Cloudflare Pages，带评论、统计、搜索。</p>
+              <div class="rows"><div><span>Date</span><span>2026</span></div><div><span>Category</span><span>作品</span></div></div><span class="pill">查看 →</span></div>
+            <div class="pcard"><h3>MT4 EA</h3><p>外汇自动化交易 EA，中长线策略，全自动运行。</p>
+              <div class="rows"><div><span>Date</span><span>2026</span></div><div><span>Category</span><span>作品</span></div></div><span class="pill">查看 →</span></div>
+            <div class="pcard"><h3>你好，我是阿九</h3><p>写下来，是对自己的复盘；发出来，是给同路人的参考。</p>
+              <div class="rows"><div><span>Date</span><span>2026.08.09</span></div><div><span>Category</span><span>文章</span></div></div><span class="pill">阅读 →</span></div>
+          </div>
+        </section>
+        <div class="ft"><span>© 2026 阿九</span><span>GitHub — RSS</span></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A · 暖墨黑</h3>
+      <p>底色用 Anthropic 自己的墨黑 <code>#141413</code>，字是象牙白，卡片是暖灰黑 <code>#262522</code>，陶土红稍微提亮。和浅色是同一套材质翻过来，切换时过渡最自然。</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="oled" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="pg oled">
+        <div class="hd">
+          <div class="wm">阿九<b>\</b>404-found.uk</div>
+          <nav><span>作品</span><span>关于</span><span>文章</span><span>工具</span>
+            <span class="ctl"><span class="lang">ZH <b>/ EN</b></span>
+              <svg viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></span>
+            <span class="pill">GitHub →</span></nav>
+        </div>
+        <section class="hero">
+          <h1>I'm <u>Zenix</u>.<br>Test engineer who<br>cares about <u>clean text</u>.</h1>
+          <div class="lede">
+            <p>你好，我是阿九，一名测试工程师。在产线测试这条路上摸爬滚打，目前的方向是测试研发——FCT / IGBT 测试、上位机自动化。</p>
+            <div class="meta">1 文章 · 2 精选 · 2 标签</div>
+          </div>
+        </section>
+        <section class="pcards">
+          <div class="sec-h"><h2>作品与文章</h2><a>全部 →</a></div>
+          <div class="grid">
+            <div class="pcard"><h3>404-found.uk</h3><p>Next.js 16 静态站点，部署在 Cloudflare Pages，带评论、统计、搜索。</p>
+              <div class="rows"><div><span>Date</span><span>2026</span></div><div><span>Category</span><span>作品</span></div></div><span class="pill">查看 →</span></div>
+            <div class="pcard"><h3>MT4 EA</h3><p>外汇自动化交易 EA，中长线策略，全自动运行。</p>
+              <div class="rows"><div><span>Date</span><span>2026</span></div><div><span>Category</span><span>作品</span></div></div><span class="pill">查看 →</span></div>
+            <div class="pcard"><h3>你好，我是阿九</h3><p>写下来，是对自己的复盘；发出来，是给同路人的参考。</p>
+              <div class="rows"><div><span>Date</span><span>2026.08.09</span></div><div><span>Category</span><span>文章</span></div></div><span class="pill">阅读 →</span></div>
+          </div>
+        </section>
+        <div class="ft"><span>© 2026 阿九</span><span>GitHub — RSS</span></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B · OLED 纯黑</h3>
+      <p>底色 <code>#000</code>，和你现在的暗色主题一致，手机 OLED 上更省电、对比更强。卡片 <code>#161614</code>。代价是和浅色的象牙白不是同一套「纸」的感觉，更像两套皮肤。</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="section" style="margin-top:1.5rem">
+  <h3>两个开关的样子</h3>
+  <p class="subtitle">都放顶栏右侧，和现在位置一样，只是换成这套语言：等宽小字 + 一笔线描图标，不做胶囊按钮。</p>
+  <div class="ctl-demo">
+    <span class="chip"><code>ZH / EN</code> &nbsp;← 中英切换，当前语言实色、另一个灰；点一下跳到对应语言的同一页</span>
+    <span class="chip">☾ / ☀ &nbsp;← 明暗切换，图标 300ms 交叉淡入，整页颜色 token 过渡 400ms，不闪白</span>
+  </div>
+</div>
+</div>

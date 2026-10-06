@@ -1,0 +1,197 @@
+<style>
+  @font-face { font-family: "ASans"; src: url("/files/anthropic-sans-roman.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+  @font-face { font-family: "ASerif"; src: url("/files/anthropic-serif-roman.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+  @font-face { font-family: "AMono"; src: url("/files/anthropic-mono-roman.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+
+  .wrap { max-width: 1180px; }
+  .ip-grid { display: grid; grid-template-columns: 1.15fr 1fr; gap: 1.25rem; align-items: start; }
+  @media (max-width: 900px) { .ip-grid { grid-template-columns: minmax(0, 1fr); } }
+  .ip-grid .mockup { margin-bottom: 0; }
+  .ip-grid .mockup-body { padding: 0; }
+
+  .pg { --bg: #faf9f5; --fg: #141413; --card: #e3dacc; --mute: #5f5e5a; --hair: rgba(20,20,19,0.18); --clay: #c6613f; --code: #141413; --code-fg: #faf9f5;
+        --sans: "ASans", "Styrene A", "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+        --serif: "ASerif", Georgia, "Noto Serif SC", "Songti SC", "SimSun", serif;
+        --mono: "AMono", ui-monospace, Consolas, monospace;
+        background: var(--bg); color: var(--fg); font-family: var(--serif); font-size: 12px; line-height: 1.55; position: relative; overflow: hidden; }
+  .pg * { box-sizing: border-box; }
+  .hd { display: flex; justify-content: space-between; align-items: center; padding: 16px 26px; font-family: var(--sans); position: relative; }
+  .hd::before { content: ""; position: absolute; left: 0; top: 0; height: 2px; width: 38%; background: var(--fg); }
+  .hd .wm { font-weight: 700; font-size: 13px; }
+  .hd .wm b { color: var(--clay); }
+  .hd nav { display: flex; gap: 16px; align-items: center; font-size: 11px; font-family: var(--serif); }
+  .hd .ctl { display: flex; align-items: center; gap: 10px; margin-left: 6px; padding-left: 14px; border-left: 1px solid var(--hair); font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; }
+  .hd .ctl b { font-weight: 400; color: var(--mute); }
+  .pill { display: inline-flex; align-items: center; gap: 6px; background: var(--fg); color: var(--bg); font-size: 10.5px; padding: 5px 10px; border-radius: 6px; font-family: var(--serif); }
+
+  /* 文章页 */
+  .art { padding: 28px 26px 30px; }
+  .art .back { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mute); }
+  .art h1 { font-family: var(--sans); font-weight: 700; font-size: 34px; line-height: 1.1; letter-spacing: -0.015em; margin: 14px 0 12px; max-width: 520px; }
+  .art .lede { font-size: 15px; color: var(--fg); max-width: 520px; margin-bottom: 26px; }
+  .art .cols { display: grid; grid-template-columns: 150px 1fr; gap: 30px; }
+  .art .meta div { display: flex; justify-content: space-between; padding: 7px 0; border-top: 1px solid var(--hair); font-family: var(--mono); font-size: 8.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mute); }
+  .art .meta div span:last-child { font-family: var(--serif); text-transform: none; letter-spacing: 0; font-size: 10.5px; color: var(--fg); }
+  .art .meta div:last-child { border-bottom: 1px solid var(--hair); }
+  .art .toc { margin-top: 20px; font-family: var(--sans); font-size: 10.5px; }
+  .art .toc .k { font-family: var(--mono); font-size: 8.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mute); margin-bottom: 6px; }
+  .art .toc div { padding: 3px 0 3px 10px; border-left: 1.5px solid transparent; color: var(--mute); }
+  .art .toc div.on { border-left-color: var(--fg); color: var(--fg); }
+  .art .body { font-size: 12.5px; line-height: 1.7; max-width: 440px; }
+  .art .body h2 { font-family: var(--sans); font-weight: 600; font-size: 17px; margin: 18px 0 8px; letter-spacing: -0.01em; }
+  .art .body h2:first-child { margin-top: 0; }
+  .art .body p { margin: 0 0 10px; }
+  .art .body ul { margin: 0 0 10px 16px; padding: 0; }
+  .art .body li { margin-bottom: 3px; }
+  .art .body li b { font-family: var(--sans); font-weight: 600; }
+  .art .body blockquote { margin: 12px 0; padding: 2px 0 2px 12px; border-left: 2px solid var(--clay); color: var(--mute); font-style: italic; }
+  .art .body pre { background: var(--code); color: var(--code-fg); font-family: var(--mono); font-size: 10px; padding: 10px 12px; border-radius: 6px; margin: 10px 0; line-height: 1.5; }
+  .art .next { margin-top: 26px; border-top: 1px solid var(--hair); padding-top: 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .art .next .k { grid-column: 1 / -1; font-family: var(--mono); font-size: 8.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mute); }
+  .art .next .c { background: var(--card); border-radius: 8px; padding: 12px; }
+  .art .next .c h4 { font-family: var(--sans); font-weight: 600; font-size: 12px; margin: 0 0 4px; }
+  .art .next .c span { font-family: var(--mono); font-size: 8.5px; color: var(--mute); letter-spacing: 0.06em; }
+  .art .cmt { margin-top: 18px; border-top: 1px solid var(--hair); padding-top: 12px; font-family: var(--mono); font-size: 8.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mute); display: flex; justify-content: space-between; }
+
+  /* 列表页 */
+  .lst { padding: 28px 26px 26px; }
+  .lst .k { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mute); }
+  .lst h1 { font-family: var(--sans); font-weight: 700; font-size: 30px; letter-spacing: -0.015em; margin: 10px 0 14px; }
+  .lst .search { border-bottom: 1px solid var(--fg); padding: 6px 0; font-size: 12.5px; color: var(--mute); display: flex; justify-content: space-between; }
+  .lst .search span:last-child { font-family: var(--mono); font-size: 9px; letter-spacing: 0.08em; }
+  .lst .row { display: grid; grid-template-columns: 74px 1fr auto; gap: 14px; align-items: baseline; padding: 11px 0; border-bottom: 1px solid var(--hair); }
+  .lst .row .d { font-family: var(--mono); font-size: 9px; letter-spacing: 0.06em; color: var(--mute); }
+  .lst .row .t { font-family: var(--sans); font-weight: 600; font-size: 13.5px; letter-spacing: -0.01em; }
+  .lst .row .s { display: block; font-family: var(--serif); font-weight: 400; font-size: 11px; color: var(--mute); margin-top: 2px; }
+  .lst .row .tg { font-family: var(--mono); font-size: 8.5px; letter-spacing: 0.06em; color: var(--mute); text-transform: uppercase; }
+  .lst .row:first-of-type { border-top: 0; }
+
+  .prj { padding: 26px 26px 26px; border-top: 1px solid var(--hair); }
+  .prj .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+  .prj .c { background: var(--card); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; }
+  .prj .cv { aspect-ratio: 16 / 9; background: #d6cbb8; display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-size: 34px; color: rgba(20,20,19,0.35); }
+  .prj .cb { padding: 12px 12px 12px; }
+  .prj .cb h4 { font-family: var(--sans); font-weight: 600; font-size: 13px; margin: 0 0 4px; }
+  .prj .cb p { font-size: 10.5px; margin: 0 0 8px; color: var(--mute); }
+  .prj .cb .rows div { display: flex; justify-content: space-between; padding: 4px 0; border-top: 1px solid var(--hair); font-family: var(--mono); font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mute); }
+  .prj .cb .rows div span:last-child { font-family: var(--serif); text-transform: none; letter-spacing: 0; font-size: 10px; color: var(--fg); }
+
+  .notes { margin-top: 1.5rem; }
+  .notes ul { margin-left: 1.25rem; color: var(--text-secondary); font-size: 0.9rem; }
+  .notes li { margin-bottom: 0.3rem; }
+</style>
+
+<div class="wrap">
+<h2>内页怎么延续：文章页 / 列表页 / 作品页</h2>
+<p class="subtitle">暗色定为 OLED 纯黑，记下了。这屏是浅色下的三个内页。文章页照 Anthropic 新闻页的骨架：标题 + 导语在上，左边一列等宽元数据和目录，右边窄栏衬线正文。列表页用细线行，作品页用带封面的沙色卡。</p>
+
+<div class="ip-grid">
+
+  <div class="mockup">
+    <div class="mockup-header">文章页 /blog/[slug]（顶栏上那根短黑线是阅读进度）</div>
+    <div class="mockup-body">
+      <div class="pg">
+        <div class="hd">
+          <div class="wm">阿九<b>\</b>404-found.uk</div>
+          <nav><span>作品</span><span>关于</span><span style="border-bottom:1.5px solid var(--fg)">文章</span><span>工具</span><span class="ctl">ZH <b>/ EN</b> &nbsp;☾</span></nav>
+        </div>
+        <div class="art">
+          <div class="back">← 文章</div>
+          <h1>你好，我是阿九</h1>
+          <div class="lede">一名测试工程师的自我介绍：我在做什么，为什么写博客，这里会有什么。</div>
+          <div class="cols">
+            <div>
+              <div class="meta">
+                <div><span>Date</span><span>2026.08.09</span></div>
+                <div><span>Category</span><span>杂谈</span></div>
+                <div><span>Reading</span><span>约 1 分钟</span></div>
+                <div><span>Tags</span><span>杂谈 · 关于</span></div>
+              </div>
+              <div class="toc">
+                <div class="k">目录</div>
+                <div class="on">我是谁</div>
+                <div>我在做什么</div>
+                <div>为什么写博客</div>
+                <div>这里有什么</div>
+              </div>
+            </div>
+            <div class="body">
+              <h2>我是谁</h2>
+              <p>你好，我是阿九，一名测试工程师。我在产线测试这条路上摸爬滚打，目前的方向是测试研发——FCT/IGBT 测试，跟"测"字打了一辈子交道。</p>
+              <p>这个博客的名字叫 404-found.uk，是个双关：404 通常意味着"找不到"，但在这里，它找到了你。</p>
+              <h2>我在做什么</h2>
+              <ul>
+                <li><b>工作</b>：FCT/IGBT 测试，上位机自动化，产线测试研发</li>
+                <li><b>学习</b>：Python、上位机开发、自动化测试</li>
+                <li><b>生活</b>：折腾数码设备、看动画、听音乐</li>
+              </ul>
+              <blockquote>想清楚一件事和写清楚一件事是两回事。</blockquote>
+              <pre>$ python -m pytest tests/ -q
+.......... 10 passed in 0.42s</pre>
+              <p>写下来，是对自己的复盘；发出来，是给同路人的参考。</p>
+            </div>
+          </div>
+          <div class="next">
+            <div class="k">继续阅读</div>
+            <div class="c"><h4>404-found.uk</h4><span>作品 · 2026</span></div>
+            <div class="c"><h4>MT4 EA</h4><span>作品 · 2026</span></div>
+          </div>
+          <div class="cmt"><span>Comments · Giscus</span><span>GitHub 登录后留言</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mockup">
+    <div class="mockup-header">文章列表 /blog（上）· 作品 /projects（下）</div>
+    <div class="mockup-body">
+      <div class="pg">
+        <div class="hd" style="--_:0">
+          <div class="wm">阿九<b>\</b>404-found.uk</div>
+          <nav><span>作品</span><span>关于</span><span style="border-bottom:1.5px solid var(--fg)">文章</span><span>工具</span><span class="ctl">ZH <b>/ EN</b> &nbsp;☾</span></nav>
+        </div>
+        <div class="lst">
+          <div class="k">Writing · 1 篇</div>
+          <h1>文章</h1>
+          <div class="search"><span>搜索标题或标签…</span><span>⌘K</span></div>
+          <div class="row"><span class="d">2026.08.09</span><span class="t">你好，我是阿九<span class="s">一名测试工程师的自我介绍：我在做什么，为什么写博客。</span></span><span class="tg">杂谈 · 关于</span></div>
+          <div class="row"><span class="d">2026.09.—</span><span class="t">下一篇还没写<span class="s">不追更新频率，不写没想清楚的东西。</span></span><span class="tg">—</span></div>
+        </div>
+        <div class="prj">
+          <div class="k">Selected Work · 2</div>
+          <div class="grid">
+            <div class="c"><div class="cv">4</div><div class="cb"><h4>404-found.uk</h4><p>Next.js 16 静态站点，部署在 Cloudflare Pages。</p>
+              <div class="rows"><div><span>Year</span><span>2026</span></div><div><span>Stack</span><span>Next.js · React · Tailwind</span></div></div></div></div>
+            <div class="c"><div class="cv">M</div><div class="cb"><h4>MT4 EA</h4><p>外汇自动化交易 EA，中长线策略，全自动运行。</p>
+              <div class="rows"><div><span>Year</span><span>2026</span></div><div><span>Stack</span><span>MQL4 · MT4</span></div></div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="notes">
+  <h3>内页上的动效</h3>
+  <ul>
+    <li>进入文章：标题从遮罩升起，导语和元数据随后浮现；正文不做入场动画，直接可读。</li>
+    <li>阅读进度：顶栏上沿一根 2px 黑线随滚动变长（scroll-driven），替代现在的进度条组件。</li>
+    <li>目录联动：正文 h2 进入视口时，左侧目录对应项的竖线变实（现有 ScrollSpy 保留，换样式）。</li>
+    <li>列表行悬停：整行背景不变，只有标题下划线从左长出、右侧标签变实色。</li>
+    <li>作品卡悬停：卡片加深一级、上浮 2px、封面轻微放大 1.02。</li>
+    <li>页面切换：列表行 → 文章页，标题位置用 View Transitions 做共享元素过渡（标题从行里"长"到页首）。</li>
+  </ul>
+</div>
+
+<div class="options" style="margin-top:1.5rem">
+  <div class="option" data-choice="ok" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content"><h3>可以，内页就这么延续</h3><p>我回到聊天，确认最后一件事（未提交改动怎么处理），然后写设计文档。</p></div>
+  </div>
+  <div class="option" data-choice="tweak" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content"><h3>还要改</h3><p>在聊天里说哪里不对。</p></div>
+  </div>
+</div>
+</div>
