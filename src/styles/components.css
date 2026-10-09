@@ -102,8 +102,11 @@
 
 /* 首页 */
 .home-hero { display: grid; grid-template-columns: 1.15fr 1fr; gap: 56px; padding: 86px 0 92px; align-items: start; }
-.home-hero h1 { font-size: 58px; line-height: 1.06; font-weight: 700; }
-.home-lede { padding-top: 10px; }
+.home-hero h1 { font-size: 58px; line-height: 1.15; font-weight: 700; }
+/* 右栏下移,让正文首行字顶与左侧大标题首行字顶齐平。数值为实测微调,与 h1 的 font-size/line-height 绑定:
+   中文需 -4.65px、英文需 -6.65px(中英首字字形高度天然差 2px),取折中值,两语偏差均在 1px 内。
+   调整 h1 行高或字号后需重新测量。 */
+.home-lede { padding-top: 4.35px; }
 .home-lede p + p { margin-top: 14px; }
 .home-lede .label { margin-top: 18px; }
 .home-section { padding: 64px 0; }
@@ -156,8 +159,16 @@
 }
 
 /* 响应式 */
-@media (max-width: 640px) { .site-nav, .site-header .pill { display: none; } }
-@media (min-width: 641px) { .mobile-menu, .mobile-menu-button { display: none; } }
+/* 顶栏 pill 增至三个(GitHub + site.apps 两项)后,单行容纳需要 ~860px,
+   所以折叠点从 640px 提到 860px:更窄一律收进菜单,避免 641~860 区间横向溢出。 */
+@media (max-width: 860px) { .site-nav, .site-header .pill { display: none; } }
+@media (min-width: 861px) { .mobile-menu, .mobile-menu-button { display: none; } }
+/* 中窄屏(861~1100)收窄间距,保证单行不换行 */
+@media (min-width: 861px) and (max-width: 1100px) {
+  .site-header-right { gap: 12px; }
+  .site-nav { gap: 16px; }
+  .site-header .pill { padding: 7px 11px; font-size: 13px; }
+}
 @media (max-width: 760px) {
   .site-header-bar { padding-top: 18px; padding-bottom: 18px; }
   .site-footer { flex-direction: column; gap: 8px; }

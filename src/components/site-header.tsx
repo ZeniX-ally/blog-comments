@@ -15,7 +15,8 @@ const POST_PATH = /^\/(en\/)?blog\/[^/]+\/?$/;
 const HOST = site.url.replace(/^https?:\/\//, "").replace(/\/$/, "");
 
 /**
- * 顶栏:sticky。左字标「阿九\404-found.uk」;右侧导航四项、竖线、ZH / EN、☾/☀、GitHub pill。
+ * 顶栏:sticky。左字标「阿九\404-found.uk」;右侧导航(站内四项 + site.apps 的站外入口,同排同样式)、
+ * 竖线、ZH / EN、☾/☀、GitHub pill。
  * 滚动 24px 后的底色 / 底线 / 字标收缩全部由 motion.css 的 scroll-driven 动画负责,这里不监听 scroll。
  * viewTransitionName 固定为 site-header,切页时顶栏不参与动画(motion.css)。
  */
@@ -24,6 +25,8 @@ export function SiteHeader() {
   const lang = getLangFromPath(pathname);
   const d = dict[lang];
   const progress = POST_PATH.test(pathname);
+  /** 站外入口:href 来自 site.apps,文案按语言取自字典(中文模式显示中文) */
+  const apps = site.apps.map((app) => ({ href: app.href, label: d.header[app.key] }));
 
   return (
     <header className="site-header" style={{ viewTransitionName: "site-header" }}>
@@ -41,6 +44,12 @@ export function SiteHeader() {
                 {item.label}
               </NavLink>
             ))}
+            {/* 站外入口:与站内导航同排、同样式,不带箭头;文案随语言 */}
+            {apps.map((app) => (
+              <a key={app.href} className="nav-link" href={app.href} target="_blank" rel="noreferrer">
+                {app.label}
+              </a>
+            ))}
           </nav>
           <span className="site-header-divider" aria-hidden="true" />
           <LanguageToggle />
@@ -50,7 +59,7 @@ export function SiteHeader() {
               {d.header.github} <span className="arrow">→</span>
             </a>
           )}
-          <MobileMenu items={d.nav} lang={lang} />
+          <MobileMenu items={d.nav} apps={apps} lang={lang} />
         </div>
       </div>
     </header>

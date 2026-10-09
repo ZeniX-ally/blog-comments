@@ -4,7 +4,9 @@
 @keyframes draw { from { transform: scaleX(0) } to { transform: scaleX(1) } }
 @keyframes view-rise { from { opacity: 0; transform: translateY(22px) } to { opacity: 1; transform: translateY(0) } }
 
-.mask { overflow: hidden; display: block; }
+/* overflow:hidden 给上移入场做遮罩,但行盒比字体墨迹矮(降部会超出行盒下缘),
+   所以留出 padding-bottom 再用等量负 margin 收回:降部不再被裁,视觉行距不变。 */
+.mask { overflow: hidden; display: block; padding-bottom: 0.14em; margin-bottom: -0.14em; }
 .mask > * { display: block; animation: rise 900ms var(--ease-out) both; animation-delay: calc(var(--i, 0) * 120ms); }
 .reveal { animation: fade-up 900ms var(--ease-out) both; animation-delay: calc(var(--i, 0) * 120ms); }
 .underline-draw { position: relative; display: inline-block; }

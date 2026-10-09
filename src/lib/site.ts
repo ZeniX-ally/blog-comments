@@ -38,6 +38,17 @@ export const site = {
     rss: "/feed.xml",
   },
 
+  /**
+   * 顶栏入口:点开即到各自登录页 / 面板。
+   * key 对应 i18n 字典的 header.gitea / header.dashboard —— 中文模式显示中文,英文模式显示英文。
+   * 桌面端与站内导航同排同样式(不带箭头);≤860px 随导航一起收进展开菜单。
+   * 留空数组则两个入口都不显示。
+   */
+  apps: [
+    { key: "gitea", href: "https://git.404-found.uk/user/login" },
+    { key: "dashboard", href: "https://wb.404-found.uk/" },
+  ],
+
   /** Giscus 评论(https://giscus.app 上配置后填入;为空则不显示评论区) */
   giscus: {
     repo: "ZeniX-ally/blog-comments", // 格式: "owner/repo"
