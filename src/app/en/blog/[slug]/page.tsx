@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getAllPosts, getAdjacentPosts, getPost, decodeSlug, slugToHref } from "@/lib/posts";
+import { getAdjacentPosts, getPost, getPostStaticParams, decodeSlug, slugToHref } from "@/lib/posts";
 import { getFeaturedProjects } from "@/lib/projects";
 import { PageTransition } from "@/components/page-transition";
 import { PostView } from "@/views/post";
@@ -8,8 +8,7 @@ import { PostView } from "@/views/post";
 type Params = { slug: string };
 
 export function generateStaticParams(): Params[] {
-  const posts = getAllPosts("en").map((post) => ({ slug: post.slug }));
-  return posts;
+  return getPostStaticParams("en");
 }
 
 export const dynamicParams = false;

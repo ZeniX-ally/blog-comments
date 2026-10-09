@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { decodeSlug, getAllTags, getPostsByTag, slugToHref } from "@/lib/posts";
+import { decodeSlug, getPostsByTag, getTagStaticParams, slugToHref } from "@/lib/posts";
 import { pageMeta } from "@/lib/seo";
 import { PageTransition } from "@/components/page-transition";
 import { TagView } from "@/views/tags";
@@ -8,9 +8,8 @@ import { TagView } from "@/views/tags";
 type Params = { tag: string };
 
 export function generateStaticParams(): Params[] {
-  const tags = getAllTags().map(({ tag }) => ({ tag }));
-  // 静态导出要求至少生成一个路由；暂无文章时用占位标签(页面会 404)
-  return tags;
+  // 静态导出要求至少生成一个路由;无标签时由 getTagStaticParams 占位兜底,页面 notFound
+  return getTagStaticParams();
 }
 
 export const dynamicParams = false;

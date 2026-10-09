@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
-import { decodeSlug, renderMarkdown } from "@/lib/posts";
+import { decodeSlug, renderMarkdown, EMPTY_PARAM_SLUG } from "@/lib/posts";
 
 const projectsDir = path.join(process.cwd(), "content", "projects");
 
@@ -155,8 +155,11 @@ export async function getProjectBySlug(slug: string): Promise<ProjectDetail | nu
   return { ...meta, html };
 }
 
-/** generateStaticParams 友好列表 */
+/** generateStaticParams 友好列表;静态导出要求非空,无作品时占位兜底(页面 notFound) */
 export function getProjectStaticParams(): { slug: string }[] {
-  return getAllProjects().map((p) => ({ slug: p.slug }));
+  const projects = getAllProjects();
+  return projects.length > 0
+    ? projects.map((p) => ({ slug: p.slug }))
+    : [{ slug: EMPTY_PARAM_SLUG }];
 }
 

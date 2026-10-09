@@ -168,8 +168,7 @@ async function renderCard({ title, date, tags, isDefault }) {
 }
 
 // —— 主流程 ——
-const posts = fs
-  .readdirSync(POSTS_DIR)
+const posts = (fs.existsSync(POSTS_DIR) ? fs.readdirSync(POSTS_DIR) : [])
   .filter((f) => f.endsWith(".md"))
   .map((file) => {
     const { data } = matter(fs.readFileSync(path.join(POSTS_DIR, file), "utf8"));

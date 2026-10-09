@@ -57,8 +57,13 @@ function xmlEscape(s) {
     .replaceAll("'", "&apos;");
 }
 
+// 目录可能不存在(git 不追踪空目录):无文章时生成空 feed,不中断构建
+const postFiles = fs.existsSync(POSTS_DIR)
+  ? fs.readdirSync(POSTS_DIR).filter((f) => f.endsWith(".md"))
+  : [];
+
 const posts = [];
-for (const file of fs.readdirSync(POSTS_DIR).filter((f) => f.endsWith(".md"))) {
+for (const file of postFiles) {
   const { data, content } = matter(fs.readFileSync(path.join(POSTS_DIR, file), "utf8"));
   if (data.draft === true) continue;
 

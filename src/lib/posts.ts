@@ -190,6 +190,25 @@ export function getAdjacentPosts(slug: string, lang: Lang = "zh"): {
 }
 
 /**
+ * 占位参数(仅内部使用)。静态导出(output: export)要求动态路由的
+ * generateStaticParams 至少返回一条;内容为空时用它兜底,
+ * 页面取不到内容会 notFound()。
+ */
+export const EMPTY_PARAM_SLUG = "__empty";
+
+/** generateStaticParams 友好列表:文章;无文章时占位兜底 */
+export function getPostStaticParams(lang: Lang = "zh"): { slug: string }[] {
+  const posts = getAllPosts(lang);
+  return posts.length > 0 ? posts.map((post) => ({ slug: post.slug })) : [{ slug: EMPTY_PARAM_SLUG }];
+}
+
+/** generateStaticParams 友好列表:标签;无标签时占位兜底 */
+export function getTagStaticParams(lang: Lang = "zh"): { tag: string }[] {
+  const tags = getAllTags(lang);
+  return tags.length > 0 ? tags.map(({ tag }) => ({ tag })) : [{ tag: EMPTY_PARAM_SLUG }];
+}
+
+/**
  * frontmatter 里的 date 会被 YAML 解析成 Date 对象(UTC 零点),
  * 这里统一归一化为 YYYY-MM-DD 字符串。
  */

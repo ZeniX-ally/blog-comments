@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { decodeSlug, getAllTags, getPostsByTag } from "@/lib/posts";
+import { decodeSlug, getPostsByTag, getTagStaticParams } from "@/lib/posts";
 import { PageTransition } from "@/components/page-transition";
 import { TagView } from "@/views/tags";
 
 type Params = { tag: string };
 
 export function generateStaticParams(): Params[] {
-  const tags = getAllTags("en").map(({ tag }) => ({ tag }));
-  return tags;
+  return getTagStaticParams("en");
 }
 
 export const dynamicParams = false;
