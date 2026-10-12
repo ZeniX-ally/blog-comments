@@ -34,8 +34,15 @@ type Ctx = {
 };
 
 const SITE_ORIGIN = String(siteCore.url).replace(/\/$/, "");
-/** 本地 `wrangler pages dev` 的默认端口也要放行 */
-const ALLOWED_ORIGINS = [SITE_ORIGIN, "http://localhost:8788", "http://127.0.0.1:8788"];
+const ALLOWED_ORIGINS = [
+  SITE_ORIGIN,
+  // Cloudflare 控制台与构建输出交给用户的 pages.dev 主机名，表单也会从这里提交。
+  // 浏览器按页面自身 origin 设置 Origin，别的站点无法冒用，不削弱跨站防护。
+  "https://0xff-blog.pages.dev",
+  /** 本地 `wrangler pages dev` 的默认端口也要放行 */
+  "http://localhost:8788",
+  "http://127.0.0.1:8788",
+];
 
 const JSON_HEADERS = {
   "content-type": "application/json; charset=utf-8",
@@ -56,7 +63,14 @@ export async function onRequest(context: Ctx): Promise<Response> {
     return json({ ok: false, error: "bad_origin" }, 403);
   }
 
+  // content-length 粗筛：先兜住超大请求再读 body（阈值 4 倍是 UTF-8 最坏情况余量）
+  const declared = Number(request.headers.get("content-length") ?? "0");
+  if (Number.isFinite(declared) && declared > BODY_MAX * 4) {
+    return json({ ok: false, error: "body_too_large" }, 400);
+  }
+
   const body = await request.text();
+  // 后备：content-length 可能缺失或低报；它按字节计，而 BODY_MAX 按 UTF-16 code unit 计
   if (body.length > BODY_MAX) return json({ ok: false, error: "body_too_large" }, 400);
 
   const kv = env.GONGYI_KV;
@@ -82,20 +96,23 @@ export async function onRequest(context: Ctx): Promise<Response> {
   // 蜜罐 / 时序命中：对外一律成功，不发通知，不给刷子任何反馈
   if (isSpam({ hp, elapsed })) return json({ ok: true }, 200);
 
-  // 去重：命中同样返回成功
+  // 去重「查询」：命中同样返回成功。这里只读不写：写标记推迟到推送成功之后，
+  // 否则推送失败（如未配置凭据）会让申请人第一次尝试就烧掉 24h 窗口，静默丢申请。
+  const dedupeKey = kv ? `em:${await sha256Hex(email)}` : "";
   if (kv) {
     try {
-      const key = `em:${await sha256Hex(email)}`;
-      if (await kv.get(key)) return json({ ok: true }, 200);
-      await kv.put(key, "1", { expirationTtl: DEDUPE_WINDOW_SEC });
+      if (await kv.get(dedupeKey)) return json({ ok: true }, 200);
     } catch {
-      /* 降级继续 */
+      /* KV 读失败降级放行 */
     }
   }
 
   const token = env.TELEGRAM_BOT_TOKEN;
   const chatId = env.TELEGRAM_CHAT_ID;
-  if (!token || !chatId) return json({ ok: false, error: "notify_failed" }, 502);
+  if (!token || !chatId) {
+    console.error("gongyi_notify_missing_credentials");
+    return json({ ok: false, error: "notify_failed" }, 502);
+  }
 
   const text = telegramText({ email, source, ref, country: request.cf?.country ?? "" });
 
@@ -105,9 +122,25 @@ export async function onRequest(context: Ctx): Promise<Response> {
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ chat_id: chatId, text, disable_web_page_preview: true }),
     });
-    if (!res.ok) return json({ ok: false, error: "notify_failed" }, 502);
+    if (!res.ok) {
+      // 读 Telegram 的错误描述便于诊断；不含 token，也不含申请人数据
+      const detail = await res.text().catch(() => "");
+      console.error("gongyi_notify_failed", res.status, detail.slice(0, 200));
+      return json({ ok: false, error: "notify_failed" }, 502);
+    }
   } catch {
+    // 只记固定串，绝不记异常文本（可能含 token 的请求 URL）
+    console.error("gongyi_notify_threw");
     return json({ ok: false, error: "notify_failed" }, 502);
+  }
+
+  // 推送成功才写去重标记
+  if (kv && dedupeKey) {
+    try {
+      await kv.put(dedupeKey, "1", { expirationTtl: DEDUPE_WINDOW_SEC });
+    } catch {
+      /* KV 写失败降级 */
+    }
   }
 
   return json({ ok: true }, 200);
