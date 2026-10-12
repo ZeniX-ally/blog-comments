@@ -1,7 +1,7 @@
 ---
 title: Free API
 subtitle: I share the AI API endpoints I run myself. Invite-only, no charge.
-description: An invite-only free AI API: what it is, how to use it, where its limits are, and how to request an invite.
+description: "An invite-only free AI API: what it is, how to use it, where its limits are, and how to request an invite."
 ---
 
 ## What this is
