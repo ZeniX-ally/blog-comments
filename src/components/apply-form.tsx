@@ -8,7 +8,11 @@ import {
   EVENT_ERROR,
   EVENT_SUBMIT,
   EVENT_SUCCESS,
+  LUSER_MAX,
+  REASON_MAX,
   isValidEmail,
+  isValidLuser,
+  isValidReason,
   type Attribution,
 } from "@/lib/apply";
 import { captureAttribution } from "@/lib/capture";
@@ -17,13 +21,18 @@ import { track } from "@/lib/analytics";
 type Status = "idle" | "submitting" | "success" | "error";
 
 /**
- * 邀请码申请表单：邮箱 + 蜜罐字段。
+ * 邀请码申请表单：L站用户 ID + 邮箱 + 申请原因，外加「同意规则书」勾选门槛。
+ * 三栏按页面从上到下的阅读顺序排列，校验函数全部来自 @/lib/apply，保证
+ * 客户端与服务端共用同一份规则实现。未勾选同意时提交按钮禁用，不能投递。
  * 蜜罐是视觉隐藏的输入框，真人看不见、脚本会填，服务端见到有值就静默丢弃。
  * 停留时长（挂载到提交的毫秒数）一并上报，服务端用它拦掉秒提交的脚本。
  */
 export function ApplyForm({ lang }: { lang: Lang }) {
   const d = dict[lang].gongyi.form;
+  const [luser, setLuser] = useState("");
   const [email, setEmail] = useState("");
+  const [reason, setReason] = useState("");
+  const [agree, setAgree] = useState(false);
   const [status, setStatus] = useState<Status>("idle");
   const [message, setMessage] = useState("");
   const honeypot = useRef<HTMLInputElement>(null);
@@ -38,9 +47,20 @@ export function ApplyForm({ lang }: { lang: Lang }) {
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (status === "submitting") return;
+    // 按字段在页面里的顺序逐个校验，任何一栏失败都停在原地并给出对应文案
+    if (!isValidLuser(luser)) {
+      setStatus("error");
+      setMessage(d.invalidLuser);
+      return;
+    }
     if (!isValidEmail(email)) {
       setStatus("error");
       setMessage(d.invalidEmail);
+      return;
+    }
+    if (!isValidReason(reason)) {
+      setStatus("error");
+      setMessage(d.invalidReason);
       return;
     }
 
@@ -54,6 +74,9 @@ export function ApplyForm({ lang }: { lang: Lang }) {
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
           email: email.trim(),
+          luser: luser.trim(),
+          reason: reason.trim(),
+          agree,
           source: attribution.current.source,
           ref: attribution.current.ref,
           hp: honeypot.current?.value ?? "",
@@ -92,6 +115,20 @@ export function ApplyForm({ lang }: { lang: Lang }) {
   return (
     <form className="apply-form" onSubmit={onSubmit} noValidate>
       <label className="apply-form-field">
+        <span>{d.luserLabel}</span>
+        <input
+          type="text"
+          name="luser"
+          value={luser}
+          onChange={(event) => setLuser(event.target.value)}
+          placeholder={d.luserPlaceholder}
+          autoComplete="off"
+          maxLength={LUSER_MAX}
+          required
+        />
+      </label>
+
+      <label className="apply-form-field">
         <span>{d.emailLabel}</span>
         <input
           type="email"
@@ -101,6 +138,19 @@ export function ApplyForm({ lang }: { lang: Lang }) {
           placeholder={d.placeholder}
           autoComplete="email"
           maxLength={EMAIL_MAX}
+          required
+        />
+      </label>
+
+      <label className="apply-form-field">
+        <span>{d.reasonLabel}</span>
+        <textarea
+          name="reason"
+          value={reason}
+          onChange={(event) => setReason(event.target.value)}
+          rows={5}
+          maxLength={REASON_MAX}
+          placeholder={d.reasonPlaceholder}
           required
         />
       </label>
@@ -116,7 +166,20 @@ export function ApplyForm({ lang }: { lang: Lang }) {
         aria-hidden="true"
       />
 
-      <button type="submit" className="pill" disabled={status === "submitting"}>
+      <label className="apply-form-agree">
+        <input
+          type="checkbox"
+          checked={agree}
+          onChange={(event) => setAgree(event.target.checked)}
+        />
+        <span>{d.agreeLabel}</span>
+      </label>
+
+      <button
+        type="submit"
+        className="pill"
+        disabled={status === "submitting" || !agree}
+      >
         {status === "submitting" ? d.submitting : d.submit}
       </button>
 

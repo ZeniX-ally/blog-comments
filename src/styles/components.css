@@ -189,10 +189,17 @@
 
 /* 公益页：申请表单（复用 token 与 .pill，不新增视觉语言） */
 .apply-form { max-width: 520px; }
-.apply-form-field { display: block; }
+/* 字段之间留白：三栏 + 勾选框行靠它拉开，避免挤成一片 */
+.apply-form-field { display: block; margin-bottom: 18px; }
 .apply-form-field > span { display: block; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
-.apply-form input[type="email"] { width: 100%; background: var(--bg); color: var(--fg); border: 1px solid var(--hair); border-radius: 8px; padding: 10px 12px; font-family: var(--font-serif); font-size: 17px; line-height: 1.4; }
-.apply-form input[type="email"]:focus { outline: none; border-color: var(--accent); }
+/* text / email / textarea 视觉必须一致：同背景、细边框、8px 圆角、同内边距与字号 */
+.apply-form input[type="text"], .apply-form input[type="email"], .apply-form textarea { width: 100%; background: var(--bg); color: var(--fg); border: 1px solid var(--hair); border-radius: 8px; padding: 10px 12px; font-family: var(--font-serif); font-size: 17px; line-height: 1.4; }
+/* textarea 单独要更高行距、最小高度，并允许纵向拉伸（横向不拉，免撑破 520px 列宽） */
+.apply-form textarea { line-height: 1.6; min-height: 132px; resize: vertical; }
+.apply-form input[type="text"]:focus, .apply-form input[type="email"]:focus, .apply-form textarea:focus { outline: none; border-color: var(--accent); }
+/* 勾选同意规则书的门槛行 */
+.apply-form-agree { display: flex; align-items: center; gap: 10px; margin: 4px 0 0; font-size: 15px; color: var(--fg); cursor: pointer; }
+.apply-form-agree input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--accent); cursor: pointer; }
 .apply-form button.pill { margin-top: 16px; border: 0; cursor: pointer; font-family: var(--font-serif); }
 .apply-form button.pill[disabled] { opacity: 0.55; cursor: default; }
 .apply-form-honey { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
@@ -200,3 +207,14 @@
 .apply-form-status:empty { display: none; }
 .apply-form-status.is-error { color: var(--accent); }
 .apply-form-status.is-success { color: var(--fg); }
+
+/* 规则书折叠块：占满 520px 表单宽，细边框的小盒子，summary 可点 */
+.apply-rules { max-width: 520px; margin: 0 0 24px; border: 1px solid var(--hair); border-radius: 10px; padding: 12px 16px; }
+.apply-rules > summary { cursor: pointer; color: var(--muted); font-size: 14px; }
+.apply-rules[open] > summary { margin-bottom: 12px; }
+.apply-rules .prose { font-size: 15px; }
+
+/* 表单下方的隐私小字：用户反馈它原本紧贴提交按钮，这里补上间距。
+   .label 与 .rise 自身都不设 margin（前者只定义字体，后者只播动画），
+   所以单靠类选择器 .apply-note 就足以覆盖任何元素级 p 边距，无需提高特异性。 */
+.apply-note { margin-top: 20px; }

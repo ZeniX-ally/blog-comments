@@ -91,7 +91,7 @@ export async function onRequest(context: Ctx): Promise<Response> {
 
   const parsed = parseApplyPayload(body);
   if (!parsed.ok) return json({ ok: false, error: parsed.error }, 400);
-  const { email, source, ref, hp, elapsed } = parsed.payload;
+  const { email, luser, reason, source, ref, hp, elapsed } = parsed.payload;
 
   // 蜜罐 / 时序命中：对外一律成功，不发通知，不给刷子任何反馈
   if (isSpam({ hp, elapsed })) return json({ ok: true }, 200);
@@ -121,7 +121,7 @@ export async function onRequest(context: Ctx): Promise<Response> {
     return json({ ok: false, error: "notify_failed" }, 502);
   }
 
-  const text = telegramText({ email, source, ref, country: request.cf?.country ?? "" });
+  const text = telegramText({ email, luser, reason, source, ref, country: request.cf?.country ?? "" });
 
   try {
     const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
