@@ -55,6 +55,8 @@
 
 文案源：`content/gongyi.md` 与 `content/en/gongyi.md`，frontmatter 取 `title` / `subtitle` / `description`，正文按 `##` 分节渲染（照 `src/lib/about.ts` 的既有做法）；界面文案（label、表单、错误）进 `dict.gongyi`。
 
+页面不含评论区（Giscus），OG 图沿用默认 `og/default.png`，不新增图片生成脚本。页头放一个锚点到 `#apply` 的按钮，作为 `gongyi_cta_click` 的埋点位置。
+
 ### 申请表单
 
 `src/components/apply-form.tsx`（client）：
@@ -64,7 +66,7 @@
 - 提交按钮 + 状态区：`idle` / `submitting`（禁用按钮）/ `success` / `error`
 - 成功文案：`已收到，我会尽快把邀请码发到这个邮箱，注意查收垃圾邮件。`
 - 失败文案按错误区分：限流 →「提交太频繁了，请稍后再试」；其他 →「提交失败，请稍后重试」
-- 提交时带 `source`（见归因）与 `elapsed`（组件挂载到提交的毫秒数）
+- 提交时带 `source`、`ref`（见归因）与 `elapsed`（组件挂载到提交的毫秒数）
 
 ## 接口
 
@@ -76,21 +78,24 @@
 | --- | --- | --- |
 | `email` | 是 | 待校验的邮箱 |
 | `source` | 否 | 归因串；服务端仍按字符白名单过滤并截断 64 字符 |
-| `hp` | 是 | 蜜罐字段值，正常提交为空串 |
-| `elapsed` | 是 | 表单停留毫秒数 |
+| `ref` | 否 | 来源页 host（客户端取 `document.referrer`，服务端再次过滤与截断 64 字符） |
+| `hp` | 否 | 蜜罐字段值，正常提交为空串；**缺失按空串处理**，不为它单独报错（否则等于告诉刷子蜜罐在哪） |
+| `elapsed` | 否 | 表单停留毫秒数；缺失或非数字时**跳过时序判定**，不因客户端问题误拦真人 |
+
+Origin 白名单：`https://404-found.uk`（取自 `src/lib/site-core.json` 的 `url`）与本地 `http://localhost:8788`、`http://127.0.0.1:8788`。浏览器 POST 一定带 `Origin`；非浏览器客户端不带，会被 403 拒掉，所以本地 curl 测试必须显式带上 `-H "Origin: http://localhost:8788"`。
 
 响应：
 
 | 码 | body | 触发 |
 | --- | --- | --- |
 | 200 | `{"ok":true}` | 正常受理；也用于蜜罐命中、停留过短、重复邮箱（对外一律同样的成功响应） |
-| 400 | `{"ok":false,"error":"invalid_email"}` 等 | body 非 JSON / 超长 / 邮箱不合法 / 字段缺失 |
+| 400 | `{"ok":false,"error":"invalid_email"}` 等 | body 非 JSON / 超长 / `email` 缺失或不合法 |
 | 403 | `{"ok":false,"error":"bad_origin"}` | `Origin` 不在白名单 |
 | 405 | 方法不是 POST | 带 `Allow: POST` |
 | 429 | `{"ok":false,"error":"rate_limited"}` | 同 IP 超限 |
 | 502 | `{"ok":false,"error":"notify_failed"}` | Telegram 推送失败，让访客重试 |
 
-处理顺序：方法 → Origin → body 解析与大小 → 邮箱格式 → 蜜罐 / 时序（命中即 200 静默返回）→ KV 限流 → 邮箱去重（命中即 200，不再通知）→ Telegram 推送 → 写入限流计数。
+处理顺序：方法 → Origin → **KV 限流（先计数再判定，刷子也要计入）** → body 解析与大小 → 邮箱格式 → 蜜罐 / 时序（命中即 200 静默返回）→ 邮箱去重（命中即 200，不再通知）→ Telegram 推送。
 
 KV 用途（绑定名 `GONGYI_KV`）：
 
@@ -110,6 +115,14 @@ Telegram 消息（纯文本，不用 `parse_mode`，避免转义问题）：
 Referrer: tieba.baidu.com
 地区: CN · 2026-10-12 14:03 UTC
 ```
+
+`地区` 取 `request.cf.country`，缺失时记 `??`；时间为 UTC。
+
+## 本地联调
+
+- `npm run build` 后 `npx wrangler pages dev out --kv GONGYI_KV`（本地模拟 KV）。
+- Telegram 凭据放项目根 `.dev.vars`（`wrangler pages dev` 会自动读取），已加进 `.gitignore`。
+- 用 `curl.exe -X POST http://localhost:8788/api/gongyi/apply -H "Origin: http://localhost:8788" -H "Content-Type: application/json" -d "{\"email\":\"a@b.co\",\"hp\":\"\",\"elapsed\":5000}"` 逐条跑验收里的对抗用例。
 
 ## 归因与埋点
 
@@ -151,6 +164,7 @@ Referrer: tieba.baidu.com
 | `package.json` | `build` 链追加 `node scripts/generate-routes.mjs` |
 | `src/app/sitemap.ts` | 加 `${site.url}/gongyi`（保持只列中文的现有约定） |
 | `deploy.sh` | 验证列表加 `/gongyi/` |
+| `.gitignore` | 加 `.dev.vars`（本地测试用的 Telegram 凭据不能进仓库；现有 `.env*` 规则不覆盖它） |
 
 不改：`next.config.ts`、`src/styles/*`、`src/app/layout.tsx`、现有页面与视图。
 
@@ -179,7 +193,7 @@ Referrer: tieba.baidu.com
 - `npm test`：新增 `tests/apply.test.mjs` 覆盖邮箱校验（合法 / 非法 / 超长 / 含换行）、蜜罐与停留判定、归因归一化（UTM 优先级、referrer 兜底、字符白名单、64 截断）、限流判定（第 3 次通过、第 4 次拦住）、Telegram 文案拼装；`tests/i18n.test.mjs` 覆盖新字典键对齐。
 - `npm run build` 成功，且 `out/gongyi/index.html`、`out/en/gongyi/index.html`、`out/_routes.json`（内容含 `"/api/*"`）都在。
 
-对抗测试（本地 `wrangler pages dev out`）：
+对抗测试（按「本地联调」起服务，curl 需带 `Origin` 头）：
 
 - 正常提交 → 200 且 Telegram 收到一条，消息含 `来源`。
 - 蜜罐填值 → 200 且 Telegram 无新消息。
