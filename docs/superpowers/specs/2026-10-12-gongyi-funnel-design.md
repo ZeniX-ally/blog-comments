@@ -267,3 +267,13 @@ Referrer: tieba.baidu.com
 - 来源白名单抽到 `src/lib/allowed-origins.ts`，申请表与埋点代理共用；判断逻辑仍在 `src/lib/apply.ts`
 
 因此验收清单里「Umami 后台能看到 gongyi_apply_success」改为「Plausible 后台能看到该事件」；四个事件名与属性（`source` / `reason`）不变。代理端点已在预览部署实测：脚本 200 且 4185B 与上游一致，合法来源转发比站外来源丢弃慢约 0.2s，申请表 405/403/400 回归正常。
+
+## 变更二：统计后端换成自托管 Umami（2026-10-12 深夜）
+
+Plausible 云版需订阅（试用后 €9/月起），用户认为太贵；而免费托管方案在这条网络上基本不可用——实测 `gc.zgo.at`、`cdn.counter.dev`、`scripts.simpleanalyticscdn.com`、`cloud.umami.is` 全部 TLS 被重置，只有 `hm.baidu.com` 通。故改为自托管 Umami：
+
+- **实例**：ThinkPad `192.168.1.232` 上 `~/umami/docker-compose.yml`（umami 官方镜像 + 复用本机已有的 `pgvector/pgvector:pg15`，因为 Docker Hub 拉取被墙、ghcr 可通），只监听 `127.0.0.1:3300`，数据在 `umami-db-data` 卷。
+- **对外**：Cloudflare 隧道 `workbuddy-panel` 的 ingress 在兜底规则前插入 `stats.404-found.uk → http://127.0.0.1:3300`（原 8 条规则与顺序保持不变，改前已备份配置）；DNS 增加 CNAME → `<tunnel>.cfargotunnel.com`（proxied）。
+- **前端**：`site.ts` 的 `umami` 配置指向 `https://stats.404-found.uk/script.js` 与 websiteId `7aceee9f-…`；`analytics.ts` 回到 `window.umami.track`；上一版的 Plausible 两个代理 Function 与 `analytics-proxy.ts` 已删除，`_routes.json` 回到只有 `/api/*`。
+- **事件与属性不变**：`gongyi_cta_click` / `gongyi_apply_submit` / `gongyi_apply_success` / `gongyi_apply_error`，附 `source` / `reason`；Umami 不需要预先注册目标。
+- **实测**：`stats.404-found.uk/api/heartbeat` = `{"ok":true}`；跨域预检 204 且 `access-control-allow-origin: *`；带 `Origin: https://404-found.uk` 的 POST 返回 200 且 `website_event` 入库；线上 `/gongyi/` 标签正确、`wb./git.` 计数 0/0；旧 `/js/script.js` 边缘缓存已按 URL 清理并 404；申请表 405/403 回归正常。

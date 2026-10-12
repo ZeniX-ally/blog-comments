@@ -5,7 +5,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { BackToTop } from "@/components/back-to-top";
 import "./globals.css";
 
-const plausibleEnabled = Boolean(site.plausible.scriptSrc && site.plausible.domain);
+const umamiEnabled = Boolean(site.umami.scriptSrc && site.umami.websiteId);
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -54,12 +54,11 @@ export default function RootLayout({
             __html: `(function(){try{var t=localStorage.getItem("theme");if(t==="dark"||(!t&&window.matchMedia("(prefers-color-scheme: dark)").matches)){document.documentElement.classList.add("dark");}else{document.documentElement.classList.remove("dark");}}catch(e){}})();`,
           }}
         />
-        {plausibleEnabled && (
+        {umamiEnabled && (
           <script
             defer
-            src={site.plausible.scriptSrc}
-            data-domain={site.plausible.domain}
-            data-api={site.plausible.apiUrl}
+            src={site.umami.scriptSrc}
+            data-website-id={site.umami.websiteId}
           />
         )}
       </head>

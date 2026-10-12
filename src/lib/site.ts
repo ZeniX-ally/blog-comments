@@ -58,13 +58,12 @@ export const site = {
     lang: "zh-CN",
   },
 
-  /** 站点统计(Plausible;scriptSrc 或 domain 为空则不加载)。
-      脚本与事件都走本站域名代理(见 src/lib/analytics-proxy.ts),
+  /** 站点统计(自托管 Umami;scriptSrc 或 websiteId 为空则不加载)。
+      实例跑在自己的机器上(stats.404-found.uk 经 Cloudflare 隧道到 127.0.0.1:3300),
       因为第三方统计域名(cloud.umami.is、static.cloudflareinsights.com)在这条网络上会被按域名阻断 */
-  plausible: {
-    scriptSrc: "/js/script.js",
-    apiUrl: "/api/event",
-    domain: "404-found.uk",
+  umami: {
+    scriptSrc: "https://stats.404-found.uk/script.js",
+    websiteId: "7aceee9f-9383-43a6-85c8-21ddb3289548",
   },
 } as const;
 
