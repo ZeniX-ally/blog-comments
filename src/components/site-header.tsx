@@ -13,6 +13,8 @@ import { MobileMenu } from "./mobile-menu";
 const POST_PATH = /^\/(en\/)?blog\/[^/]+\/?$/;
 /** 字标右半:站点域名(去协议) */
 const HOST = site.url.replace(/^https?:\/\//, "").replace(/\/$/, "");
+/** 公益页会被分享进微信：页头不渲染站外入口，避免露出公益站域名 */
+const HIDE_APPS = /^\/(en\/)?gongyi\/?$/;
 
 /**
  * 顶栏:sticky。左字标「阿九\404-found.uk」;右侧导航(站内四项 + site.apps 的站外入口,同排同样式)、
@@ -26,7 +28,9 @@ export function SiteHeader() {
   const d = dict[lang];
   const progress = POST_PATH.test(pathname);
   /** 站外入口:href 来自 site.apps,文案按语言取自字典(中文模式显示中文) */
-  const apps = site.apps.map((app) => ({ href: app.href, label: d.header[app.key] }));
+  const apps = HIDE_APPS.test(pathname)
+    ? []
+    : site.apps.map((app) => ({ href: app.href, label: d.header[app.key] }));
 
   return (
     <header className="site-header" style={{ viewTransitionName: "site-header" }}>
