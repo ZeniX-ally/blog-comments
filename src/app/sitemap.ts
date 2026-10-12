@@ -26,6 +26,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${site.url}/projects` },
     { url: `${site.url}/about` },
     { url: `${site.url}/tools` },
+    { url: `${site.url}/gongyi` },
     { url: `${site.url}/tags` },
     ...posts,
     ...projects,

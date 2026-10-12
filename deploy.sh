@@ -22,7 +22,7 @@ source .cf-env
 npx wrangler pages deploy out --project-name 0xff-blog --branch main --commit-dirty=true
 
 echo "==> 4/4 验证"
-for path in "/" "/blog/" "/tools/" "/about/" "/projects/" "/en/"; do
+for path in "/" "/blog/" "/tools/" "/about/" "/projects/" "/gongyi/" "/en/"; do
   code=$(curl -sL -o /dev/null -w "%{http_code}" "$SITE$path")
   echo "  $path -> $code"
 done
