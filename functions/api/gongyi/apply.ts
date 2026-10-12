@@ -98,8 +98,15 @@ export async function onRequest(context: Ctx): Promise<Response> {
 
   // 去重「查询」：命中同样返回成功。这里只读不写：写标记推迟到推送成功之后，
   // 否则推送失败（如未配置凭据）会让申请人第一次尝试就烧掉 24h 窗口，静默丢申请。
-  const dedupeKey = kv ? `em:${await sha256Hex(email)}` : "";
+  let dedupeKey = "";
   if (kv) {
+    try {
+      dedupeKey = `em:${await sha256Hex(email)}`;
+    } catch {
+      /* 哈希计算失败：留空键，跳过去重读写，继续走通知，绝不 500 */
+    }
+  }
+  if (kv && dedupeKey) {
     try {
       if (await kv.get(dedupeKey)) return json({ ok: true }, 200);
     } catch {

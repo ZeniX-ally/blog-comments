@@ -125,7 +125,6 @@ export function ApplyForm({ lang }: { lang: Lang }) {
       >
         {message}
       </p>
-      <p className="label">{d.privacy}</p>
     </form>
   );
 }
