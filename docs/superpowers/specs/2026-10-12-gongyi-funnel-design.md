@@ -164,9 +164,11 @@ Referrer: tieba.baidu.com
 | `package.json` | `build` 链追加 `node scripts/generate-routes.mjs` |
 | `src/app/sitemap.ts` | 加 `${site.url}/gongyi`（保持只列中文的现有约定） |
 | `deploy.sh` | 验证列表加 `/gongyi/` |
+| `src/styles/components.css` | 末尾追加「公益页」样式块（`.apply-form*`，复用现有 token 与 `.pill`，约 10 行） |
+| `src/components/site-header.tsx` | `/gongyi/` 与 `/en/gongyi/` 上不渲染 `site.apps`（Gitea / 控制台）：这一页会被分享进微信，页头不能出现公益站域名 |
 | `.gitignore` | 加 `.dev.vars`（本地测试用的 Telegram 凭据不能进仓库；现有 `.env*` 规则不覆盖它） |
 
-不改：`next.config.ts`、`src/styles/*`、`src/app/layout.tsx`、现有页面与视图。
+不改：`next.config.ts`、`src/app/layout.tsx`、现有页面与视图（`src/lib/about.ts` 只做一处纯抽取：把 `splitMarkdownSections` 移到共用模块）。
 
 ## 一次性配置（需要你操作）
 
@@ -217,8 +219,9 @@ Referrer: tieba.baidu.com
 
 ## 已知项与风险
 
-- 顶栏「控制台」（`site.apps`）本来就指向 `https://wb.404-found.uk/`，站内每一页都有。本次不新增也不移除，作为已知暴露项记录。
-- 公开页面必然招爬虫与白嫖；蜜罐 + 时序 + IP 限流只是放缓，**真正的闸门是你手动发码**。
+- 顶栏「控制台」（`site.apps`）指向 `https://wb.404-found.uk/`，其余页面保留；**`/gongyi/` 与 `/en/gongyi/` 上不渲染这两个站外入口**，让被分享进微信的那一页全文不含公益站域名（有构建产物检查守着）。
+- 公开页面必然招爬虫与白嫖；蜜罐 + 时序 + IP 限流只是放缓，**真正的闸门是你手动发码**。另外 Workers KV 最终一致（写入约 60s 全球可见），突发并发可能绕过限流。
 - 福利不落数字（只写「邀请后可见」），降低被举报与攀比的风险。
 - 需要下线时：`git revert` 对应提交 + `bash deploy.sh`，一条命令恢复。
 - `content/tools.md` 与 `content/en/tools.md` 已无引用（工具数据早已搬进 `src/lib/tools.ts`），本轮不动，仅作为顺手的清理候选记录在此。
+- 计划阶段补出的支撑模块（不是新增能力，只是拆分）：`src/lib/markdown-sections.ts`（从 `about.ts` 抽出的共用分节函数）、`src/lib/gongyi-sections.ts`（文案标题与分节的契约，供测试校验）、`src/lib/capture.ts`（浏览器侧归因胶水）、`src/components/gongyi-cta.tsx`（页头 CTA 与点击埋点）。
