@@ -3,6 +3,7 @@ import path from "node:path";
 import matter from "gray-matter";
 import { renderMarkdown } from "@/lib/posts";
 import type { Lang } from "@/lib/i18n";
+import { splitMarkdownSections } from "./markdown-sections";
 
 export type AboutNowItem = {
   title: string;
@@ -28,30 +29,6 @@ const aboutPaths: Record<Lang, string> = {
 
 const DEFAULT_DOTS = ["dot-running", "dot-local", "dot-daily"] as const;
 const ALLOWED_DOTS = new Set(["dot-running", "dot-local", "dot-lab", "dot-daily"]);
-
-function splitMarkdownSections(markdown: string): Map<string, string> {
-  const map = new Map<string, string>();
-  const lines = markdown.replace(/\r\n/g, "\n").split("\n");
-  let current: string | null = null;
-  const buf: string[] = [];
-
-  const flush = () => {
-    if (current) map.set(current, buf.join("\n").trim());
-  };
-
-  for (const line of lines) {
-    const m = line.match(/^##\s+(.+?)\s*$/);
-    if (m) {
-      flush();
-      current = m[1].trim();
-      buf.length = 0;
-    } else if (current) {
-      buf.push(line);
-    }
-  }
-  flush();
-  return map;
-}
 
 function parseNow(value: unknown): AboutNowItem[] {
   if (!Array.isArray(value)) return [];
