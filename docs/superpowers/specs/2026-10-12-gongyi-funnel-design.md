@@ -62,7 +62,7 @@
 `src/components/apply-form.tsx`（client）：
 
 - 邮箱（必填、`type="email"`、长度 ≤254）
-- 蜜罐字段：名为 `url` 的文本框，视觉隐藏（`position:absolute;left:-9999px`）+ `tabIndex={-1}` + `autoComplete="off"` + `aria-hidden`
+- 蜜罐字段：名为 `website` 的文本框（请求体里对应 `hp`），视觉隐藏（`position:absolute;left:-9999px`）+ `tabIndex={-1}` + `autoComplete="off"` + `aria-hidden`
 - 提交按钮 + 状态区：`idle` / `submitting`（禁用按钮）/ `success` / `error`
 - 成功文案：`已收到，我会尽快把邀请码发到这个邮箱，注意查收垃圾邮件。`
 - 失败文案按错误区分：限流 →「提交太频繁了，请稍后再试」；其他 →「提交失败，请稍后重试」
