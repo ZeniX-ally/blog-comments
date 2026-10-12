@@ -186,3 +186,17 @@
   .toc a:hover { color: var(--fg); }
   .back-to-top:hover { border-color: var(--fg); }
 }
+
+/* 公益页：申请表单（复用 token 与 .pill，不新增视觉语言） */
+.apply-form { max-width: 520px; }
+.apply-form-field { display: block; }
+.apply-form-field > span { display: block; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+.apply-form input[type="email"] { width: 100%; background: var(--bg); color: var(--fg); border: 1px solid var(--hair); border-radius: 8px; padding: 10px 12px; font-family: var(--font-serif); font-size: 17px; line-height: 1.4; }
+.apply-form input[type="email"]:focus { outline: none; border-color: var(--accent); }
+.apply-form button.pill { margin-top: 16px; border: 0; cursor: pointer; font-family: var(--font-serif); }
+.apply-form button.pill[disabled] { opacity: 0.55; cursor: default; }
+.apply-form-honey { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.apply-form-status { margin-top: 14px; font-family: var(--font-serif); font-size: 16px; line-height: 1.6; color: var(--muted); }
+.apply-form-status:empty { display: none; }
+.apply-form-status.is-error { color: var(--accent); }
+.apply-form-status.is-success { color: var(--fg); }
