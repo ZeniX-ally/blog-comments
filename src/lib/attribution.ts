@@ -24,13 +24,19 @@ export function readAttribution(now: number = Date.now()): Attribution | null {
   }
 }
 
-/** first touch：已有记录就用它，否则写入本次并返回本次 */
+/**
+ * first touch：已有记录就用它；本次既无来源也无 referrer 时不写入，
+ * 返回 spec 的 direct 标记（空记录不能占掉后续真实归因）。
+ */
 export function rememberAttribution(
   derived: Attribution,
   now: number = Date.now(),
 ): Attribution {
   const stored = readAttribution(now);
   if (stored) return stored;
+  if (!derived.source && !derived.ref) {
+    return { source: "direct", ref: "" };
+  }
   try {
     localStorage.setItem(KEY, JSON.stringify({ source: derived.source, ref: derived.ref, ts: now }));
   } catch {

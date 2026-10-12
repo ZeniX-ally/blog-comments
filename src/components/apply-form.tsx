@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import { dict, type Lang } from "@/lib/i18n";
 import {
   APPLY_PATH,
+  EMAIL_MAX,
   EVENT_ERROR,
   EVENT_SUBMIT,
   EVENT_SUCCESS,
@@ -99,7 +100,7 @@ export function ApplyForm({ lang }: { lang: Lang }) {
           onChange={(event) => setEmail(event.target.value)}
           placeholder={d.placeholder}
           autoComplete="email"
-          maxLength={254}
+          maxLength={EMAIL_MAX}
           required
         />
       </label>

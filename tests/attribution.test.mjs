@@ -65,3 +65,32 @@ test("currentAttribution：没有记录时返回空来源", () => {
   stubStorage();
   assert.deepEqual(currentAttribution(0), { source: "", ref: "" });
 });
+
+test("rememberAttribution：空来源不写入存储，返回 direct 标记", () => {
+  stubStorage();
+  assert.deepEqual(rememberAttribution({ source: "", ref: "" }, 1000000), {
+    source: "direct",
+    ref: "",
+  });
+  assert.equal(globalThis.localStorage.getItem(KEY), null);
+});
+
+test("rememberAttribution：先空来源后 UTM，不被空记录占掉", () => {
+  stubStorage();
+  const now = 1000000;
+  rememberAttribution({ source: "", ref: "" }, now);
+  assert.deepEqual(rememberAttribution({ source: "v2ex:launch", ref: "" }, now + DAY), {
+    source: "v2ex:launch",
+    ref: "",
+  });
+});
+
+test("rememberAttribution：已有来源不被后续空访问覆盖", () => {
+  stubStorage();
+  const now = 1000000;
+  rememberAttribution({ source: "v2ex", ref: "tieba.baidu.com" }, now);
+  assert.deepEqual(rememberAttribution({ source: "", ref: "" }, now + DAY), {
+    source: "v2ex",
+    ref: "tieba.baidu.com",
+  });
+});
