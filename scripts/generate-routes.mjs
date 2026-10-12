@@ -14,6 +14,8 @@ if (!fs.existsSync(OUT)) {
   process.exit(1);
 }
 
-const routes = { version: 1, include: ["/api/*"], exclude: [] };
+// /api/* ：申请表与埋点代理；/js/script.js ：Plausible 脚本代理。
+// 两者之外的静态请求都不触发 Function，静态页面的无限免费额度保住。
+const routes = { version: 1, include: ["/api/*", "/js/script.js"], exclude: [] };
 fs.writeFileSync(path.join(OUT, "_routes.json"), `${JSON.stringify(routes, null, 2)}\n`);
-console.log("✅ _routes.json → include /api/*");
+console.log("✅ _routes.json → include /api/*, /js/script.js");

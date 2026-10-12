@@ -58,10 +58,13 @@ export const site = {
     lang: "zh-CN",
   },
 
-  /** Umami 统计(自托管或云版;scriptSrc 为空则不加载) */
-  umami: {
-    scriptSrc: "https://cloud.umami.is/script.js",
-    websiteId: "6444ccf5-d4e7-4df4-a9a8-d4204141db58",
+  /** 站点统计(Plausible;scriptSrc 或 domain 为空则不加载)。
+      脚本与事件都走本站域名代理(见 src/lib/analytics-proxy.ts),
+      因为第三方统计域名(cloud.umami.is、static.cloudflareinsights.com)在这条网络上会被按域名阻断 */
+  plausible: {
+    scriptSrc: "/js/script.js",
+    apiUrl: "/api/event",
+    domain: "404-found.uk",
   },
 } as const;
 

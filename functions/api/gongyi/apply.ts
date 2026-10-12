@@ -8,14 +8,13 @@ import {
   BODY_MAX,
   DEDUPE_WINDOW_SEC,
   RATE_WINDOW_SEC,
-  isAllowedOrigin,
   isRateLimited,
   isSpam,
   parseApplyPayload,
   sha256Hex,
   telegramText,
 } from "../../../src/lib/apply";
-import siteCore from "../../../src/lib/site-core.json";
+import { isOriginAllowed } from "../../../src/lib/allowed-origins";
 
 type KVNamespaceLike = {
   get(key: string): Promise<string | null>;
@@ -33,17 +32,6 @@ type Ctx = {
   env: Env;
 };
 
-const SITE_ORIGIN = String(siteCore.url).replace(/\/$/, "");
-const ALLOWED_ORIGINS = [
-  SITE_ORIGIN,
-  // Cloudflare 控制台与构建输出交给用户的 pages.dev 主机名，表单也会从这里提交。
-  // 浏览器按页面自身 origin 设置 Origin，别的站点无法冒用，不削弱跨站防护。
-  "https://0xff-blog.pages.dev",
-  /** 本地 `wrangler pages dev` 的默认端口也要放行 */
-  "http://localhost:8788",
-  "http://127.0.0.1:8788",
-];
-
 const JSON_HEADERS = {
   "content-type": "application/json; charset=utf-8",
   "cache-control": "no-store",
@@ -59,7 +47,7 @@ export async function onRequest(context: Ctx): Promise<Response> {
   if (request.method !== "POST") {
     return json({ ok: false, error: "method_not_allowed" }, 405, { allow: "POST" });
   }
-  if (!isAllowedOrigin(request.headers.get("Origin"), ALLOWED_ORIGINS)) {
+  if (!isOriginAllowed(request.headers.get("Origin"))) {
     return json({ ok: false, error: "bad_origin" }, 403);
   }
 

@@ -254,3 +254,16 @@ Referrer: tieba.baidu.com
 - 需要下线时：`git revert` 对应提交 + `bash deploy.sh`，一条命令恢复。
 - `content/tools.md` 与 `content/en/tools.md` 已无引用（工具数据早已搬进 `src/lib/tools.ts`），本轮不动，仅作为顺手的清理候选记录在此。
 - 计划阶段补出的支撑模块（不是新增能力，只是拆分）：`src/lib/markdown-sections.ts`（从 `about.ts` 抽出的共用分节函数）、`src/lib/gongyi-sections.ts`（文案标题与分节的契约，供测试校验）、`src/lib/capture.ts`（浏览器侧归因胶水）、`src/components/gongyi-cta.tsx`（页头 CTA 与点击埋点）。
+
+## 变更：统计后端换成 Plausible 代理（2026-10-12 晚）
+
+原设计用 Umami 云版。实测 `cloud.umami.is`（以及 Cloudflare Web Analytics 的 `static.cloudflareinsights.com`）在这条网络路径上被**按域名/SNI 阻断**：同一个 Cloudflare IP 换 SNI 即 200，本机访问 GitHub / Vercel / Telegram API / 本站均正常，DNS 三处解析一致。前端脚本因此在同网络访客侧基本失效。
+
+改为 Plausible（`plausible.io` 实测可达），脚本与事件端点都从本站域名代理：
+
+- `/js/script.js` → `https://plausible.io/js/script.tagged-events.js`（自定义属性 `source` 需要该变体）
+- `/api/event` → `https://plausible.io/api/event`（只接受白名单来源的 POST，其余一律静默 202）
+- `out/_routes.json` 的 include 增加 `/js/script.js`（`/api/*` 已覆盖事件端点）
+- 来源白名单抽到 `src/lib/allowed-origins.ts`，申请表与埋点代理共用；判断逻辑仍在 `src/lib/apply.ts`
+
+因此验收清单里「Umami 后台能看到 gongyi_apply_success」改为「Plausible 后台能看到该事件」；四个事件名与属性（`source` / `reason`）不变。代理端点已在预览部署实测：脚本 200 且 4185B 与上游一致，合法来源转发比站外来源丢弃慢约 0.2s，申请表 405/403/400 回归正常。
