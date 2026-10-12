@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && node scripts/generate-feed.mjs && node scripts/generate-og.mjs",
+    "build": "next build && node scripts/generate-feed.mjs && node scripts/generate-og.mjs && node scripts/generate-routes.mjs",
     "start": "next start",
     "test": "node --experimental-strip-types --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --test \"tests/*.test.mjs\"",
     "render:hero": "remotion render src/remotion/index.ts HeroBg public/videos/hero-bg.webm --codec=vp9 && remotion still src/remotion/index.ts HeroBg public/videos/hero-poster.png --frame=0"
